@@ -19,10 +19,10 @@ import {
   TopBar,
 } from '@shopify/polaris';
 import {
-  ArrowLeftMinor,
-  HomeMajor,
-  OrdersMajor,
-  ConversationMinor,
+  ArrowLeftIcon,
+  HomeIcon,
+  OrderIcon,
+  ChatIcon,
 } from '@shopify/polaris-icons';
 import {useState, useCallback, useRef} from 'react';
 import {withPolarisExample} from '../../src/components/PolarisExampleWrapper';
@@ -180,7 +180,7 @@ function FrameExample() {
         items={[
           {
             label: 'Back to Shopify',
-            icon: ArrowLeftMinor,
+            icon: ArrowLeftIcon,
           },
         ]}
       />
@@ -190,17 +190,17 @@ function FrameExample() {
         items={[
           {
             label: 'Dashboard',
-            icon: HomeMajor,
+            icon: HomeIcon,
             onClick: toggleIsLoading,
           },
           {
             label: 'Jaded Pixel Orders',
-            icon: OrdersMajor,
+            icon: OrderIcon,
             onClick: toggleIsLoading,
           },
         ]}
         action={{
-          icon: ConversationMinor,
+          icon: ChatIcon,
           accessibilityLabel: 'Contact support',
           onClick: toggleModalActive,
         }}
@@ -292,13 +292,12 @@ function FrameExample() {
   );
 
   const logo = {
-    width: 124,
+    width: 86,
     topBarSource:
-      'https://cdn.shopify.com/s/files/1/0446/6937/files/jaded-pixel-logo-color.svg?6215648040070010999',
+      'https://cdn.shopify.com/s/files/1/2376/3301/files/Shopify_Secondary_Inverted.png',
     contextualSaveBarSource:
-      'https://cdn.shopify.com/s/files/1/0446/6937/files/jaded-pixel-logo-gray.svg?6215648040070010999',
-    url: '#',
-    accessibilityLabel: 'Jaded Pixel',
+      'https://cdn.shopify.com/s/files/1/2376/3301/files/Shopify_Secondary_Inverted.png',
+    accessibilityLabel: 'Shopify',
   };
 
   return (

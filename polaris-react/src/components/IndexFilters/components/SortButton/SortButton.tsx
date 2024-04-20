@@ -1,15 +1,14 @@
 import React, {useState, useMemo} from 'react';
-import {SortMinor} from '@shopify/polaris-icons';
+import {SortIcon} from '@shopify/polaris-icons';
 
 import {useI18n} from '../../../../utilities/i18n';
-import {Icon} from '../../../Icon';
 import {Popover} from '../../../Popover';
 import {ChoiceList} from '../../../ChoiceList';
 import type {ChoiceListProps} from '../../../ChoiceList';
 import {Tooltip} from '../../../Tooltip';
 import {Box} from '../../../Box';
 import type {SortButtonChoice} from '../../types';
-import {FilterButton} from '../FilterButton';
+import {Button} from '../../../Button';
 
 import {DirectionButton} from './components';
 
@@ -21,8 +20,9 @@ export enum SortButtonDirection {
 export interface SortButtonProps {
   choices: SortButtonChoice[];
   selected: ChoiceListProps['selected'];
-  onChange: (selected: string[]) => void;
   disabled?: boolean;
+  disclosureZIndexOverride?: number;
+  onChange: (selected: string[]) => void;
   onChangeKey?: (key: string) => void;
   onChangeDirection?: (direction: string) => void;
 }
@@ -30,12 +30,14 @@ export interface SortButtonProps {
 export function SortButton({
   choices,
   selected,
-  onChange,
   disabled,
+  disclosureZIndexOverride,
+  onChange,
   onChangeKey,
   onChangeDirection,
 }: SortButtonProps) {
   const i18n = useI18n();
+
   const [active, setActive] = useState(false);
   const [selectedValueKey, selectedDirection] = selected[0].split(' ');
 
@@ -99,26 +101,39 @@ export function SortButton({
       content={i18n.translate('Polaris.IndexFilters.SortButton.tooltip')}
       preferredPosition="above"
       hoverDelay={400}
+      zIndexOverride={disclosureZIndexOverride}
     >
-      <FilterButton
+      <Button
+        size="slim"
+        icon={SortIcon}
         onClick={handleClick}
-        aria-label={i18n.translate('Polaris.IndexFilters.SortButton.ariaLabel')}
         disabled={disabled}
-      >
-        <Icon source={SortMinor} color="base" />
-      </FilterButton>
+        accessibilityLabel={i18n.translate(
+          'Polaris.IndexFilters.SortButton.ariaLabel',
+        )}
+      />
     </Tooltip>
   );
 
   return (
     <Popover
+      fluidContent
       active={active && !disabled}
       activator={sortButton}
       autofocusTarget="first-node"
       onClose={handleClose}
-      fluidContent
+      preferredAlignment="right"
+      zIndexOverride={disclosureZIndexOverride}
     >
-      <Box minWidth="148px" padding="4" borderBlockEnd="divider">
+      <Box
+        minWidth="148px"
+        paddingInlineStart="300"
+        paddingInlineEnd="300"
+        paddingBlockStart="200"
+        paddingBlockEnd="200"
+        borderBlockEndWidth="025"
+        borderColor="border-secondary"
+      >
         <ChoiceList
           title={i18n.translate('Polaris.IndexFilters.SortButton.title')}
           choices={choiceListChoices}
@@ -126,7 +141,12 @@ export function SortButton({
           onChange={handleChangeChoiceList}
         />
       </Box>
-      <Box padding="4">
+      <Box
+        paddingInlineStart="150"
+        paddingInlineEnd="150"
+        paddingBlockStart="200"
+        paddingBlockEnd="200"
+      >
         <DirectionButton
           direction="asc"
           active={selectedDirection === SortButtonDirection.Asc}

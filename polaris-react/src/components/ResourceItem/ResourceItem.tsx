@@ -1,16 +1,15 @@
-import React, {Component, createRef, useContext} from 'react';
-import {HorizontalDotsMinor} from '@shopify/polaris-icons';
+import React, {Component, createRef, useContext, useId} from 'react';
+import {MenuHorizontalIcon} from '@shopify/polaris-icons';
 import isEqual from 'react-fast-compare';
 
 import {ActionList} from '../ActionList';
 import {Box} from '../Box';
-import {Bleed} from '../Bleed';
 import {Button, buttonsFrom} from '../Button';
 import {ButtonGroup} from '../ButtonGroup';
 import {Checkbox} from '../Checkbox';
-import {Columns} from '../Columns';
-import {Inline} from '../Inline';
-import type {InlineProps} from '../Inline';
+import {InlineGrid} from '../InlineGrid';
+import {InlineStack} from '../InlineStack';
+import type {InlineStackProps} from '../InlineStack';
 import {Popover} from '../Popover';
 import {UnstyledLink} from '../UnstyledLink';
 import type {AvatarProps} from '../Avatar';
@@ -19,7 +18,6 @@ import type {ThumbnailProps} from '../Thumbnail';
 import {useBreakpoints} from '../../utilities/breakpoints';
 import type {BreakpointsDirectionAlias} from '../../utilities/breakpoints';
 import {classNames} from '../../utilities/css';
-import {globalIdGeneratorFactory} from '../../utilities/unique-id';
 import {useI18n} from '../../utilities/i18n';
 import {
   ResourceListContext,
@@ -27,12 +25,14 @@ import {
 } from '../../utilities/resource-list';
 import type {ResourceListSelectedItems} from '../../utilities/resource-list';
 
-import styles from './ResourceItem.scss';
+import styles from './ResourceItem.module.css';
 
 type Alignment = 'leading' | 'trailing' | 'center' | 'fill' | 'baseline';
 
 interface BaseProps {
-  /** Visually hidden text for screen readers used for item link*/
+  /** Whether or not interaction is disabled */
+  disabled?: boolean;
+  /** Visually hidden text for screen readers used for item link */
   accessibilityLabel?: string;
   /** Individual item name used by various text labels */
   name?: string;
@@ -62,6 +62,10 @@ interface BaseProps {
   verticalAlignment?: Alignment;
   /** Prefetched url attribute to bind to the main element being returned */
   dataHref?: string;
+  /** Callback when mouse cursor is on item */
+  onMouseOver?: () => void;
+  /** Callback when mouse cursor leaves item */
+  onMouseOut?: () => void;
 }
 
 interface PropsWithUrl extends BaseProps {
@@ -93,11 +97,6 @@ interface State {
 
 type CombinedProps = PropsFromWrapper & (PropsWithUrl | PropsWithClick);
 
-const getUniqueCheckboxID = globalIdGeneratorFactory(
-  'ResourceListItemCheckbox',
-);
-const getUniqueOverlayID = globalIdGeneratorFactory('ResourceListItemOverlay');
-
 class BaseResourceItem extends Component<CombinedProps, State> {
   static getDerivedStateFromProps(nextProps: CombinedProps, prevState: State) {
     const selected = isSelected(nextProps.id, nextProps.context.selectedItems);
@@ -117,8 +116,7 @@ class BaseResourceItem extends Component<CombinedProps, State> {
   };
 
   private node: HTMLDivElement | null = null;
-  private checkboxId = getUniqueCheckboxID();
-  private overlayId = getUniqueOverlayID();
+  private overlayRef = createRef<HTMLAnchorElement>();
   private buttonOverlay = createRef<HTMLButtonElement>();
 
   shouldComponentUpdate(nextProps: CombinedProps, nextState: State) {
@@ -162,6 +160,8 @@ class BaseResourceItem extends Component<CombinedProps, State> {
       verticalAlignment,
       dataHref,
       breakpoints,
+      onMouseOver,
+      disabled,
     } = this.props;
 
     const {actionsMenuVisible, focused, focusedInner, selected} = this.state;
@@ -174,43 +174,43 @@ class BaseResourceItem extends Component<CombinedProps, State> {
         name || accessibilityLabel || i18n.translate('Polaris.Common.checkbox');
 
       handleMarkup = (
-        <div onClick={this.handleLargerSelectionArea}>
-          <Bleed marginBlock="2" marginInline="3">
-            <Box
-              zIndex="var(--pc-resource-item-content-stacking-order)"
-              paddingInlineStart="3"
-              paddingInlineEnd="3"
-              paddingBlockStart="3"
-              paddingBlockEnd="2"
-            >
-              <div onClick={stopPropagation}>
-                <div onChange={this.handleLargerSelectionArea}>
-                  <Checkbox
-                    id={this.checkboxId}
-                    label={checkboxAccessibilityLabel}
-                    labelHidden
-                    checked={selected}
-                    disabled={loading}
-                  />
-                </div>
-              </div>
-            </Box>
-          </Bleed>
+        <div
+          className={styles.CheckboxWrapper}
+          onClick={stopPropagation}
+          onChange={this.handleLargerSelectionArea}
+        >
+          <UseId>
+            {(id) => (
+              <Checkbox
+                id={id}
+                label={checkboxAccessibilityLabel}
+                labelHidden
+                checked={selected}
+                disabled={loading || disabled}
+                bleedInlineStart="300"
+                bleedInlineEnd="300"
+                bleedBlockStart="300"
+                bleedBlockEnd="300"
+                fill
+                labelClassName={styles.CheckboxLabel}
+              />
+            )}
+          </UseId>
         </div>
       );
     }
 
     if (media || selectable) {
       ownedMarkup = (
-        <Inline
-          gap="4"
+        <InlineStack
+          gap="300"
           blockAlign={
             media && selectable ? 'center' : getAlignment(verticalAlignment)
           }
         >
           {handleMarkup}
           {media}
-        </Inline>
+        </InlineStack>
       );
     }
 
@@ -222,12 +222,15 @@ class BaseResourceItem extends Component<CombinedProps, State> {
       selectMode && styles.selectMode,
       persistActions && styles.persistActions,
       focusedInner && styles.focusedInner,
+      disabled && styles.disabled,
     );
 
     const listItemClassName = classNames(
       styles.ListItem,
       focused && !focusedInner && styles.focused,
       hasBulkActions && styles.hasBulkActions,
+      selected && styles.selected,
+      selectable && styles.selectable,
     );
 
     let actionsMarkup: React.ReactNode | null = null;
@@ -238,7 +241,9 @@ class BaseResourceItem extends Component<CombinedProps, State> {
         actionsMarkup = breakpoints?.lgUp ? (
           <div className={styles.Actions} onClick={stopPropagation}>
             <ButtonGroup>
-              {buttonsFrom(shortcutActions, {plain: true})}
+              {buttonsFrom(shortcutActions, {
+                variant: 'tertiary',
+              })}
             </ButtonGroup>
           </div>
         ) : null;
@@ -257,8 +262,8 @@ class BaseResourceItem extends Component<CombinedProps, State> {
                   <Button
                     accessibilityLabel={disclosureAccessibilityLabel}
                     onClick={this.handleActionsClick}
-                    plain
-                    icon={HorizontalDotsMinor}
+                    variant="tertiary"
+                    icon={MenuHorizontalIcon}
                   />
                 }
                 onClose={this.handleCloseRequest}
@@ -271,8 +276,8 @@ class BaseResourceItem extends Component<CombinedProps, State> {
       } else if (breakpoints?.lgUp) {
         actionsMarkup = (
           <div className={styles.Actions} onClick={stopPropagation}>
-            <Box position="absolute" insetBlockStart="4" insetInlineEnd="5">
-              <ButtonGroup segmented>
+            <Box position="absolute" insetBlockStart="400" insetInlineEnd="500">
+              <ButtonGroup variant="segmented">
                 {buttonsFrom(shortcutActions, {size: 'slim'})}
               </ButtonGroup>
             </Box>
@@ -285,31 +290,27 @@ class BaseResourceItem extends Component<CombinedProps, State> {
       <Box
         id={this.props.id}
         position="relative"
-        padding="3"
-        paddingInlineStart={{xs: '4', sm: '5'}}
-        paddingInlineEnd={{xs: '4', sm: '5'}}
+        paddingInlineStart="300"
+        paddingInlineEnd="300"
+        paddingBlockStart="300"
+        paddingBlockEnd="300"
         zIndex="var(--pc-resource-item-content-stacking-order)"
       >
-        <Columns columns={{xs: '1fr auto'}}>
-          <Columns
+        <InlineGrid columns={{xs: '1fr auto'}}>
+          <InlineGrid
             columns={{xs: media || selectable ? 'auto 1fr' : '1fr'}}
-            gap="5"
+            gap="300"
           >
             {ownedMarkup}
-            <Inline gap="4" blockAlign={getAlignment(verticalAlignment)}>
-              <Box
-                width="100%"
-                padding="0"
-                paddingInlineStart="0"
-                paddingInlineEnd="0"
-              >
+            <InlineStack blockAlign={getAlignment(verticalAlignment)}>
+              <Box width="100%" padding="0">
                 {children}
               </Box>
-            </Inline>
-          </Columns>
+            </InlineStack>
+          </InlineGrid>
           {actionsMarkup}
           {disclosureMarkup}
-        </Columns>
+        </InlineGrid>
       </Box>
     );
 
@@ -322,15 +323,20 @@ class BaseResourceItem extends Component<CombinedProps, State> {
       });
 
     const accessibleMarkup = url ? (
-      <UnstyledLink
-        aria-describedby={this.props.id}
-        aria-label={ariaLabel}
-        className={styles.Link}
-        url={url}
-        external={external}
-        tabIndex={tabIndex}
-        id={this.overlayId}
-      />
+      <UseId>
+        {(id) => (
+          <UnstyledLink
+            aria-describedby={this.props.id}
+            aria-label={ariaLabel}
+            className={styles.Link}
+            url={url}
+            external={external}
+            tabIndex={tabIndex}
+            id={id}
+            ref={this.overlayRef}
+          />
+        )}
+      </UseId>
     ) : (
       <button
         className={styles.Button}
@@ -349,14 +355,15 @@ class BaseResourceItem extends Component<CombinedProps, State> {
           <div
             ref={this.setNode}
             className={className}
-            onClick={this.handleClick}
+            onClick={disabled ? () => {} : this.handleClick}
             onFocus={this.handleFocus}
             onBlur={this.handleBlur}
             onKeyUp={this.handleKeyUp}
+            onMouseOver={onMouseOver}
             onMouseOut={this.handleMouseOut}
             data-href={url}
           >
-            {accessibleMarkup}
+            {disabled ? null : accessibleMarkup}
             {containerMarkup}
           </div>
         </div>
@@ -371,8 +378,7 @@ class BaseResourceItem extends Component<CombinedProps, State> {
   private handleFocus = (event: React.FocusEvent<HTMLElement>) => {
     if (
       event.target === this.buttonOverlay.current ||
-      (this.node &&
-        event.target === this.node.querySelector(`#${this.overlayId}`))
+      (this.node && event.target === this.overlayRef.current)
     ) {
       this.setState({focused: true, focusedInner: false});
     } else if (this.node && this.node.contains(event.target)) {
@@ -394,6 +400,9 @@ class BaseResourceItem extends Component<CombinedProps, State> {
 
   private handleMouseOut = () => {
     this.state.focused && this.setState({focused: false, focusedInner: false});
+    if (this.props.onMouseOut) {
+      this.props.onMouseOut();
+    }
   };
 
   private handleLargerSelectionArea = (event: React.MouseEvent<any>) => {
@@ -453,12 +462,13 @@ class BaseResourceItem extends Component<CombinedProps, State> {
   // This fires onClick when there is a URL on the item
   private handleKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
     const {
+      disabled,
       onClick = noop,
       context: {selectMode},
     } = this.props;
     const {key} = event;
 
-    if (key === 'Enter' && this.props.url && !selectMode) {
+    if (key === 'Enter' && this.props.url && !selectMode && !disabled) {
       onClick();
     }
   };
@@ -500,7 +510,7 @@ export function ResourceItem(props: ResourceItemProps) {
   );
 }
 
-function getAlignment(alignment?: Alignment): InlineProps['blockAlign'] {
+function getAlignment(alignment?: Alignment): InlineStackProps['blockAlign'] {
   switch (alignment) {
     case 'leading':
       return 'start';
@@ -515,4 +525,9 @@ function getAlignment(alignment?: Alignment): InlineProps['blockAlign'] {
     default:
       return 'start';
   }
+}
+
+function UseId(props: {children(id: string): JSX.Element}) {
+  const id = useId();
+  return props.children(id);
 }

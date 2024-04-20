@@ -4,13 +4,13 @@ import React, {
   useEffect,
   useCallback,
   useMemo,
+  useId,
   Children,
 } from 'react';
 import type {ReactNode} from 'react';
 
 import {debounce} from '../../utilities/debounce';
 import {useToggle} from '../../utilities/use-toggle';
-import {useUniqueId} from '../../utilities/unique-id';
 import {useComboboxListbox} from '../../utilities/combobox';
 import {
   ListboxContext,
@@ -31,7 +31,7 @@ import {
   Loading,
   TextOption,
 } from './components';
-import styles from './Listbox.scss';
+import styles from './Listbox.module.css';
 
 export enum AutoSelection {
   /** Default active option is the first selected option. If no options are selected, defaults to first interactive option. */
@@ -88,7 +88,7 @@ export function Listbox({
     setFalse: disableKeyboardEvents,
   } = useToggle(Boolean(enableKeyboardControl));
 
-  const uniqueId = useUniqueId('Listbox');
+  const uniqueId = useId();
   const listId = customListId || uniqueId;
 
   const scrollableRef = useRef<HTMLElement | null>(null);

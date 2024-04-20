@@ -7,6 +7,8 @@ import type {
   ActionListItemDescriptor,
   ActionListSection,
 } from '../../../../types';
+import {InlineStack} from '../../../InlineStack';
+import {BlockStack} from '../../../BlockStack';
 
 export interface SectionProps {
   /** Section of action items */
@@ -40,35 +42,49 @@ export function Section({
   };
   const actionMarkup = section.items.map(
     ({content, helpText, onAction, ...item}, index) => {
+      const itemMarkup = (
+        <Item
+          content={content}
+          helpText={helpText}
+          role={actionRole}
+          onAction={handleAction(onAction)}
+          {...item}
+        />
+      );
+
       return (
-        <li
+        <Box
+          as="li"
           key={`${content}-${index}`}
           role={actionRole === 'menuitem' ? 'presentation' : undefined}
         >
-          <Item
-            content={content}
-            helpText={helpText}
-            role={actionRole}
-            onAction={handleAction(onAction)}
-            {...item}
-          />
-        </li>
+          <InlineStack wrap={false}>{itemMarkup}</InlineStack>
+        </Box>
       );
     },
   );
 
-  const titleMarkup = section.title ? (
-    <Box
-      paddingBlockStart="4"
-      paddingInlineStart="4"
-      paddingBlockEnd="2"
-      paddingInlineEnd="4"
-    >
-      <Text as="p" variant="headingXs">
-        {section.title}
-      </Text>
-    </Box>
-  ) : null;
+  let titleMarkup: string | React.ReactNode = null;
+
+  if (section.title) {
+    titleMarkup =
+      typeof section.title === 'string' ? (
+        <Box
+          paddingBlockStart="300"
+          paddingBlockEnd="100"
+          paddingInlineStart="300"
+          paddingInlineEnd="300"
+        >
+          <Text as="p" variant="headingSm">
+            {section.title}
+          </Text>
+        </Box>
+      ) : (
+        <Box padding="200" paddingInlineEnd="150">
+          {section.title}
+        </Box>
+      );
+  }
 
   let sectionRole: 'menu' | 'presentation' | undefined;
   switch (actionRole) {
@@ -87,13 +103,14 @@ export function Section({
     <>
       {titleMarkup}
       <Box
-        as="ul"
-        padding="2"
+        as="div"
+        padding="150"
         {...(hasMultipleSections && {paddingBlockStart: '0'})}
-        {...(sectionRole && {role: sectionRole})}
         tabIndex={!hasMultipleSections ? -1 : undefined}
       >
-        {actionMarkup}
+        <BlockStack gap="050" as="ul" {...(sectionRole && {role: sectionRole})}>
+          {actionMarkup}
+        </BlockStack>
       </Box>
     </>
   );
@@ -102,8 +119,11 @@ export function Section({
     <Box
       as="li"
       role="presentation"
-      {...(!isFirst && {borderBlockStart: 'divider'})}
-      {...(!section.title && {paddingBlockStart: '2'})}
+      borderColor="border-secondary"
+      {...(!isFirst && {borderBlockStartWidth: '025'})}
+      {...(!section.title && {
+        paddingBlockStart: '150',
+      })}
     >
       {sectionMarkup}
     </Box>

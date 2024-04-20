@@ -8,7 +8,7 @@ import {TextOption} from '../TextOption';
 import {classNames} from '../../../../utilities/css';
 import {ActionContext} from '../../../../utilities/listbox/context';
 
-import styles from './Action.scss';
+import styles from './Action.module.css';
 
 interface ActionProps extends OptionProps {
   icon?: IconProps['source'];
@@ -19,7 +19,7 @@ export function Action(props: ActionProps) {
 
   const iconMarkup = icon && (
     <div className={styles.Icon}>
-      <Icon color="subdued" source={icon} />
+      <Icon tone="subdued" source={icon} />
     </div>
   );
 

@@ -1,8 +1,10 @@
+// This file is not built with vite.
+// Therefore the vite config in './main.js' doesn't apply.
+// All manager code is built using esbuild.
+// see: https://github.com/storybookjs/storybook/blob/d112cbac280f23530b366918b9d54818006db963/code/builders/builder-manager/src/index.ts#L103
 import React from 'react';
-import {AddonPanel, ArgsTable} from '@storybook/components';
-import {addons, types} from '@storybook/addons';
-import {useGlobals} from '@storybook/api';
 import {create} from '@storybook/theming';
+import {addons} from '@storybook/manager-api';
 
 const colors = {
   primary: '#008060',
@@ -49,56 +51,3 @@ addons.setConfig({
     inputBorderRadius: 4,
   }),
 });
-
-addons.register('polaris/global-controls', () => {
-  addons.add('grid/panel', {
-    type: types.PANEL,
-    title: 'Grid',
-    match: ({viewMode}) => viewMode === 'story',
-    render: ({active, key}) => <GridPanel active={active} key={key} />,
-  });
-});
-
-export const gridOptions = {
-  showGrid: {
-    name: 'Show grid overlay',
-    description: 'Show or hide a 4 / 12 column grid, overlaying components',
-    defaultValue: false,
-    control: {type: 'boolean'},
-  },
-  gridInFrame: {
-    name: 'Grid in frame',
-    description: 'Show grid within app frame context',
-    defaultValue: false,
-    control: {type: 'boolean'},
-  },
-  gridWidth: {
-    name: 'Grid width',
-    description: 'Set a max width for the grid overlay',
-    default: '100%',
-    control: {type: 'select'},
-    options: ['560px', '768px', '1008px', '100%'],
-  },
-  gridLayer: {
-    name: 'Grid layer',
-    description: 'Set the grid layer above or below content',
-    default: 'below',
-    control: {type: 'select'},
-    options: ['above', 'below'],
-  },
-};
-
-function GridPanel(props) {
-  const [globals, updateGlobals] = useGlobals();
-
-  return (
-    <AddonPanel {...props}>
-      <ArgsTable
-        inAddonPanel
-        rows={gridOptions}
-        args={globals}
-        updateArgs={updateGlobals}
-      />
-    </AddonPanel>
-  );
-}

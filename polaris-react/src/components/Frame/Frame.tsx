@@ -1,8 +1,7 @@
 import React, {PureComponent, createRef} from 'react';
 import type {MouseEvent} from 'react';
-import {MobileCancelMajor} from '@shopify/polaris-icons';
+import {XIcon} from '@shopify/polaris-icons';
 import {CSSTransition} from 'react-transition-group';
-import {motion} from '@shopify/polaris-tokens';
 
 import {useI18n} from '../../utilities/i18n';
 import {useMediaQuery} from '../../utilities/media-query';
@@ -12,6 +11,7 @@ import {Icon} from '../Icon';
 // eslint-disable-next-line import/no-deprecated
 import {EventListener} from '../EventListener';
 import {Backdrop} from '../Backdrop';
+import {Text} from '../Text';
 import {TrapFocus} from '../TrapFocus';
 import {dataPolarisTopBar, layer} from '../shared';
 import {setRootProperty} from '../../utilities/set-root-property';
@@ -21,6 +21,9 @@ import type {
   ToastID,
   ToastPropsWithID,
 } from '../../utilities/frame';
+import {UseTheme} from '../../utilities/use-theme';
+import {UseFeatures} from '../../utilities/features';
+import type {FeaturesConfig} from '../../utilities/features';
 
 import {
   ToastManager,
@@ -28,7 +31,7 @@ import {
   ContextualSaveBar,
   CSSAnimation,
 } from './components';
-import styles from './Frame.scss';
+import styles from './Frame.module.css';
 
 export interface FrameProps {
   /** Sets the logo for the TopBar, Navigation, and ContextualSaveBar components */
@@ -51,6 +54,10 @@ export interface FrameProps {
   skipToContentTarget?: React.RefObject<HTMLAnchorElement>;
   /** A callback function to handle clicking the mobile navigation dismiss button */
   onNavigationDismiss?(): void;
+  /** A boolean property indicating whether there should be space for a sidebar
+   * @default false
+   */
+  sidebar?: boolean;
 }
 
 type CombinedProps = FrameProps & {
@@ -112,6 +119,7 @@ class FrameInner extends PureComponent<CombinedProps, State> {
       showMobileNavigation = false,
       skipToContentTarget,
       i18n,
+      sidebar,
       mediaQuery: {isNavigationCollapsed},
     } = this.props;
     const navClassName = classNames(
@@ -131,44 +139,48 @@ class FrameInner extends PureComponent<CombinedProps, State> {
     };
 
     const navigationMarkup = navigation ? (
-      <TrapFocus trapping={mobileNavShowing}>
-        <CSSTransition
-          nodeRef={this.navigationNode}
-          appear={isNavigationCollapsed}
-          exit={isNavigationCollapsed}
-          in={showMobileNavigation}
-          timeout={parseInt(motion['duration-300'], 10)}
-          classNames={navTransitionClasses}
-        >
-          <div
-            key="NavContent"
-            {...mobileNavAttributes}
-            aria-label={i18n.translate('Polaris.Frame.navigationLabel')}
-            ref={this.navigationNode}
-            className={navClassName}
-            onKeyDown={this.handleNavKeydown}
-            id={APP_FRAME_NAV}
-            hidden={mobileNavHidden}
-          >
-            {navigation}
-            <button
-              type="button"
-              className={styles.NavigationDismiss}
-              onClick={this.handleNavigationDismiss}
-              aria-hidden={
-                mobileNavHidden ||
-                (!isNavigationCollapsed && !showMobileNavigation)
-              }
-              aria-label={i18n.translate(
-                'Polaris.Frame.Navigation.closeMobileNavigationLabel',
-              )}
-              tabIndex={tabIndex}
+      <UseTheme>
+        {(theme) => (
+          <TrapFocus trapping={mobileNavShowing}>
+            <CSSTransition
+              nodeRef={this.navigationNode}
+              appear={isNavigationCollapsed}
+              exit={isNavigationCollapsed}
+              in={showMobileNavigation}
+              timeout={parseInt(theme.motion['motion-duration-300'], 10)}
+              classNames={navTransitionClasses}
             >
-              <Icon source={MobileCancelMajor} />
-            </button>
-          </div>
-        </CSSTransition>
-      </TrapFocus>
+              <div
+                key="NavContent"
+                {...mobileNavAttributes}
+                aria-label={i18n.translate('Polaris.Frame.navigationLabel')}
+                ref={this.navigationNode}
+                className={navClassName}
+                onKeyDown={this.handleNavKeydown}
+                id={APP_FRAME_NAV}
+                hidden={mobileNavHidden}
+              >
+                {navigation}
+                <button
+                  type="button"
+                  className={styles.NavigationDismiss}
+                  onClick={this.handleNavigationDismiss}
+                  aria-hidden={
+                    mobileNavHidden ||
+                    (!isNavigationCollapsed && !showMobileNavigation)
+                  }
+                  aria-label={i18n.translate(
+                    'Polaris.Frame.Navigation.closeMobileNavigationLabel',
+                  )}
+                  tabIndex={tabIndex}
+                >
+                  <Icon source={XIcon} />
+                </button>
+              </div>
+            </CSSTransition>
+          </TrapFocus>
+        )}
+      </UseTheme>
     ) : null;
 
     const loadingMarkup =
@@ -177,16 +189,6 @@ class FrameInner extends PureComponent<CombinedProps, State> {
           <Loading />
         </div>
       ) : null;
-
-    const contextualSaveBarMarkup = (
-      <CSSAnimation
-        in={showContextualSaveBar}
-        className={styles.ContextualSaveBar}
-        type="fade"
-      >
-        <ContextualSaveBar {...this.contextualSaveBar} />
-      </CSSAnimation>
-    );
 
     const topBarMarkup = topBar ? (
       <div
@@ -225,7 +227,9 @@ class FrameInner extends PureComponent<CombinedProps, State> {
           onBlur={this.handleBlur}
           onClick={this.handleClick}
         >
-          {i18n.translate('Polaris.Frame.skipToContent')}
+          <Text as="span" variant="bodyLg" fontWeight="medium">
+            {i18n.translate('Polaris.Frame.skipToContent')}
+          </Text>
         </a>
       </div>
     );
@@ -236,10 +240,34 @@ class FrameInner extends PureComponent<CombinedProps, State> {
         }
       : {};
 
-    const frameClassName = classNames(
-      styles.Frame,
-      navigation && styles.hasNav,
-      topBar && styles.hasTopBar,
+    const getFrameClassName = (features: FeaturesConfig) =>
+      classNames(
+        styles.Frame,
+        features?.dynamicTopBarAndReframe && styles['Frame-TopBarAndReframe'],
+        navigation && styles.hasNav,
+        topBar && styles.hasTopBar,
+        sidebar && styles.hasSidebar,
+        sidebar &&
+          features?.dynamicTopBarAndReframe &&
+          styles['hasSidebar-TopBarAndReframe'],
+      );
+
+    const contextualSaveBarMarkup = (
+      <UseFeatures>
+        {({dynamicTopBarAndReframe}) =>
+          dynamicTopBarAndReframe ? (
+            <></>
+          ) : (
+            <CSSAnimation
+              in={showContextualSaveBar}
+              className={styles.ContextualSaveBar}
+              type="fade"
+            >
+              <ContextualSaveBar {...this.contextualSaveBar} />
+            </CSSAnimation>
+          )
+        }
+      </UseFeatures>
     );
 
     const navigationOverlayMarkup =
@@ -257,36 +285,77 @@ class FrameInner extends PureComponent<CombinedProps, State> {
       logo,
       showToast: this.showToast,
       hideToast: this.hideToast,
+      toastMessages,
       startLoading: this.startLoading,
       stopLoading: this.stopLoading,
       setContextualSaveBar: this.setContextualSaveBar,
       removeContextualSaveBar: this.removeContextualSaveBar,
+      contextualSaveBarVisible: this.state.showContextualSaveBar,
+      contextualSaveBarProps: this.contextualSaveBar,
     };
 
     return (
       <FrameContext.Provider value={context}>
-        <div
-          className={frameClassName}
-          {...layer.props}
-          {...navigationAttributes}
-        >
-          {skipMarkup}
-          {topBarMarkup}
-          {navigationMarkup}
-          {contextualSaveBarMarkup}
-          {loadingMarkup}
-          {navigationOverlayMarkup}
-          <main
-            className={styles.Main}
-            id={APP_FRAME_MAIN}
-            data-has-global-ribbon={Boolean(globalRibbon)}
-          >
-            <div className={styles.Content}>{children}</div>
-          </main>
-          <ToastManager toastMessages={toastMessages} />
-          {globalRibbonMarkup}
-          <EventListener event="resize" handler={this.handleResize} />
-        </div>
+        <UseFeatures>
+          {(features) => (
+            <div
+              className={getFrameClassName(features)}
+              {...layer.props}
+              {...navigationAttributes}
+            >
+              {skipMarkup}
+              {topBarMarkup}
+              {features?.dynamicTopBarAndReframe ? null : navigationMarkup}
+              {contextualSaveBarMarkup}
+              {loadingMarkup}
+              {navigationOverlayMarkup}
+              {features?.dynamicTopBarAndReframe ? (
+                <div className={styles.ShadowBevel}>
+                  {navigationMarkup}
+                  <main
+                    className={classNames(
+                      styles.Main,
+                      styles['Main-TopBarAndReframe'],
+                    )}
+                    id={APP_FRAME_MAIN}
+                    data-has-global-ribbon={Boolean(globalRibbon)}
+                  >
+                    <div
+                      className={classNames(
+                        styles.Content,
+                        features?.dynamicTopBarAndReframe &&
+                          styles['Content-TopBarAndReframe'],
+                      )}
+                    >
+                      {features?.dynamicTopBarAndReframe ? (
+                        <div
+                          className={
+                            styles['ScrollbarSafeArea-TopBarAndReframe']
+                          }
+                        >
+                          {children}
+                        </div>
+                      ) : (
+                        children
+                      )}
+                    </div>
+                  </main>
+                </div>
+              ) : (
+                <main
+                  className={styles.Main}
+                  id={APP_FRAME_MAIN}
+                  data-has-global-ribbon={Boolean(globalRibbon)}
+                >
+                  <div className={styles.Content}>{children}</div>
+                </main>
+              )}
+              <ToastManager toastMessages={toastMessages} />
+              {globalRibbonMarkup}
+              <EventListener event="resize" handler={this.handleResize} />
+            </div>
+          )}
+        </UseFeatures>
       </FrameContext.Provider>
     );
   }

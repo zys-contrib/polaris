@@ -10,11 +10,11 @@ import {
   RangeSlider,
   Badge,
 } from '@shopify/polaris';
-import type {IndexFiltersProps, AlphaTabProps} from '@shopify/polaris';
+import type {IndexFiltersProps, TabProps} from '@shopify/polaris';
 import {useState, useCallback} from 'react';
 import {withPolarisExample} from '../../src/components/PolarisExampleWrapper';
 
-function IndexFiltersWithPinnedFilters() {
+function IndexFiltersWithPinnedFiltersExample() {
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
   const [itemStrings, setItemStrings] = useState([
@@ -39,7 +39,7 @@ function IndexFiltersWithPinnedFilters() {
     return true;
   };
 
-  const tabs: AlphaTabProps[] = itemStrings.map((item, index) => ({
+  const tabs: TabProps[] = itemStrings.map((item, index) => ({
     content: item,
     index,
     onAction: () => {},
@@ -52,7 +52,7 @@ function IndexFiltersWithPinnedFilters() {
             {
               type: 'rename',
               onAction: () => {},
-              onPrimaryAction: async (value: string) => {
+              onPrimaryAction: async (value: string): Promise<boolean> => {
                 const newItemsStrings = tabs.map((item, idx) => {
                   if (idx === index) {
                     return value;
@@ -66,9 +66,9 @@ function IndexFiltersWithPinnedFilters() {
             },
             {
               type: 'duplicate',
-              onPrimaryAction: async (name) => {
+              onPrimaryAction: async (value: string): Promise<boolean> => {
                 await sleep(1);
-                duplicateView(name);
+                duplicateView(value);
                 return true;
               },
             },
@@ -319,7 +319,11 @@ function IndexFiltersWithPinnedFilters() {
         </IndexTable.Cell>
         <IndexTable.Cell>{date}</IndexTable.Cell>
         <IndexTable.Cell>{customer}</IndexTable.Cell>
-        <IndexTable.Cell>{total}</IndexTable.Cell>
+        <IndexTable.Cell>
+          <Text as="span" alignment="end" numeric>
+            {total}
+          </Text>
+        </IndexTable.Cell>
         <IndexTable.Cell>{paymentStatus}</IndexTable.Cell>
         <IndexTable.Cell>{fulfillmentStatus}</IndexTable.Cell>
       </IndexTable.Row>
@@ -334,7 +338,7 @@ function IndexFiltersWithPinnedFilters() {
         queryValue={queryValue}
         queryPlaceholder="Searching in all"
         onQueryChange={handleFiltersQueryChange}
-        onQueryClear={() => {}}
+        onQueryClear={() => setQueryValue('')}
         onSort={setSortSelected}
         primaryAction={primaryAction}
         cancelAction={{
@@ -396,4 +400,4 @@ function IndexFiltersWithPinnedFilters() {
   }
 }
 
-export default withPolarisExample(IndexFiltersWithPinnedFilters);
+export default withPolarisExample(IndexFiltersWithPinnedFiltersExample);

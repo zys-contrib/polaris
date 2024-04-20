@@ -1,6 +1,6 @@
 import React from 'react';
 import {mountWithApp} from 'tests/utilities';
-import {SortAscendingMajor, SortDescendingMajor} from '@shopify/polaris-icons';
+import {SortAscendingIcon, SortDescendingIcon} from '@shopify/polaris-icons';
 
 import {getTableHeadingsBySelector} from '../utilities';
 import {EmptySearchResult} from '../../EmptySearchResult';
@@ -12,8 +12,6 @@ import {Checkbox} from '../../Checkbox';
 import {Badge} from '../../Badge';
 import {Text} from '../../Text';
 import {BulkActions} from '../../BulkActions';
-import type {useIsBulkActionsSticky} from '../../BulkActions';
-import {SelectAllActions} from '../../SelectAllActions';
 import {IndexTable} from '../IndexTable';
 import type {IndexTableProps, IndexTableSortDirection} from '../IndexTable';
 import {ScrollContainer} from '../components';
@@ -21,6 +19,8 @@ import {SelectionType} from '../../../utilities/index-provider';
 import {AfterInitialMount} from '../../AfterInitialMount';
 import {UnstyledButton} from '../../UnstyledButton';
 import {Tooltip} from '../../Tooltip';
+import {IndexProvider} from '../../IndexProvider';
+import {Pagination} from '../../Pagination';
 
 jest.mock('../utilities', () => ({
   ...jest.requireActual('../utilities'),
@@ -33,20 +33,6 @@ jest.mock('../../../utilities/debounce', () => ({
     callback();
   },
 }));
-
-jest.mock('../../BulkActions', () => ({
-  ...jest.requireActual('../../BulkActions'),
-  useIsBulkActionsSticky: jest.fn(),
-}));
-
-function mockUseIsBulkActionsSticky(
-  args: ReturnType<typeof useIsBulkActionsSticky>,
-) {
-  const useIsBulkActionsSticky: jest.Mock =
-    jest.requireMock('../../BulkActions').useIsBulkActionsSticky;
-
-  useIsBulkActionsSticky.mockReturnValue(args);
-}
 
 const mockTableItems = [
   {
@@ -99,15 +85,6 @@ describe('<IndexTable>', () => {
   beforeEach(() => {
     jest.resetAllMocks();
     (getTableHeadingsBySelector as jest.Mock).mockReturnValue([]);
-    mockUseIsBulkActionsSticky({
-      bulkActionsIntersectionRef: {current: null},
-      tableMeasurerRef: {current: null},
-      isBulkActionsSticky: false,
-      bulkActionsAbsoluteOffset: 0,
-      bulkActionsMaxWidth: 0,
-      bulkActionsOffsetLeft: 0,
-      computeTableDimensions: jest.fn(),
-    });
   });
 
   it('renders an <EmptySearchResult /> if no items are passed', () => {
@@ -361,10 +338,11 @@ describe('<IndexTable>', () => {
       expect(index).toContainReactComponent('table', {
         className: 'Table Table-sticky Table-sticky-last',
       });
-      expect(index).toContainReactComponent('th', {
-        children: title,
+      const lastHeading = index.find('th', {
         className: 'TableHeading TableHeading-last',
       });
+      expect(lastHeading).not.toBeNull();
+      expect(lastHeading).toContainReactText(title);
     });
 
     it('does not render a sticky last heading if `lastColumnSticky` prop is true and last heading is hidden', () => {
@@ -393,7 +371,7 @@ describe('<IndexTable>', () => {
     });
   });
 
-  describe('SelectAllActions', () => {
+  describe('BulkActions', () => {
     const originalInnerWidth = window.innerWidth;
 
     afterEach(() => {
@@ -419,7 +397,7 @@ describe('<IndexTable>', () => {
       );
 
       index
-        .find(SelectAllActions)!
+        .find(BulkActions)!
         .triggerKeypath('paginatedSelectAllAction.onAction');
 
       expect(onSelectionChangeSpy).toHaveBeenCalledWith(
@@ -428,7 +406,7 @@ describe('<IndexTable>', () => {
       );
     });
 
-    it('renders a custom select all string if present', () => {
+    it('renders a custom select all action string if present', () => {
       const onSelectionChangeSpy = jest.fn();
       const customString = 'Foo bar baz';
       const index = mountWithApp(
@@ -445,7 +423,48 @@ describe('<IndexTable>', () => {
           {mockTableItems.map(mockRenderRow)}
         </IndexTable>,
       );
-      expect(index.find(SelectAllActions)).toContainReactText(customString);
+      expect(index.find(BulkActions)).toContainReactText(customString);
+    });
+
+    it('renders a custom default select all string if present', () => {
+      const onSelectionChangeSpy = jest.fn();
+      const customString = 'Foo bar baz';
+      const index = mountWithApp(
+        <IndexTable
+          {...defaultProps}
+          selectable
+          hasMoreItems
+          selectedItemsCount="All"
+          itemCount={2}
+          promotedBulkActions={[{content: 'promoted action'}]}
+          onSelectionChange={onSelectionChangeSpy}
+          paginatedSelectAllText={customString}
+        >
+          {mockTableItems.map(mockRenderRow)}
+        </IndexTable>,
+      );
+      expect(index.find(BulkActions)).toContainReactText(customString);
+    });
+
+    it('does not need the bulkActions or promotedBulkActions props present to render the custom select all string', () => {
+      const onSelectionChangeSpy = jest.fn();
+      const customString = 'Foo bar baz';
+      const index = mountWithApp(
+        <IndexTable
+          {...defaultProps}
+          selectable
+          hasMoreItems
+          selectedItemsCount={1}
+          itemCount={2}
+          bulkActions={undefined}
+          promotedBulkActions={undefined}
+          onSelectionChange={onSelectionChangeSpy}
+          paginatedSelectAllActionText={customString}
+        >
+          {mockTableItems.map(mockRenderRow)}
+        </IndexTable>,
+      );
+      expect(index.find(BulkActions)).toContainReactText(customString);
     });
 
     it('toggles all page resources when onToggleAll is triggered', () => {
@@ -464,7 +483,7 @@ describe('<IndexTable>', () => {
         </IndexTable>,
       );
 
-      index.find(SelectAllActions)!.trigger('onToggleAll');
+      index.find(BulkActions)!.trigger('onToggleAll');
 
       expect(onSelectionChangeSpy).toHaveBeenCalledWith(
         SelectionType.Page,
@@ -499,14 +518,14 @@ describe('<IndexTable>', () => {
       expect(index).not.toContainReactComponent(BulkActions);
     });
 
-    it('does not render SelectAllActions', () => {
+    it('does not render BulkActions', () => {
       const index = mountWithApp(
         <IndexTable {...defaultIndexTableProps} condensed selectable={false}>
           {mockTableItems.map(mockRenderCondensedRow)}
         </IndexTable>,
       );
 
-      expect(index).not.toContainReactComponent(SelectAllActions);
+      expect(index).not.toContainReactComponent(BulkActions);
     });
 
     it('does not render bulk actions with onSelectModeToggle when condensed is false', () => {
@@ -572,6 +591,18 @@ describe('<IndexTable>', () => {
       );
 
       expect(index).not.toContainReactComponent(BulkActions);
+    });
+
+    it('prevents rows from being selectable', () => {
+      const index = mountWithApp(
+        <IndexTable {...defaultIndexTableProps} condensed>
+          {mockTableItems.map(mockRenderCondensedRow)}
+        </IndexTable>,
+      );
+
+      expect(index).toContainReactComponent(IndexProvider, {
+        selectable: false,
+      });
     });
   });
 
@@ -647,9 +678,7 @@ describe('<IndexTable>', () => {
             </IndexTable>,
           );
           const source =
-            direction === 'ascending'
-              ? SortAscendingMajor
-              : SortDescendingMajor;
+            direction === 'ascending' ? SortAscendingIcon : SortDescendingIcon;
 
           expect(index.findAll('th')[1]).toContainReactComponent(source);
         },
@@ -669,9 +698,7 @@ describe('<IndexTable>', () => {
             </IndexTable>,
           );
           const source =
-            direction === 'ascending'
-              ? SortAscendingMajor
-              : SortDescendingMajor;
+            direction === 'ascending' ? SortAscendingIcon : SortDescendingIcon;
 
           expect(index.findAll('th')[3]).toContainReactComponent(source);
         },
@@ -693,7 +720,7 @@ describe('<IndexTable>', () => {
         );
 
         expect(index.findAll('th')[3]).toContainReactComponent(
-          SortDescendingMajor,
+          SortDescendingIcon,
         );
       });
     });
@@ -743,7 +770,7 @@ describe('<IndexTable>', () => {
           </IndexTable>,
         );
 
-        expect(index.findAll(Tooltip)[2].prop('content')).toBe(
+        expect(index.findAll(Tooltip)[1].prop('content')).toBe(
           defaultSortingProps!.sortToggleLabels![2].descending,
         );
       });
@@ -765,28 +792,32 @@ describe('<IndexTable>', () => {
     });
   });
 
-  describe('computeTableDimensions', () => {
-    it('invokes the computeTableDimensions callback when the number of items changes', () => {
-      const computeTableDimensions = jest.fn();
-      mockUseIsBulkActionsSticky({
-        bulkActionsIntersectionRef: {current: null},
-        tableMeasurerRef: {current: null},
-        isBulkActionsSticky: false,
-        bulkActionsAbsoluteOffset: 0,
-        bulkActionsMaxWidth: 0,
-        bulkActionsOffsetLeft: 0,
-        computeTableDimensions,
-      });
+  describe('pagination', () => {
+    it('does not render Pagination when pagination props are not provided', () => {
       const index = mountWithApp(
-        <IndexTable {...defaultProps} itemCount={mockTableItems.length}>
+        <IndexTable {...defaultProps} pagination={undefined}>
           {mockTableItems.map(mockRenderRow)}
         </IndexTable>,
       );
-      expect(computeTableDimensions).toHaveBeenCalledTimes(1);
 
-      index.setProps({itemCount: 60});
+      expect(index).not.toContainReactComponent(Pagination);
+    });
 
-      expect(computeTableDimensions).toHaveBeenCalledTimes(2);
+    it('renders Pagination with table type when pagination props are provided', () => {
+      const paginationProps = {
+        hasNext: true,
+      };
+
+      const index = mountWithApp(
+        <IndexTable {...defaultProps} pagination={paginationProps}>
+          {mockTableItems.map(mockRenderRow)}
+        </IndexTable>,
+      );
+
+      expect(index).toContainReactComponent(Pagination, {
+        type: 'table',
+        ...paginationProps,
+      });
     });
   });
 });

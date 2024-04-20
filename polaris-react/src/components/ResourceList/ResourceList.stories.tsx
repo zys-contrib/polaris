@@ -3,7 +3,7 @@ import type {ComponentMeta} from '@storybook/react';
 import {
   Avatar,
   Button,
-  LegacyCard,
+  Card,
   EmptyState,
   LegacyFilters,
   Layout,
@@ -12,7 +12,14 @@ import {
   ResourceList,
   TextField,
   Text,
+  BlockStack,
+  Box,
+  InlineStack,
+  Frame,
+  Modal,
+  Scrollable,
 } from '@shopify/polaris';
+import {DeleteIcon} from '@shopify/polaris-icons';
 
 export default {
   component: ResourceList,
@@ -20,7 +27,7 @@ export default {
 
 export function Default() {
   return (
-    <LegacyCard>
+    <Card padding="0" roundedAbove="sm">
       <ResourceList
         resourceName={{singular: 'customer', plural: 'customers'}}
         items={[
@@ -39,7 +46,7 @@ export function Default() {
         ]}
         renderItem={(item) => {
           const {id, url, name, location} = item;
-          const media = <Avatar customer size="medium" name={name} />;
+          const media = <Avatar customer size="md" name={name} />;
 
           return (
             <ResourceItem
@@ -58,7 +65,7 @@ export function Default() {
           );
         }}
       />
-    </LegacyCard>
+    </Card>
   );
 }
 
@@ -83,10 +90,10 @@ export function WithEmptyState() {
         action={{content: 'Upload files'}}
         image="https://cdn.shopify.com/s/files/1/2376/3301/products/emptystate-files.png"
       >
-        <p>
+        <Text as="p" variant="bodyMd">
           You can use the Files section to upload images, videos, and other
           documents
-        </p>
+        </Text>
       </EmptyState>
     ) : undefined;
 
@@ -94,7 +101,7 @@ export function WithEmptyState() {
     <Page title="Files">
       <Layout>
         <Layout.Section>
-          <LegacyCard>
+          <Card padding="0" roundedAbove="sm">
             <ResourceList
               emptyState={emptyStateMarkup}
               items={items}
@@ -102,7 +109,7 @@ export function WithEmptyState() {
               filterControl={filterControl}
               resourceName={{singular: 'file', plural: 'files'}}
             />
-          </LegacyCard>
+          </Card>
         </Layout.Section>
       </Layout>
     </Page>
@@ -133,7 +140,7 @@ export function WithSelectionAndNoBulkActions() {
   ];
 
   return (
-    <LegacyCard>
+    <Card padding="0" roundedAbove="sm">
       <ResourceList
         resourceName={resourceName}
         items={items}
@@ -142,12 +149,12 @@ export function WithSelectionAndNoBulkActions() {
         onSelectionChange={setSelectedItems}
         selectable
       />
-    </LegacyCard>
+    </Card>
   );
 
   function renderItem(item) {
     const {id, url, name, location} = item;
-    const media = <Avatar customer size="medium" name={name} />;
+    const media = <Avatar customer size="md" name={name} />;
 
     return (
       <ResourceItem
@@ -207,13 +214,15 @@ export function WithBulkActions() {
       onAction: () => console.log('Todo: implement bulk remove tags'),
     },
     {
+      icon: DeleteIcon,
+      destructive: true,
       content: 'Delete customers',
       onAction: () => console.log('Todo: implement bulk delete'),
     },
   ];
 
   return (
-    <LegacyCard>
+    <Card padding="0" roundedAbove="sm">
       <ResourceList
         resourceName={resourceName}
         items={items}
@@ -223,12 +232,12 @@ export function WithBulkActions() {
         promotedBulkActions={promotedBulkActions}
         bulkActions={bulkActions}
       />
-    </LegacyCard>
+    </Card>
   );
 
   function renderItem(item) {
     const {id, url, name, location} = item;
-    const media = <Avatar customer size="medium" name={name} />;
+    const media = <Avatar customer size="md" name={name} />;
 
     return (
       <ResourceItem
@@ -284,28 +293,39 @@ export function WithBulkActionsAndManyItems() {
       onAction: () => console.log('Todo: implement bulk remove tags'),
     },
     {
+      icon: DeleteIcon,
+      destructive: true,
       content: 'Delete customers',
       onAction: () => console.log('Todo: implement bulk delete'),
     },
   ];
 
   return (
-    <LegacyCard>
-      <ResourceList
-        resourceName={resourceName}
-        items={items}
-        renderItem={renderItem}
-        selectedItems={selectedItems}
-        onSelectionChange={setSelectedItems}
-        promotedBulkActions={promotedBulkActions}
-        bulkActions={bulkActions}
-      />
-    </LegacyCard>
+    <BlockStack gap="400">
+      <Card padding="0">
+        <ResourceList
+          resourceName={resourceName}
+          items={items}
+          renderItem={renderItem}
+          selectedItems={selectedItems}
+          onSelectionChange={setSelectedItems}
+          promotedBulkActions={promotedBulkActions}
+          bulkActions={bulkActions}
+        />
+        <Box padding="300" borderBlockStartWidth="025" borderColor="border">
+          <InlineStack align="space-between">
+            <div>Total inventory at all locations</div>
+            <div>32069 available</div>
+          </InlineStack>
+        </Box>
+      </Card>
+      <Card padding="300">Content of another card</Card>
+    </BlockStack>
   );
 
   function renderItem(item) {
     const {id, url, name, location} = item;
-    const media = <Avatar customer size="medium" name={name} />;
+    const media = <Avatar customer size="md" name={name} />;
 
     return (
       <ResourceItem
@@ -371,7 +391,7 @@ export function WithLoadingState() {
   ];
 
   return (
-    <LegacyCard>
+    <Card padding="0" roundedAbove="sm">
       <ResourceList
         resourceName={resourceName}
         items={items}
@@ -382,12 +402,12 @@ export function WithLoadingState() {
         bulkActions={bulkActions}
         loading
       />
-    </LegacyCard>
+    </Card>
   );
 
   function renderItem(item) {
     const {id, url, name, location} = item;
-    const media = <Avatar customer size="medium" name={name} />;
+    const media = <Avatar customer size="md" name={name} />;
 
     return (
       <ResourceItem
@@ -409,7 +429,7 @@ export function WithLoadingState() {
 
 export function WithTotalCount() {
   return (
-    <LegacyCard>
+    <Card padding="0" roundedAbove="sm">
       <ResourceList
         resourceName={{singular: 'customer', plural: 'customers'}}
         items={[
@@ -428,7 +448,7 @@ export function WithTotalCount() {
         ]}
         renderItem={(item) => {
           const {id, url, name, location} = item;
-          const media = <Avatar customer size="medium" name={name} />;
+          const media = <Avatar customer size="md" name={name} />;
 
           return (
             <ResourceItem
@@ -449,13 +469,13 @@ export function WithTotalCount() {
         showHeader
         totalItemsCount={50}
       />
-    </LegacyCard>
+    </Card>
   );
 }
 
 export function WithHeaderContent() {
   return (
-    <LegacyCard>
+    <Card padding="0" roundedAbove="sm">
       <ResourceList
         headerContent="Customer details shown below"
         items={[
@@ -474,7 +494,7 @@ export function WithHeaderContent() {
         ]}
         renderItem={(item) => {
           const {id, url, name, location} = item;
-          const media = <Avatar customer size="medium" name={name} />;
+          const media = <Avatar customer size="md" name={name} />;
 
           return (
             <ResourceItem
@@ -494,7 +514,7 @@ export function WithHeaderContent() {
         }}
         showHeader
       />
-    </LegacyCard>
+    </Card>
   );
 }
 
@@ -522,7 +542,7 @@ export function WithSorting() {
   ];
 
   return (
-    <LegacyCard>
+    <Card padding="0" roundedAbove="sm">
       <ResourceList
         resourceName={resourceName}
         items={items}
@@ -537,12 +557,12 @@ export function WithSorting() {
           console.log(`Sort option changed to ${selected}.`);
         }}
       />
-    </LegacyCard>
+    </Card>
   );
 
   function renderItem(item) {
     const {id, url, name, location} = item;
-    const media = <Avatar customer size="medium" name={name} />;
+    const media = <Avatar customer size="md" name={name} />;
 
     return (
       <ResourceItem
@@ -584,19 +604,19 @@ export function WithAlternateTool() {
   ];
 
   return (
-    <LegacyCard>
+    <Card padding="0" roundedAbove="sm">
       <ResourceList
         items={items}
         renderItem={renderItem}
         resourceName={resourceName}
         alternateTool={<Button>Email customers</Button>}
       />
-    </LegacyCard>
+    </Card>
   );
 
   function renderItem(item) {
     const {id, url, name, location} = item;
-    const media = <Avatar customer size="medium" name={name} />;
+    const media = <Avatar customer size="md" name={name} />;
 
     return (
       <ResourceItem
@@ -694,19 +714,19 @@ export function WithFiltering() {
   );
 
   return (
-    <LegacyCard>
+    <Card padding="0" roundedAbove="sm">
       <ResourceList
         resourceName={resourceName}
         items={items}
         renderItem={renderItem}
         filterControl={filterControl}
       />
-    </LegacyCard>
+    </Card>
   );
 
   function renderItem(item) {
     const {id, url, name, location} = item;
-    const media = <Avatar customer size="medium" name={name} />;
+    const media = <Avatar customer size="md" name={name} />;
 
     return (
       <ResourceItem id={id} url={url} media={media}>
@@ -806,7 +826,7 @@ export function WithACustomEmptySearchResultState() {
   );
 
   return (
-    <LegacyCard>
+    <Card padding="0" roundedAbove="sm">
       <ResourceList
         resourceName={resourceName}
         items={items}
@@ -814,12 +834,12 @@ export function WithACustomEmptySearchResultState() {
         filterControl={filterControl}
         emptySearchState={<div>This is a custom empty state</div>}
       />
-    </LegacyCard>
+    </Card>
   );
 
   function renderItem(item) {
     const {id, url, name, location} = item;
-    const media = <Avatar customer size="medium" name={name} />;
+    const media = <Avatar customer size="md" name={name} />;
 
     return (
       <ResourceItem id={id} url={url} media={media}>
@@ -853,7 +873,7 @@ export function WithACustomEmptySearchResultState() {
 
 export function WithItemShortcutActions() {
   return (
-    <LegacyCard>
+    <Card padding="0" roundedAbove="sm">
       <ResourceList
         resourceName={{singular: 'customer', plural: 'customers'}}
         items={[
@@ -874,7 +894,7 @@ export function WithItemShortcutActions() {
         ]}
         renderItem={(item) => {
           const {id, url, name, location, latestOrderUrl} = item;
-          const media = <Avatar customer size="medium" name={name} />;
+          const media = <Avatar customer size="md" name={name} />;
           const shortcutActions = latestOrderUrl
             ? [
                 {
@@ -903,13 +923,13 @@ export function WithItemShortcutActions() {
           );
         }}
       />
-    </LegacyCard>
+    </Card>
   );
 }
 
 export function WithPersistentItemShortcutActions() {
   return (
-    <LegacyCard>
+    <Card padding="0" roundedAbove="sm">
       <ResourceList
         resourceName={{singular: 'customer', plural: 'customers'}}
         items={[
@@ -930,7 +950,7 @@ export function WithPersistentItemShortcutActions() {
         ]}
         renderItem={(item) => {
           const {id, url, name, location, latestOrderUrl} = item;
-          const media = <Avatar customer size="medium" name={name} />;
+          const media = <Avatar customer size="md" name={name} />;
           const shortcutActions = latestOrderUrl
             ? [
                 {
@@ -960,7 +980,7 @@ export function WithPersistentItemShortcutActions() {
           );
         }}
       />
-    </LegacyCard>
+    </Card>
   );
 }
 
@@ -1034,7 +1054,7 @@ export function WithMultiselect() {
   ];
 
   return (
-    <LegacyCard>
+    <Card padding="0" roundedAbove="sm">
       <ResourceList
         resourceName={resourceName}
         items={items}
@@ -1045,12 +1065,12 @@ export function WithMultiselect() {
         bulkActions={bulkActions}
         resolveItemId={resolveItemIds}
       />
-    </LegacyCard>
+    </Card>
   );
 
   function renderItem(item, _, index) {
     const {id, url, name, location} = item;
-    const media = <Avatar customer size="medium" name={name} />;
+    const media = <Avatar customer size="md" name={name} />;
 
     return (
       <ResourceItem
@@ -1135,6 +1155,8 @@ export function WithAllOfItsElements() {
       onAction: () => console.log('Todo: implement bulk remove tags'),
     },
     {
+      icon: DeleteIcon,
+      destructive: true,
       content: 'Delete customers',
       onAction: () => console.log('Todo: implement bulk delete'),
     },
@@ -1183,7 +1205,7 @@ export function WithAllOfItsElements() {
   );
 
   return (
-    <LegacyCard>
+    <Card padding="0" roundedAbove="sm">
       <ResourceList
         resourceName={resourceName}
         items={items}
@@ -1203,12 +1225,12 @@ export function WithAllOfItsElements() {
         }}
         filterControl={filterControl}
       />
-    </LegacyCard>
+    </Card>
   );
 
   function renderItem(item) {
     const {id, url, name, location, latestOrderUrl} = item;
-    const media = <Avatar customer size="medium" name={name} />;
+    const media = <Avatar customer size="md" name={name} />;
     const shortcutActions = latestOrderUrl
       ? [{content: 'View latest order', url: latestOrderUrl}]
       : null;
@@ -1247,4 +1269,241 @@ export function WithAllOfItsElements() {
       return value === '' || value == null;
     }
   }
+}
+
+export function WithPagination() {
+  return (
+    <Card padding="0">
+      <ResourceList
+        resourceName={{singular: 'customer', plural: 'customers'}}
+        items={[
+          {
+            id: 100,
+            url: '#',
+            name: 'Mae Jemison',
+            location: 'Decatur, USA',
+          },
+          {
+            id: 200,
+            url: '#',
+            name: 'Ellen Ochoa',
+            location: 'Los Angeles, USA',
+          },
+        ]}
+        pagination={{
+          hasNext: true,
+          onNext: () => {},
+        }}
+        renderItem={(item) => {
+          const {id, url, name, location} = item;
+          const media = <Avatar customer size="md" name={name} />;
+
+          return (
+            <ResourceItem
+              id={id}
+              url={url}
+              media={media}
+              accessibilityLabel={`View details for ${name}`}
+            >
+              <h3>
+                <Text fontWeight="bold" as="span">
+                  {name}
+                </Text>
+              </h3>
+              <div>{location}</div>
+            </ResourceItem>
+          );
+        }}
+      />
+    </Card>
+  );
+}
+
+export function WithBulkActionsAndPagination() {
+  const [selectedItems, setSelectedItems] = useState<string[] | 'All'>([]);
+
+  const resourceName = {
+    singular: 'customer',
+    plural: 'customers',
+  };
+
+  const items = Array.from({length: 50}, (_, num) => {
+    return {
+      id: `${num}`,
+      url: '#',
+      name: `Mae Jemison ${num}`,
+      location: 'Decatur, USA',
+      orders: 20,
+      amountSpent: '$24,00',
+    };
+  });
+
+  const promotedBulkActions = [
+    {
+      content: 'Edit customers',
+      onAction: () => console.log('Todo: implement bulk edit'),
+    },
+  ];
+
+  const bulkActions = [
+    {
+      content: 'Add tags',
+      onAction: () => console.log('Todo: implement bulk add tags'),
+    },
+    {
+      content: 'Remove tags',
+      onAction: () => console.log('Todo: implement bulk remove tags'),
+    },
+    {
+      icon: DeleteIcon,
+      destructive: true,
+      content: 'Delete customers',
+      onAction: () => console.log('Todo: implement bulk delete'),
+    },
+  ];
+  return (
+    <Card padding="0">
+      <ResourceList
+        resourceName={resourceName}
+        items={items}
+        bulkActions={bulkActions}
+        promotedBulkActions={promotedBulkActions}
+        selectedItems={selectedItems}
+        onSelectionChange={setSelectedItems}
+        pagination={{
+          hasNext: true,
+          onNext: () => {},
+        }}
+        renderItem={(item) => {
+          const {id, url, name, location} = item;
+          const media = <Avatar customer size="md" name={name} />;
+
+          return (
+            <ResourceItem
+              id={id}
+              url={url}
+              media={media}
+              accessibilityLabel={`View details for ${name}`}
+            >
+              <h3>
+                <Text fontWeight="bold" as="span">
+                  {name}
+                </Text>
+              </h3>
+              <div>{location}</div>
+            </ResourceItem>
+          );
+        }}
+      />
+    </Card>
+  );
+}
+
+export function WithinAModal() {
+  const [active, setActive] = useState(true);
+  const [checked, setChecked] = useState(false);
+  const [selectedItems, setSelectedItems] = useState<string[] | 'All'>([]);
+
+  const toggleActive = () => setActive((active) => !active);
+
+  const activator = <Button onClick={toggleActive}>Open</Button>;
+
+  const resourceName = {
+    singular: 'customer',
+    plural: 'customers',
+  };
+
+  const items = Array.from({length: 50}, (_, num) => {
+    return {
+      id: `${num}`,
+      url: '#',
+      name: `Mae Jemison ${num}`,
+      location: 'Decatur, USA',
+      orders: 20,
+      amountSpent: '$24,00',
+    };
+  });
+
+  const promotedBulkActions = [
+    {
+      content: 'Edit customers',
+      onAction: () => console.log('Todo: implement bulk edit'),
+    },
+  ];
+
+  const bulkActions = [
+    {
+      content: 'Add tags',
+      onAction: () => console.log('Todo: implement bulk add tags'),
+    },
+    {
+      content: 'Remove tags',
+      onAction: () => console.log('Todo: implement bulk remove tags'),
+    },
+    {
+      icon: DeleteIcon,
+      destructive: true,
+      content: 'Delete customers',
+      onAction: () => console.log('Todo: implement bulk delete'),
+    },
+  ];
+
+  const listMarkup = (
+    <ResourceList
+      resourceName={resourceName}
+      items={items}
+      bulkActions={bulkActions}
+      promotedBulkActions={promotedBulkActions}
+      selectedItems={selectedItems}
+      onSelectionChange={setSelectedItems}
+      renderItem={(item) => {
+        const {id, url, name, location} = item;
+        const media = <Avatar customer size="md" name={name} />;
+
+        return (
+          <ResourceItem
+            id={id}
+            url={url}
+            media={media}
+            accessibilityLabel={`View details for ${name}`}
+          >
+            <h3>
+              <Text fontWeight="bold" as="span">
+                {name}
+              </Text>
+            </h3>
+            <div>{location}</div>
+          </ResourceItem>
+        );
+      }}
+    />
+  );
+
+  return (
+    <Frame>
+      <div style={{height: '500px'}}>
+        <Modal
+          noScroll
+          activator={activator}
+          open={active}
+          onClose={toggleActive}
+          title="Import customers by CSV"
+          primaryAction={{
+            content: 'Import customers',
+            onAction: toggleActive,
+          }}
+          secondaryActions={[
+            {
+              content: 'Cancel',
+              onAction: toggleActive,
+            },
+          ]}
+        >
+          <Box>
+            <Scrollable style={{height: '65dvh'}}>{listMarkup}</Scrollable>
+          </Box>
+        </Modal>
+      </div>
+    </Frame>
+  );
 }

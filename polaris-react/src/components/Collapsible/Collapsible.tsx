@@ -2,7 +2,7 @@ import React, {useState, useRef, useEffect, useCallback} from 'react';
 
 import {classNames} from '../../utilities/css';
 
-import styles from './Collapsible.scss';
+import styles from './Collapsible.module.css';
 
 interface Transition {
   /** Assign a transition duration to the collapsible animation. */
@@ -19,11 +19,9 @@ export interface CollapsibleProps {
   /** Toggle whether the collapsible is expanded or not. */
   open: boolean;
   /** Override transition properties. When set to false, disables transition completely.
-   * @default transition={{duration: 'var(--p-duration-150)', timingFunction: 'var(--p-ease-in-out)'}}
+   * @default transition={{duration: 'var(--p-motion-duration-150)', timingFunction: 'var(--p-motion-ease-in-out)'}}
    */
   transition?: boolean | Transition;
-  /** @deprecated Re-measuring is no longer necessary on children update **/
-  preventMeasuringOnChildrenUpdate?: boolean;
   /** Callback when the animation completes. */
   onAnimationEnd?(): void;
   /** The content to display inside the collapsible. */
@@ -37,7 +35,6 @@ export function Collapsible({
   expandOnPrint,
   open,
   transition = true,
-  preventMeasuringOnChildrenUpdate: _preventMeasuringOnChildrenUpdate,
   children,
   onAnimationEnd,
 }: CollapsibleProps) {

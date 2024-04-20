@@ -1,16 +1,15 @@
-import React, {useContext} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 
 import {classNames} from '../../utilities/css';
-import {WithinContentContext} from '../../utilities/within-content-context';
 import type {ComplexAction} from '../../types';
 import {Box} from '../Box';
 import {buttonFrom} from '../Button';
 import {Image} from '../Image';
 import {Text} from '../Text';
-import {AlphaStack} from '../AlphaStack';
-import {Inline} from '../Inline';
+import {BlockStack} from '../BlockStack';
+import {InlineStack} from '../InlineStack';
 
-import styles from './EmptyState.scss';
+import styles from './EmptyState.module.css';
 
 export interface EmptyStateProps {
   /** The empty state heading */
@@ -47,30 +46,59 @@ export function EmptyState({
   secondaryAction,
   footerContent,
 }: EmptyStateProps) {
-  const withinContentContainer = useContext(WithinContentContext);
-  const imageContainedClass = classNames(
+  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
+  const imageRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    if (imageRef.current?.complete) setImageLoaded(true);
+  }, []);
+
+  const imageClassNames = classNames(
+    styles.Image,
+    imageLoaded && styles.loaded,
     imageContained && styles.imageContained,
   );
 
-  const imageMarkup = largeImage ? (
+  const loadedImageMarkup = largeImage ? (
     <Image
       alt=""
       role="presentation"
+      ref={imageRef}
       source={largeImage}
-      className={imageContainedClass}
+      className={imageClassNames}
       sourceSet={[
         {source: image, descriptor: '568w'},
         {source: largeImage, descriptor: '1136w'},
       ]}
       sizes="(max-width: 568px) 60vw"
+      onLoad={() => setImageLoaded(true)}
     />
   ) : (
     <Image
-      className={imageContainedClass}
-      role="presentation"
       alt=""
+      role="presentation"
+      ref={imageRef}
+      className={imageClassNames}
       source={image}
+      onLoad={() => setImageLoaded(true)}
     />
+  );
+
+  const skeletonImageClassNames = classNames(
+    styles.SkeletonImage,
+    imageLoaded && styles.loaded,
+  );
+
+  const imageContainerClassNames = classNames(
+    styles.ImageContainer,
+    !imageLoaded && styles.SkeletonImageContainer,
+  );
+
+  const imageMarkup = (
+    <div className={imageContainerClassNames}>
+      {loadedImageMarkup}
+      <div className={skeletonImageClassNames} />
+    </div>
   );
 
   const secondaryActionMarkup = secondaryAction
@@ -78,36 +106,34 @@ export function EmptyState({
     : null;
 
   const footerContentMarkup = footerContent ? (
-    <Box paddingBlockStart="4">
-      <Text as="span" color="subdued" alignment="center">
+    <Box paddingBlockStart="400">
+      <Text as="span" alignment="center" variant="bodySm">
         {footerContent}
       </Text>
     </Box>
   ) : null;
 
-  const headingSize = withinContentContainer ? 'headingLg' : 'headingXl';
-
   const primaryActionMarkup = action
-    ? buttonFrom(action, {primary: true, size: 'medium'})
+    ? buttonFrom(action, {variant: 'primary', size: 'medium'})
     : null;
 
   const headingMarkup = heading ? (
-    <Box paddingBlockEnd="4">
-      <Text variant={headingSize} as="p" alignment="center">
+    <Box paddingBlockEnd="150">
+      <Text variant="headingMd" as="p" alignment="center">
         {heading}
       </Text>
     </Box>
   ) : null;
 
   const childrenMarkup = children ? (
-    <Text as="span" color="subdued" alignment="center">
+    <Text as="span" alignment="center" variant="bodySm">
       {children}
     </Text>
   ) : null;
 
   const textContentMarkup =
     headingMarkup || children ? (
-      <Box paddingBlockEnd="6">
+      <Box paddingBlockEnd="400">
         {headingMarkup}
         {childrenMarkup}
       </Box>
@@ -115,20 +141,20 @@ export function EmptyState({
 
   const actionsMarkup =
     primaryActionMarkup || secondaryActionMarkup ? (
-      <Inline align="center" gap="2">
+      <InlineStack align="center" gap="200">
         {secondaryActionMarkup}
         {primaryActionMarkup}
-      </Inline>
+      </InlineStack>
     ) : null;
 
   const detailsMarkup =
     textContentMarkup || actionsMarkup || footerContentMarkup ? (
       <Box maxWidth={fullWidth ? '100%' : '400px'}>
-        <AlphaStack inlineAlign="center">
+        <BlockStack inlineAlign="center">
           {textContentMarkup}
           {actionsMarkup}
           {footerContentMarkup}
-        </AlphaStack>
+        </BlockStack>
       </Box>
     ) : null;
 
@@ -136,13 +162,13 @@ export function EmptyState({
     <Box
       paddingInlineStart="0"
       paddingInlineEnd="0"
-      paddingBlockStart="5"
-      paddingBlockEnd="16"
+      paddingBlockStart="500"
+      paddingBlockEnd="1600"
     >
-      <AlphaStack inlineAlign="center">
+      <BlockStack inlineAlign="center">
         {imageMarkup}
         {detailsMarkup}
-      </AlphaStack>
+      </BlockStack>
     </Box>
   );
 }

@@ -4,7 +4,9 @@ import {
   useIndexResourceState,
   Text,
   Badge,
+  useBreakpoints,
 } from '@shopify/polaris';
+import {DeleteIcon} from '@shopify/polaris-icons';
 import React from 'react';
 import {withPolarisExample} from '../../src/components/PolarisExampleWrapper';
 
@@ -64,7 +66,11 @@ function IndexTableWithMultiplePromotedBulkActionsExample() {
         </IndexTable.Cell>
         <IndexTable.Cell>{date}</IndexTable.Cell>
         <IndexTable.Cell>{customer}</IndexTable.Cell>
-        <IndexTable.Cell>{total}</IndexTable.Cell>
+        <IndexTable.Cell>
+          <Text as="span" alignment="end" numeric>
+            {total}
+          </Text>
+        </IndexTable.Cell>
         <IndexTable.Cell>{paymentStatus}</IndexTable.Cell>
         <IndexTable.Cell>{fulfillmentStatus}</IndexTable.Cell>
       </IndexTable.Row>
@@ -95,6 +101,21 @@ function IndexTableWithMultiplePromotedBulkActionsExample() {
       onAction: () => console.log('Todo: implement bulk remove tags'),
     },
     {
+      title: 'Import',
+      items: [
+        {
+          content: 'Import from PDF',
+          onAction: () => console.log('Todo: implement PDF importing'),
+        },
+        {
+          content: 'Import from CSV',
+          onAction: () => console.log('Todo: implement CSV importing'),
+        },
+      ],
+    },
+    {
+      icon: DeleteIcon,
+      destructive: true,
       content: 'Delete customers',
       onAction: () => console.log('Todo: implement bulk delete'),
     },
@@ -103,6 +124,7 @@ function IndexTableWithMultiplePromotedBulkActionsExample() {
   return (
     <LegacyCard>
       <IndexTable
+        condensed={useBreakpoints().smDown}
         resourceName={resourceName}
         itemCount={orders.length}
         selectedItemsCount={

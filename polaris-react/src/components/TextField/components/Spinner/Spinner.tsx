@@ -1,8 +1,8 @@
 import React from 'react';
-import {CaretDownMinor, CaretUpMinor} from '@shopify/polaris-icons';
+import {ChevronDownIcon, ChevronUpIcon} from '@shopify/polaris-icons';
 
 import {Icon} from '../../../Icon';
-import styles from '../../TextField.scss';
+import styles from '../../TextField.module.css';
 
 type HandleStepFn = (step: number) => void;
 
@@ -23,7 +23,7 @@ export const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
     function handleMouseDown(onChange: HandleStepFn) {
       return (event: React.MouseEvent) => {
         if (event.button !== 0) return;
-        onMouseDown(onChange);
+        onMouseDown?.(onChange);
       };
     }
 
@@ -39,7 +39,7 @@ export const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
           onBlur={onBlur}
         >
           <div className={styles.SpinnerIcon}>
-            <Icon source={CaretUpMinor} />
+            <Icon source={ChevronUpIcon} />
           </div>
         </div>
         <div
@@ -52,7 +52,7 @@ export const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
           onBlur={onBlur}
         >
           <div className={styles.SpinnerIcon}>
-            <Icon source={CaretDownMinor} />
+            <Icon source={ChevronDownIcon} />
           </div>
         </div>
       </div>

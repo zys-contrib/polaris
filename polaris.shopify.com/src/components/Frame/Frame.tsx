@@ -5,22 +5,21 @@ import {DarkMode} from 'use-dark-mode';
 import {motion, AnimatePresence} from 'framer-motion';
 
 import GlobalSearch from '../GlobalSearch';
-import navJSON from '../../../.cache/nav.json';
-import {NavJSON, NavItem, Breakpoints} from '../../types';
+import nav from '../../../.cache/nav';
+import {NavItem, Breakpoints} from '../../types';
 
 import styles from './Frame.module.scss';
 import {className} from '../../utils/various';
 import {useRouter} from 'next/router';
 import StatusBadge from '../StatusBadge';
+import Icon from '../Icon';
+import {LockIcon} from '@shopify/polaris-icons';
 
 const NAV_ID = 'nav';
-
 interface Props {
   darkMode: DarkMode;
   children: React.ReactNode;
 }
-
-const nav = navJSON as NavJSON;
 
 function Frame({darkMode, children}: Props) {
   const [showSkipToContentLink, setShowSkipToContentLink] = useState(true);
@@ -215,7 +214,10 @@ function NavItem({
 
             if (!child.slug) return null;
 
-            const isExpandable = child.children && !child.hideChildren;
+            const isExpandable =
+              child.children &&
+              Object.keys(child.children).length &&
+              !child.hideChildren;
             const id = (child.slug || key).replace(/\//g, '');
             const navAriaId = `nav-${id}`;
             const segments = asPath.slice(1).split('/');
@@ -241,20 +243,35 @@ function NavItem({
                     isCurrent && styles.isCurrent,
                   )}
                 >
-                  <Link
-                    href={child.slug}
-                    onClick={handleLinkClick}
-                    aria-current={isCurrent ? 'page' : 'false'}
-                    onKeyDown={(evt) => {
-                      if (level === 0 && i === 0) {
-                        handleShiftTabOnFirstLink(evt);
-                      }
-                    }}
-                  >
-                    {child.title}
-
-                    {child.status && <StatusBadge status={child.status} />}
-                  </Link>
+                  {child.internalOnly ? (
+                    <a
+                      href={child.slug}
+                      onClick={handleLinkClick}
+                      aria-current={isCurrent ? 'page' : 'false'}
+                      onKeyDown={(evt) => {
+                        if (level === 0 && i === 0) {
+                          handleShiftTabOnFirstLink(evt);
+                        }
+                      }}
+                    >
+                      {child.title}
+                      <Icon source={LockIcon} width={16} height={16} />
+                    </a>
+                  ) : (
+                    <Link
+                      href={child.slug}
+                      onClick={handleLinkClick}
+                      aria-current={isCurrent ? 'page' : 'false'}
+                      onKeyDown={(evt) => {
+                        if (level === 0 && i === 0) {
+                          handleShiftTabOnFirstLink(evt);
+                        }
+                      }}
+                    >
+                      {child.title}
+                      {child.status && <StatusBadge status={child.status} />}
+                    </Link>
+                  )}
 
                   {isExpandable && !child.expanded && (
                     <button

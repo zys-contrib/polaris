@@ -2,8 +2,9 @@ import React, {useCallback, useState} from 'react';
 import type {ComponentMeta} from '@storybook/react';
 import {
   Avatar,
+  Box,
   Button,
-  LegacyCard,
+  Card,
   ChoiceList,
   DataTable,
   LegacyFilters,
@@ -149,7 +150,7 @@ export function WithAResourceList() {
 
   return (
     <div style={{height: '568px'}}>
-      <LegacyCard>
+      <Card padding="0">
         <ResourceList
           resourceName={{singular: 'customer', plural: 'customers'}}
           filterControl={
@@ -178,7 +179,7 @@ export function WithAResourceList() {
           ]}
           renderItem={(item) => {
             const {id, url, name, location} = item;
-            const media = <Avatar customer size="medium" name={name} />;
+            const media = <Avatar customer size="md" name={name} />;
 
             return (
               <ResourceList.Item
@@ -195,7 +196,7 @@ export function WithAResourceList() {
             );
           }}
         />
-      </LegacyCard>
+      </Card>
     </div>
   );
 
@@ -221,7 +222,7 @@ export function WithAResourceList() {
   }
 }
 
-export function WithADataTable() {
+export function WithADataTable(_, context) {
   const [availability, setAvailability] = useState(null);
   const [productType, setProductType] = useState(null);
   const [taggedWith, setTaggedWith] = useState(null);
@@ -340,8 +341,8 @@ export function WithADataTable() {
 
   return (
     <div style={{height: '568px'}}>
-      <LegacyCard>
-        <LegacyCard.Section>
+      <Card padding="0">
+        <Box padding="400">
           <LegacyFilters
             queryValue={queryValue}
             filters={filters}
@@ -350,7 +351,7 @@ export function WithADataTable() {
             onQueryClear={handleQueryValueRemove}
             onClearAll={handleFiltersClearAll}
           />
-        </LegacyCard.Section>
+        </Box>
         <DataTable
           columnContentTypes={[
             'text',
@@ -379,7 +380,7 @@ export function WithADataTable() {
           ]}
           totals={['', '', '', 255, '$155,830.00']}
         />
-      </LegacyCard>
+      </Card>
     </div>
   );
 
@@ -454,7 +455,7 @@ export function WithChildrenContent() {
 
   return (
     <div style={{height: '568px'}}>
-      <LegacyCard>
+      <Card padding="0">
         <ResourceList
           resourceName={{singular: 'customer', plural: 'customers'}}
           filterControl={
@@ -466,8 +467,11 @@ export function WithChildrenContent() {
               onQueryClear={handleQueryValueRemove}
               onClearAll={handleClearAll}
             >
-              <div style={{paddingLeft: '8px'}}>
-                <Button onClick={() => console.log('New filter saved')}>
+              <div>
+                <Button
+                  onClick={() => console.log('New filter saved')}
+                  size="large"
+                >
                   Save
                 </Button>
               </div>
@@ -489,7 +493,7 @@ export function WithChildrenContent() {
           ]}
           renderItem={(item) => {
             const {id, url, name, location} = item;
-            const media = <Avatar customer size="medium" name={name} />;
+            const media = <Avatar customer size="md" name={name} />;
 
             return (
               <ResourceList.Item
@@ -506,7 +510,7 @@ export function WithChildrenContent() {
             );
           }}
         />
-      </LegacyCard>
+      </Card>
     </div>
   );
 
@@ -577,7 +581,7 @@ export function Disabled() {
 
   return (
     <div style={{height: '568px'}}>
-      <LegacyCard>
+      <Card padding="0">
         <ResourceList
           resourceName={{singular: 'customer', plural: 'customers'}}
           filterControl={
@@ -590,10 +594,11 @@ export function Disabled() {
               onClearAll={handleClearAll}
               disabled
             >
-              <div style={{paddingLeft: '8px'}}>
+              <div>
                 <Button
                   disabled
                   onClick={() => console.log('New filter saved')}
+                  size="large"
                 >
                   Save
                 </Button>
@@ -616,7 +621,7 @@ export function Disabled() {
           ]}
           renderItem={(item) => {
             const {id, url, name, location} = item;
-            const media = <Avatar customer size="medium" name={name} />;
+            const media = <Avatar customer size="md" name={name} />;
 
             return (
               <ResourceList.Item
@@ -633,7 +638,7 @@ export function Disabled() {
             );
           }}
         />
-      </LegacyCard>
+      </Card>
     </div>
   );
 
@@ -724,7 +729,7 @@ export function SomeDisabled() {
 
   return (
     <div style={{height: '568px'}}>
-      <LegacyCard>
+      <Card padding="0">
         <ResourceList
           resourceName={{singular: 'customer', plural: 'customers'}}
           filterControl={
@@ -736,9 +741,10 @@ export function SomeDisabled() {
               onQueryClear={handleQueryValueRemove}
               onClearAll={handleClearAll}
             >
-              <div style={{paddingLeft: '8px'}}>
+              <div>
                 <Button
                   disabled
+                  size="large"
                   onClick={() => console.log('New filter saved')}
                 >
                   Save
@@ -762,7 +768,7 @@ export function SomeDisabled() {
           ]}
           renderItem={(item) => {
             const {id, url, name, location} = item;
-            const media = <Avatar customer size="medium" name={name} />;
+            const media = <Avatar customer size="md" name={name} />;
 
             return (
               <ResourceList.Item
@@ -779,7 +785,7 @@ export function SomeDisabled() {
             );
           }}
         />
-      </LegacyCard>
+      </Card>
     </div>
   );
 
@@ -852,7 +858,7 @@ export function WithoutClearButton() {
 
   return (
     <div style={{height: '568px'}}>
-      <LegacyCard>
+      <Card padding="0">
         <ResourceList
           resourceName={{singular: 'customer', plural: 'customers'}}
           filterControl={
@@ -864,9 +870,10 @@ export function WithoutClearButton() {
               onQueryClear={handleQueryValueRemove}
               onClearAll={handleClearAll}
             >
-              <div style={{paddingLeft: '8px'}}>
+              <div>
                 <Button
                   disabled
+                  size="large"
                   onClick={() => console.log('New filter saved')}
                 >
                   Save
@@ -890,7 +897,7 @@ export function WithoutClearButton() {
           ]}
           renderItem={(item) => {
             const {id, url, name, location} = item;
-            const media = <Avatar customer size="medium" name={name} />;
+            const media = <Avatar customer size="md" name={name} />;
 
             return (
               <ResourceList.Item
@@ -907,7 +914,7 @@ export function WithoutClearButton() {
             );
           }}
         />
-      </LegacyCard>
+      </Card>
     </div>
   );
 
@@ -1052,7 +1059,7 @@ export function WithHelpText() {
 
   return (
     <div style={{height: '568px'}}>
-      <LegacyCard>
+      <Card padding="0">
         <ResourceList
           resourceName={{singular: 'customer', plural: 'customers'}}
           filterControl={
@@ -1083,7 +1090,7 @@ export function WithHelpText() {
           ]}
           renderItem={(item) => {
             const {id, url, name, location} = item;
-            const media = <Avatar customer size="medium" name={name} />;
+            const media = <Avatar customer size="md" name={name} />;
 
             return (
               <ResourceList.Item
@@ -1100,7 +1107,7 @@ export function WithHelpText() {
             );
           }}
         />
-      </LegacyCard>
+      </Card>
     </div>
   );
 
@@ -1249,7 +1256,7 @@ export function WithQueryFieldHidden() {
 
   return (
     <div style={{height: '568px'}}>
-      <LegacyCard>
+      <Card padding="0">
         <ResourceList
           resourceName={{singular: 'customer', plural: 'customers'}}
           filterControl={
@@ -1279,7 +1286,7 @@ export function WithQueryFieldHidden() {
           ]}
           renderItem={(item) => {
             const {id, url, name, location} = item;
-            const media = <Avatar customer size="medium" name={name} />;
+            const media = <Avatar customer size="md" name={name} />;
 
             return (
               <ResourceList.Item
@@ -1296,7 +1303,7 @@ export function WithQueryFieldHidden() {
             );
           }}
         />
-      </LegacyCard>
+      </Card>
     </div>
   );
 
@@ -1445,7 +1452,7 @@ export function WithQueryFieldDisabled() {
 
   return (
     <div style={{height: '568px'}}>
-      <LegacyCard>
+      <Card padding="0">
         <ResourceList
           resourceName={{singular: 'customer', plural: 'customers'}}
           filterControl={
@@ -1475,7 +1482,7 @@ export function WithQueryFieldDisabled() {
           ]}
           renderItem={(item) => {
             const {id, url, name, location} = item;
-            const media = <Avatar customer size="medium" name={name} />;
+            const media = <Avatar customer size="md" name={name} />;
 
             return (
               <ResourceList.Item
@@ -1492,7 +1499,7 @@ export function WithQueryFieldDisabled() {
             );
           }}
         />
-      </LegacyCard>
+      </Card>
     </div>
   );
 

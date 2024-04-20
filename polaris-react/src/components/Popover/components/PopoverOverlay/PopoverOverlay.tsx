@@ -1,8 +1,8 @@
 import React, {PureComponent, Children, createRef} from 'react';
-import {motion} from '@shopify/polaris-tokens';
+import {themeDefault} from '@shopify/polaris-tokens';
 
 import {findFirstKeyboardFocusableNode} from '../../../../utilities/focus';
-import {classNames} from '../../../../utilities/css';
+import {classNames, variationName} from '../../../../utilities/css';
 import {
   isElementOfType,
   wrapWithComponent,
@@ -16,10 +16,9 @@ import {PositionedOverlay} from '../../../PositionedOverlay';
 import type {PositionedOverlayProps} from '../../../PositionedOverlay';
 import {Pane} from '../Pane';
 import type {PaneProps} from '../Pane';
-import styles from '../../Popover.scss';
+import styles from '../../Popover.module.css';
 import {PortalsManagerContext} from '../../../../utilities/portals';
 import type {PortalsContainerElement} from '../../../../utilities/portals';
-import {Box} from '../../../Box';
 
 export enum PopoverCloseSource {
   Click,
@@ -74,7 +73,6 @@ export class PopoverOverlay extends PureComponent<PopoverOverlayProps, State> {
 
   private contentNode = createRef<HTMLDivElement>();
   private enteringTimer?: number;
-  private exitingTimer?: number;
   private overlayRef: React.RefObject<PositionedOverlay>;
 
   constructor(props: PopoverOverlayProps) {
@@ -108,17 +106,15 @@ export class PopoverOverlay extends PureComponent<PopoverOverlayProps, State> {
         this.clearTransitionTimeout();
         this.enteringTimer = window.setTimeout(() => {
           this.setState({transitionStatus: TransitionStatus.Entered});
-        }, parseInt(motion['duration-100'], 10));
+          // Important: This will not update when the active theme changes.
+          // Update this to `useTheme` once converted to a function component.
+        }, parseInt(themeDefault.motion['motion-duration-100'], 10));
       });
     }
 
     if (!this.props.active && oldProps.active) {
-      this.changeTransitionStatus(TransitionStatus.Exiting, () => {
-        this.clearTransitionTimeout();
-        this.exitingTimer = window.setTimeout(() => {
-          this.setState({transitionStatus: TransitionStatus.Exited});
-        }, parseInt(motion['duration-100'], 10));
-      });
+      this.clearTransitionTimeout();
+      this.setState({transitionStatus: TransitionStatus.Exited});
     }
   }
 
@@ -148,6 +144,7 @@ export class PopoverOverlay extends PureComponent<PopoverOverlayProps, State> {
         styles['PopoverOverlay-open'],
       transitionStatus === TransitionStatus.Exiting &&
         styles['PopoverOverlay-exiting'],
+      preferredPosition === 'cover' && styles['PopoverOverlay-noAnimation'],
     );
 
     return (
@@ -171,10 +168,6 @@ export class PopoverOverlay extends PureComponent<PopoverOverlayProps, State> {
   private clearTransitionTimeout() {
     if (this.enteringTimer) {
       window.clearTimeout(this.enteringTimer);
-    }
-
-    if (this.exitingTimer) {
-      window.clearTimeout(this.exitingTimer);
     }
   }
 
@@ -223,33 +216,20 @@ export class PopoverOverlay extends PureComponent<PopoverOverlayProps, State> {
       autofocusTarget,
       captureOverscroll,
     } = this.props;
-
+    const isCovering = positioning === 'cover';
     const className = classNames(
       styles.Popover,
-      positioning === 'above' && styles.positionedAbove,
-      fullWidth && styles.fullWidth,
       measuring && styles.measuring,
+      (fullWidth || isCovering) && styles.fullWidth,
       hideOnPrint && styles['PopoverOverlay-hideOnPrint'],
+      positioning && styles[variationName('positioned', positioning)],
     );
 
     const contentStyles = measuring ? undefined : {height: desiredHeight};
-
     const contentClassNames = classNames(
       styles.Content,
       fullHeight && styles['Content-fullHeight'],
       fluidContent && styles['Content-fluidContent'],
-    );
-
-    const content = (
-      <div
-        id={id}
-        tabIndex={autofocusTarget === 'none' ? undefined : -1}
-        className={contentClassNames}
-        style={contentStyles}
-        ref={this.contentNode}
-      >
-        {renderPopoverContent(children, {captureOverscroll, sectioned})}
-      </div>
     );
 
     return (
@@ -263,16 +243,17 @@ export class PopoverOverlay extends PureComponent<PopoverOverlayProps, State> {
           tabIndex={0}
           onFocus={this.handleFocusFirstItem}
         />
-        <Box
-          position="relative"
-          overflowX="hidden"
-          overflowY="hidden"
-          background="surface"
-          borderRadius="2"
-          outline="transparent"
-        >
-          {content}
-        </Box>
+        <div className={styles.ContentContainer}>
+          <div
+            id={id}
+            tabIndex={autofocusTarget === 'none' ? undefined : -1}
+            className={contentClassNames}
+            style={contentStyles}
+            ref={this.contentNode}
+          >
+            {renderPopoverContent(children, {captureOverscroll, sectioned})}
+          </div>
+        </div>
         <div
           className={styles.FocusTracker}
           // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex

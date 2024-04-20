@@ -1,14 +1,11 @@
-import React, {useCallback, useState} from 'react';
+import React from 'react';
 import type {ComponentMeta} from '@storybook/react';
 import {
   AppProvider,
   Avatar,
   LegacyCard,
-  ContextualSaveBar,
-  Layout,
   Page,
   ResourceList,
-  SettingToggle,
   Text,
 } from '@shopify/polaris';
 
@@ -18,7 +15,7 @@ export default {
   parameters: {layout: 'fullscreen'},
 } as ComponentMeta<typeof AppProvider>;
 
-export function Default() {
+export function Default(_, context) {
   return (
     <AppProvider
       i18n={{
@@ -58,16 +55,16 @@ export function Default() {
             ]}
             renderItem={(item) => {
               const {id, url, name, location} = item;
-              const media = <Avatar customer size="medium" name={name} />;
+              const media = <Avatar customer size="md" name={name} />;
 
               return (
                 <ResourceList.Item id={id} url={url} media={media}>
-                  <h3>
-                    <Text fontWeight="bold" as="span">
-                      {name}
-                    </Text>
-                  </h3>
-                  <div>{location}</div>
+                  <Text as="h3" variant="bodyMd" fontWeight="bold">
+                    {name}
+                  </Text>
+                  <Text as="p" variant="bodyMd">
+                    {location}
+                  </Text>
                 </ResourceList.Item>
               );
             }}
@@ -118,16 +115,16 @@ export function WithI18n() {
             ]}
             renderItem={(item) => {
               const {id, url, name, location} = item;
-              const media = <Avatar customer size="medium" name={name} />;
+              const media = <Avatar customer size="md" name={name} />;
 
               return (
                 <ResourceList.Item id={id} url={url} media={media}>
-                  <h3>
-                    <Text fontWeight="bold" as="span">
-                      {name}
-                    </Text>
-                  </h3>
-                  <div>{location}</div>
+                  <Text as="h3" fontWeight="bold" variant="bodyMd">
+                    {name}
+                  </Text>
+                  <Text as="p" variant="bodyMd">
+                    {location}
+                  </Text>
                 </ResourceList.Item>
               );
             }}
@@ -138,7 +135,8 @@ export function WithI18n() {
   );
 }
 
-export function WithLinkComponent() {
+export function WithLinkComponent(_, context) {
+  // We can do this because the AppProviderDecorator wraps all Stories, even AppProvider.stories.tsx
   const CustomLinkComponent = ({children, url, ...rest}) => {
     return (
       <a
@@ -154,11 +152,13 @@ export function WithLinkComponent() {
   return (
     <AppProvider linkComponent={CustomLinkComponent} i18n={{}}>
       <Page
-        breadcrumbs={[{content: 'Products', url: '#'}]}
+        backAction={{content: 'Products', url: '#'}}
         title="Jar With Lock-Lid"
         primaryAction={{content: 'Save', disabled: true}}
       >
-        <p>Page content</p>
+        <Text as="p" variant="bodyMd">
+          Page content
+        </Text>
       </Page>
     </AppProvider>
   );

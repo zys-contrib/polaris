@@ -5,7 +5,7 @@ import {Modal} from '../../../Modal';
 import {TextField} from '../../../TextField';
 import {Form} from '../../../Form';
 import {FormLayout} from '../../../FormLayout';
-import {Inline} from '../../../Inline';
+import {InlineStack} from '../../../InlineStack';
 import {Button} from '../../../Button';
 import {focusFirstFocusableNode} from '../../../../utilities/focus';
 import {useIsTouchDevice} from '../../../../utilities/use-is-touch-device';
@@ -21,7 +21,7 @@ interface UpdateIndexFiltersPrimaryAction
 
 export interface UpdateButtonsProps {
   primaryAction?: UpdateIndexFiltersPrimaryAction;
-  cancelAction: IndexFiltersCancelAction;
+  cancelAction?: IndexFiltersCancelAction;
   viewNames: string[];
   disabled?: boolean;
 }
@@ -86,8 +86,6 @@ export function UpdateButtons({
   const saveButton = (
     <Button
       size="micro"
-      primary
-      plain
       onClick={handleClickSaveButton}
       disabled={primaryAction?.disabled || disabled}
     >
@@ -104,27 +102,27 @@ export function UpdateButtons({
     primaryAction?.loading ||
     savedViewName.length > MAX_VIEW_NAME_LENGTH;
 
-  const cancelButtonMarkup = (
+  const cancelButtonMarkup = cancelAction ? (
     <Button
-      plain
+      variant="tertiary"
       size="micro"
       onClick={cancelAction.onAction}
       disabled={disabled}
     >
       {i18n.translate('Polaris.IndexFilters.UpdateButtons.cancel')}
     </Button>
-  );
+  ) : null;
 
   if (!primaryAction) {
     return cancelButtonMarkup;
   }
 
   return (
-    <Inline align="start" blockAlign="center" gap="2">
+    <InlineStack align="start" blockAlign="center" gap="100">
       {cancelButtonMarkup}
       {primaryAction.type === 'save-as' ? (
         <Modal
-          activator={<Inline>{saveButton}</Inline>}
+          activator={<InlineStack>{saveButton}</InlineStack>}
           open={savedViewModalOpen}
           title={i18n.translate(
             'Polaris.IndexFilters.UpdateButtons.modal.title',
@@ -178,6 +176,6 @@ export function UpdateButtons({
       ) : (
         saveButton
       )}
-    </Inline>
+    </InlineStack>
   );
 }

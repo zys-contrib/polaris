@@ -2,8 +2,8 @@ import React from 'react';
 
 import {Box} from '../../../Box';
 import {CloseButton} from '../CloseButton';
-import {Columns} from '../../../Columns';
-import {Inline} from '../../../Inline';
+import {InlineGrid} from '../../../InlineGrid';
+import {InlineStack} from '../../../InlineStack';
 import {Text} from '../../../Text';
 
 export interface HeaderProps {
@@ -21,38 +21,40 @@ export function Header({
   titleHidden,
   onClose,
 }: HeaderProps) {
-  const titleHiddenMarkup = (
-    <Box position="absolute" insetInlineEnd="0" zIndex="1">
-      <Inline gap="4" align="end" blockAlign="center">
-        <CloseButton titleHidden={titleHidden} onClick={onClose} />
-      </Inline>
-    </Box>
-  );
+  const headerPaddingInline = '400';
+  const headerPaddingBlock = '400';
 
   if (titleHidden || !children) {
-    return titleHiddenMarkup;
+    return (
+      <Box
+        position="absolute"
+        insetInlineEnd={headerPaddingInline}
+        insetBlockStart={headerPaddingBlock}
+        zIndex="1"
+      >
+        <CloseButton onClick={onClose} />
+      </Box>
+    );
   }
 
   return (
     <Box
-      paddingBlockStart="4"
-      paddingBlockEnd="4"
-      paddingInlineStart="5"
-      paddingInlineEnd="5"
-      borderBlockEnd="divider"
+      paddingBlockStart="400"
+      paddingBlockEnd="400"
+      paddingInlineStart={headerPaddingInline}
+      paddingInlineEnd={headerPaddingInline}
+      borderBlockEndWidth="025"
+      borderColor="border"
+      background="bg-surface-tertiary"
     >
-      <Columns columns={{xs: '1fr auto'}} gap="4">
-        <Inline gap="4" blockAlign="center">
-          <Text id={id} as="h2" variant="headingLg" breakWord>
+      <InlineGrid columns={{xs: '1fr auto'}} gap="400">
+        <InlineStack gap="400" blockAlign="center">
+          <Text id={id} as="h2" variant="headingMd" breakWord>
             {children}
           </Text>
-        </Inline>
-        <CloseButton
-          pressed={closing}
-          titleHidden={titleHidden}
-          onClick={onClose}
-        />
-      </Columns>
+        </InlineStack>
+        <CloseButton pressed={closing} onClick={onClose} />
+      </InlineGrid>
     </Box>
   );
 }

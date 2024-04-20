@@ -1,10 +1,10 @@
 import React from 'react';
 import {mountWithApp} from 'tests/utilities';
+import {UploadIcon} from '@shopify/polaris-icons';
 
-import {Text} from '../../../../Text';
 import {DropZoneContext} from '../../../context';
 import {FileUpload} from '../FileUpload';
-import {uploadArrow as uploadArrowImage} from '../../../images';
+import {Icon} from '../../../../Icon';
 
 describe('<FileUpload />', () => {
   const defaultStates = {
@@ -46,14 +46,10 @@ describe('<FileUpload />', () => {
         </DropZoneContext.Provider>,
       );
 
-      expect(fileUpload).not.toContainReactComponent('img', {
-        src: uploadArrowImage,
+      expect(fileUpload).not.toContainReactComponent(Icon, {
+        source: UploadIcon,
       });
-      expect(fileUpload).not.toContainReactComponent(Text);
-
-      expect(fileUpload).toContainReactComponent('div', {
-        className: 'Action',
-      });
+      expect(fileUpload).toContainReactText('Add file');
     });
   });
 
@@ -62,18 +58,12 @@ describe('<FileUpload />', () => {
       <DropZoneContext.Provider
         value={{size: 'medium', type: 'file', ...defaultStates}}
       >
-        <FileUpload />
+        <FileUpload actionTitle="Add file" />
       </DropZoneContext.Provider>,
     );
 
-    expect(fileUpload).not.toContainReactComponent('img', {
-      src: uploadArrowImage,
-    });
-    expect(fileUpload).not.toContainReactComponent(Text);
-
-    expect(fileUpload).toContainReactComponent('div', {
-      className: 'Action',
-    });
+    expect(fileUpload).not.toContainReactComponent(Icon, {source: UploadIcon});
+    expect(fileUpload).toContainReactText('Add file');
   });
 
   it('renders small view', () => {
@@ -81,13 +71,11 @@ describe('<FileUpload />', () => {
       <DropZoneContext.Provider
         value={{size: 'small', type: 'file', ...defaultStates}}
       >
-        <FileUpload />
+        <FileUpload actionTitle="Add file" />
       </DropZoneContext.Provider>,
     );
 
-    expect(fileUpload).not.toContainReactComponent(Text);
-
-    expect(fileUpload).toContainReactComponentTimes('img', 1);
+    expect(fileUpload).toContainReactComponent(Icon, {source: UploadIcon});
   });
 
   it('sets a default actionTitle if the prop is provided then removed', () => {
@@ -113,7 +101,7 @@ describe('<FileUpload />', () => {
       </DropZoneContext.Provider>,
     );
 
-    expect(fileUpload).toContainReactComponent(Text);
+    expect(fileUpload).toContainReactComponent('p');
     expect(fileUpload).toContainReactText('Hint');
   });
 
@@ -133,9 +121,7 @@ describe('<FileUpload />', () => {
         </DropZoneContext.Provider>,
       );
 
-      expect(fileUpload).toContainReactComponent('div', {
-        children: expectedActionText,
-      });
+      expect(fileUpload.find('span')).toContainReactText(expectedActionText);
     },
   );
 });

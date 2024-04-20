@@ -1,14 +1,14 @@
 import {
   Text,
-  Inline,
+  InlineStack,
   Box,
-  AlphaCard,
+  Card,
   Button,
   Badge,
-  AlphaStack,
+  BlockStack,
   useBreakpoints,
 } from '@shopify/polaris';
-import {CircleInformationMajor} from '@shopify/polaris-icons';
+import {InfoIcon} from '@shopify/polaris-icons';
 import {useState, useCallback} from 'react';
 import {withPolarisExample} from '../../src/components/PolarisExampleWrapper';
 
@@ -34,35 +34,31 @@ export function WithPrimitiveComponents() {
 
   const settingStatusMarkup = (
     <Badge
-      status={badgeStatus}
-      statusAndProgressLabelOverride={`Setting is ${badgeContent}`}
+      tone={badgeStatus}
+      toneAndProgressLabelOverride={`Setting is ${badgeContent}`}
     >
       {badgeContent}
     </Badge>
   );
 
   const helpLink = (
-    <Button
-      plain
-      icon={CircleInformationMajor}
-      accessibilityLabel="Learn more"
-    />
+    <Button variant="plain" icon={InfoIcon} accessibilityLabel="Learn more" />
   );
 
   const settingTitle = title ? (
-    <Inline gap="2" wrap={false}>
-      <Inline gap="2" align="start" blockAlign="baseline">
+    <InlineStack gap="200" wrap={false}>
+      <InlineStack gap="200" align="start" blockAlign="baseline">
         <label htmlFor={toggleId}>
           <Text variant="headingMd" as="h6">
             {title}
           </Text>
         </label>
-        <Inline gap="2" align="center" blockAlign="center">
+        <InlineStack gap="200" align="center" blockAlign="center">
           {settingStatusMarkup}
           {helpLink}
-        </Inline>
-      </Inline>
-    </Inline>
+        </InlineStack>
+      </InlineStack>
+    </InlineStack>
   ) : null;
 
   const actionMarkup = (
@@ -79,44 +75,49 @@ export function WithPrimitiveComponents() {
 
   const headerMarkup = (
     <Box width="100%">
-      <Inline gap="12" align="space-between" blockAlign="start" wrap={false}>
+      <InlineStack
+        gap="1200"
+        align="space-between"
+        blockAlign="start"
+        wrap={false}
+      >
         {settingTitle}
         {!mdDown ? (
           <Box minWidth="fit-content">
-            <Inline align="end">{actionMarkup}</Inline>
+            <InlineStack align="end">{actionMarkup}</InlineStack>
           </Box>
         ) : null}
-      </Inline>
+      </InlineStack>
     </Box>
   );
 
   const descriptionMarkup = (
-    <AlphaStack gap="4">
-      <Text id={descriptionId} variant="bodyMd" as="p" color="subdued">
+    <BlockStack gap="400">
+      <Text id={descriptionId} variant="bodyMd" as="p" tone="subdued">
         {description}
       </Text>
       {mdDown ? (
         <Box width="100%">
-          <Inline align="start">{actionMarkup}</Inline>
+          <InlineStack align="start">{actionMarkup}</InlineStack>
         </Box>
       ) : null}
-    </AlphaStack>
+    </BlockStack>
   );
 
   return (
-    <AlphaCard>
-      <AlphaStack gap={{xs: '4', sm: '5'}}>
+    <Card>
+      <BlockStack gap={{xs: '400', sm: '500'}}>
         <Box width="100%">
-          <AlphaStack gap={{xs: '2', sm: '4'}}>
+          <BlockStack gap={{xs: '200', sm: '400'}}>
             {headerMarkup}
             {descriptionMarkup}
-          </AlphaStack>
+          </BlockStack>
         </Box>
         <Text variant="bodyMd" as="p">
           Your checkout is only accepting test payments.
         </Text>
-      </AlphaStack>
-    </AlphaCard>
+      </BlockStack>
+    </Card>
   );
 }
 

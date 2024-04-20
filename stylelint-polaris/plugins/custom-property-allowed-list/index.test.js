@@ -1,8 +1,8 @@
-const {getCustomPropertyNames, tokens} = require('@shopify/polaris-tokens');
+const {getThemeVarNames, themeDefault} = require('@shopify/polaris-tokens');
 
 const {messages, ruleName} = require('.');
 
-const polarisCustomPropertyNames = getCustomPropertyNames(tokens);
+const themeVarNames = getThemeVarNames(themeDefault);
 
 /*
  --p-* Tokens are to be defined in polaris-tokens.
@@ -20,10 +20,7 @@ const config = [
   {
     allowedProperties: [allowedCustomPropertyNames],
     allowedValues: {
-      '/.+/': [
-        ...polarisCustomPropertyNames,
-        invalidOrDeprecatedPrivateCustomPropertyNames,
-      ],
+      '/.+/': [...themeVarNames, invalidOrDeprecatedPrivateCustomPropertyNames],
     },
   },
 ];
@@ -43,7 +40,7 @@ testRule({
         "Defining custom-properties that don't start with --p- or --pc- is allowed",
     },
     {
-      code: '.a { color: var(--p-text); }',
+      code: '.a { color: var(--p-color-text); }',
       description: 'Using custom-properties from polaris-tokens is allowed',
     },
   ],
@@ -95,6 +92,32 @@ testRule({
       column: 6,
       endLine: 1,
       endColumn: 28,
+    },
+    {
+      code: '.a { --p-foo: var(--p-bar); }',
+      description: 'Using disallowed --p- prefixed custom property and value',
+      message: messages.rejected('--p-foo', 'var(--p-bar)', '--p-', true, [
+        '--p-bar',
+      ]),
+      line: 1,
+      column: 6,
+      endLine: 1,
+      endColumn: 28,
+    },
+    {
+      code: '.a { --p-foo: var(--p-bar) solid var(--p-baz); }',
+      description: 'Using disallowed --p- prefixed custom property and values',
+      message: messages.rejected(
+        '--p-foo',
+        'var(--p-bar) solid var(--p-baz)',
+        '--p-',
+        true,
+        ['--p-bar', '--p-baz'],
+      ),
+      line: 1,
+      column: 6,
+      endLine: 1,
+      endColumn: 47,
     },
   ],
 });

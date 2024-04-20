@@ -5,9 +5,9 @@ import {withPolarisExample} from '../../src/components/PolarisExampleWrapper';
 function PageExample() {
   return (
     <Page
-      breadcrumbs={[{content: 'Products', url: '#'}]}
+      backAction={{content: 'Products', url: '#'}}
       title="Jar With Lock-Lid"
-      titleMetadata={<Badge status="attention">Verified</Badge>}
+      titleMetadata={<Badge tone="attention">Verified</Badge>}
       primaryAction={{content: 'Save', disabled: true}}
       secondaryActions={[
         {content: 'Duplicate'},

@@ -5,7 +5,7 @@ import {withPolarisExample} from '../../src/components/PolarisExampleWrapper';
 function PageExample() {
   return (
     <Page
-      breadcrumbs={[{content: 'Orders', url: '#'}]}
+      backAction={{content: 'Orders', url: '#'}}
       title="#1085"
       secondaryActions={[
         {content: 'Print'},
@@ -22,7 +22,7 @@ function PageExample() {
           <LegacyStack.Item fill>
             <p>Buy postage and ship remaining 2 items</p>
           </LegacyStack.Item>
-          <Button primary>Continue</Button>
+          <Button variant="primary">Continue</Button>
         </LegacyStack>
       </LegacyCard>
     </Page>

@@ -16,17 +16,18 @@
   }
 
   &[data-value='beta'],
-  &[data-value='information'] {
-    background: var(--surface-information);
-  }
-
-  &[data-value='information'] {
+  &[data-value='information'],
+  &[data-value='new'] {
     background: var(--surface-information);
   }
 
   h2 {
     margin-top: 0;
     @include heading-3;
+
+    & + p {
+      margin-top: 0;
+    }
   }
 
   p {

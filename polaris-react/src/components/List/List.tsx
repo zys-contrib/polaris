@@ -3,7 +3,7 @@ import React from 'react';
 import {classNames, variationName} from '../../utilities/css';
 
 import {Item} from './components';
-import styles from './List.scss';
+import styles from './List.module.css';
 
 type Type = 'bullet' | 'number';
 
@@ -14,7 +14,7 @@ export interface ListProps {
    * Determines the space between list items
    * @default 'loose'
    */
-  spacing?: Spacing;
+  gap?: Spacing;
   /**
    * Type of list to display
    * @default 'bullet'
@@ -26,10 +26,10 @@ export interface ListProps {
 
 export const List: React.FunctionComponent<ListProps> & {
   Item: typeof Item;
-} = function List({children, spacing = 'loose', type = 'bullet'}: ListProps) {
+} = function List({children, gap = 'loose', type = 'bullet'}: ListProps) {
   const className = classNames(
     styles.List,
-    spacing && styles[variationName('spacing', spacing)],
+    gap && styles[variationName('spacing', gap)],
     type && styles[variationName('type', type)],
   );
 

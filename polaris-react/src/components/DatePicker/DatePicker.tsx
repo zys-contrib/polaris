@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback, useMemo} from 'react';
-import {ArrowLeftMinor, ArrowRightMinor} from '@shopify/polaris-icons';
+import {ArrowLeftIcon, ArrowRightIcon} from '@shopify/polaris-icons';
 
 import {Button} from '../Button';
 import {classNames} from '../../utilities/css';
@@ -17,7 +17,7 @@ import {useI18n} from '../../utilities/i18n';
 
 import {monthName} from './utilities';
 import {Month} from './components';
-import styles from './DatePicker.scss';
+import styles from './DatePicker.module.css';
 
 export type {Range};
 
@@ -259,8 +259,8 @@ export function DatePicker({
     >
       <div className={styles.Header}>
         <Button
-          plain
-          icon={ArrowLeftMinor}
+          variant="tertiary"
+          icon={ArrowLeftIcon}
           accessibilityLabel={i18n.translate(
             'Polaris.DatePicker.previousMonth',
             {
@@ -273,8 +273,8 @@ export function DatePicker({
           }
         />
         <Button
-          plain
-          icon={ArrowRightMinor}
+          variant="tertiary"
+          icon={ArrowRightIcon}
           accessibilityLabel={i18n.translate('Polaris.DatePicker.nextMonth', {
             nextMonth,
             nextYear,

@@ -3,9 +3,11 @@ import type {ReactNode} from 'react';
 
 import {classNames} from '../../utilities/css';
 
-import styles from './Text.scss';
+import styles from './Text.module.css';
 
 type Element =
+  | 'dt'
+  | 'dd'
   | 'h1'
   | 'h2'
   | 'h3'
@@ -14,6 +16,7 @@ type Element =
   | 'h6'
   | 'p'
   | 'span'
+  | 'strong'
   | 'legend';
 
 type Variant =
@@ -24,7 +27,7 @@ type Variant =
   | 'headingXl'
   | 'heading2xl'
   | 'heading3xl'
-  | 'heading4xl'
+  | 'bodyXs'
   | 'bodySm'
   | 'bodyMd'
   | 'bodyLg';
@@ -33,8 +36,24 @@ type Alignment = 'start' | 'center' | 'end' | 'justify';
 
 type FontWeight = 'regular' | 'medium' | 'semibold' | 'bold';
 
-type Color = 'success' | 'critical' | 'warning' | 'subdued' | 'text-inverse';
+type Tone =
+  | 'base'
+  | 'disabled'
+  | 'inherit'
+  | 'success'
+  | 'critical'
+  | 'caution'
+  | 'subdued'
+  | 'text-inverse'
+  | 'text-inverse-secondary'
+  | 'magic'
+  | 'magic-subdued';
 
+type TextDecorationLine = 'line-through';
+
+const deprecatedVariants: {[V in Variant]?: Variant} = {
+  heading3xl: 'heading2xl',
+};
 export interface TextProps {
   /** Adjust horizontal alignment of text */
   alignment?: Alignment;
@@ -44,8 +63,8 @@ export interface TextProps {
   breakWord?: boolean;
   /** Text to display */
   children: ReactNode;
-  /** Adjust color of text */
-  color?: Color;
+  /** Adjust tone of text */
+  tone?: Tone;
   /** Adjust weight of text */
   fontWeight?: FontWeight;
   /** HTML id attribute */
@@ -58,6 +77,8 @@ export interface TextProps {
   variant?: Variant;
   /** Visually hide the text */
   visuallyHidden?: boolean;
+  /** Add a line-through to the text */
+  textDecorationLine?: TextDecorationLine;
 }
 
 export const Text = ({
@@ -65,14 +86,26 @@ export const Text = ({
   as,
   breakWord,
   children,
-  color,
+  tone,
   fontWeight,
   id,
   numeric = false,
   truncate = false,
   variant,
   visuallyHidden = false,
+  textDecorationLine,
 }: TextProps) => {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    variant &&
+    Object.prototype.hasOwnProperty.call(deprecatedVariants, variant)
+  ) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      `Deprecation: <Text variant="${variant}" />. The value "${variant}" will be removed in a future major version of Polaris. Use "${deprecatedVariants[variant]}" instead.`,
+    );
+  }
+
   const Component = as || (visuallyHidden ? 'span' : 'p');
 
   const className = classNames(
@@ -82,10 +115,11 @@ export const Text = ({
     (alignment || truncate) && styles.block,
     alignment && styles[alignment],
     breakWord && styles.break,
-    color && styles[color],
+    tone && styles[tone],
     numeric && styles.numeric,
     truncate && styles.truncate,
     visuallyHidden && styles.visuallyHidden,
+    textDecorationLine && styles[textDecorationLine],
   );
 
   return (

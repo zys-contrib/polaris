@@ -1,30 +1,15 @@
 import React from 'react';
 
 import {classNames} from '../../../../utilities/css';
-import styles from '../../Layout.scss';
+import styles from '../../Layout.module.css';
 
 export interface SectionProps {
   children?: React.ReactNode;
-  secondary?: boolean;
-  fullWidth?: boolean;
-  oneHalf?: boolean;
-  oneThird?: boolean;
+  variant?: 'oneHalf' | 'oneThird' | 'fullWidth';
 }
 
-export function Section({
-  children,
-  secondary,
-  fullWidth,
-  oneHalf,
-  oneThird,
-}: SectionProps) {
-  const className = classNames(
-    styles.Section,
-    secondary && styles['Section-secondary'],
-    fullWidth && styles['Section-fullWidth'],
-    oneHalf && styles['Section-oneHalf'],
-    oneThird && styles['Section-oneThird'],
-  );
+export function Section({children, variant}: SectionProps) {
+  const className = classNames(styles.Section, styles[`Section-${variant}`]);
 
   return <div className={className}>{children}</div>;
 }

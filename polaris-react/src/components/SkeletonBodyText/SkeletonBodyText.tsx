@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './SkeletonBodyText.scss';
+import styles from './SkeletonBodyText.module.css';
 
 export interface SkeletonBodyTextProps {
   /**
@@ -17,5 +17,7 @@ export function SkeletonBodyText({lines = 3}: SkeletonBodyTextProps) {
     bodyTextLines.push(<div className={styles.SkeletonBodyText} key={i} />);
   }
 
-  return <>{bodyTextLines}</>;
+  return (
+    <div className={styles.SkeletonBodyTextContainer}>{bodyTextLines}</div>
+  );
 }

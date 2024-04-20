@@ -1,6 +1,6 @@
 import React from 'react';
-import {matchMedia} from '@shopify/jest-dom-mocks';
 import {mountWithApp} from 'tests/utilities';
+import {matchMedia} from '@shopify/jest-dom-mocks';
 
 import {Button} from '../../Button';
 import type {ButtonProps} from '../../Button';
@@ -12,11 +12,12 @@ import {Tag} from '../../Tag';
 import {TextField} from '../../TextField';
 import {Text} from '../../Text';
 import {WithinFilterContext} from '../../../utilities/within-filter-context';
+// eslint-disable-next-line import/no-deprecated
 import {LegacyFilters} from '../LegacyFilters';
 import type {LegacyFiltersProps} from '../LegacyFilters';
 import {ConnectedFilterControl, TagsWrapper} from '../components';
 import * as focusUtils from '../../../utilities/focus';
-import styles from '../LegacyFilters.scss';
+import styles from '../LegacyFilters.module.css';
 import {Focus} from '../../Focus';
 
 const MockFilter = (props: {id: string}) => <div id={props.id} />;
@@ -48,14 +49,6 @@ const mockProps: LegacyFiltersProps = {
 describe('<LegacyFilters />', () => {
   beforeAll(() => {
     jest.useFakeTimers();
-  });
-
-  beforeEach(() => {
-    matchMedia.mock();
-  });
-
-  afterEach(() => {
-    matchMedia.restore();
   });
 
   it('renders WithinFilterContext with a value of true', () => {
@@ -650,7 +643,7 @@ describe('<LegacyFilters />', () => {
         });
 
         expect(toggleButton!).toContainReactComponent(Text, {
-          color: 'subdued',
+          tone: 'subdued',
         });
       });
     });
@@ -687,7 +680,7 @@ describe('<LegacyFilters />', () => {
             });
 
             expect(toggleButton).toContainReactComponent(Text, {
-              color: 'subdued',
+              tone: 'subdued',
             });
           });
       });
@@ -707,7 +700,7 @@ describe('<LegacyFilters />', () => {
             });
 
             expect(toggleButton).toContainReactComponent(Text, {
-              color: undefined,
+              tone: undefined,
             });
           });
       });

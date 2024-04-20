@@ -1,11 +1,4 @@
-import React, {
-  useContext,
-  memo,
-  useEffect,
-  useRef,
-  useCallback,
-  Fragment,
-} from 'react';
+import React, {useContext, memo, useEffect, useRef, useCallback} from 'react';
 import type {ReactNode} from 'react';
 
 import {debounce} from '../../../../utilities/debounce';
@@ -15,42 +8,41 @@ import {RowContext} from '../../../../utilities/index-table';
 import {useIndexValue} from '../../../../utilities/index-provider';
 import {Checkbox as PolarisCheckbox} from '../../../Checkbox';
 import {setRootProperty} from '../../../../utilities/set-root-property';
-import sharedStyles from '../../IndexTable.scss';
+import sharedStyles from '../../IndexTable.module.css';
 
-import styles from './Checkbox.scss';
+import styles from './Checkbox.module.css';
 
-export const Checkbox = memo(function Checkbox() {
+interface CheckboxProps {
+  accessibilityLabel?: string;
+}
+
+export const Checkbox = memo(function Checkbox({
+  accessibilityLabel,
+}: CheckboxProps) {
   const i18n = useI18n();
-  const {resourceName, condensed} = useIndexValue();
+  const {resourceName} = useIndexValue();
   const {itemId, selected, disabled, onInteraction} = useContext(RowContext);
 
-  const wrapperClassName = classNames(
-    styles.Wrapper,
-    condensed ? styles.condensed : styles.expanded,
-  );
-
-  const Wrapper = condensed ? Fragment : CheckboxWrapper;
+  const label = accessibilityLabel
+    ? accessibilityLabel
+    : i18n.translate('Polaris.IndexTable.selectItem', {
+        resourceName: resourceName.singular,
+      });
 
   return (
-    <Wrapper>
+    <CheckboxWrapper>
       <div className={styles.TableCellContentContainer}>
-        <div
-          className={wrapperClassName}
-          onClick={onInteraction}
-          onKeyUp={noop}
-        >
+        <div className={styles.Wrapper} onClick={onInteraction} onKeyUp={noop}>
           <PolarisCheckbox
-            id={itemId}
-            label={i18n.translate('Polaris.IndexTable.selectItem', {
-              resourceName: resourceName.singular,
-            })}
+            id={`Select-${itemId}`}
+            label={label}
             labelHidden
             checked={selected}
             disabled={disabled}
           />
         </div>
       </div>
-    </Wrapper>
+    </CheckboxWrapper>
   );
 });
 

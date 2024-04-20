@@ -4,7 +4,7 @@ import {classNames} from '../../../../utilities/css';
 import {wrapWithComponent} from '../../../../utilities/components';
 import {Scrollable} from '../../../Scrollable';
 import {Section} from '../Section';
-import styles from '../../Popover.scss';
+import styles from '../../Popover.module.css';
 
 export interface PaneProps {
   /** Fix the pane to the top of the popover */
@@ -22,6 +22,11 @@ export interface PaneProps {
    * @default false
    */
   captureOverscroll?: boolean;
+  /**
+   * Sets a subdued background to the pane
+   * @default false
+   */
+  subdued?: boolean;
 }
 
 export function Pane({
@@ -30,11 +35,13 @@ export function Pane({
   sectioned,
   children,
   height,
+  subdued,
   onScrolledToBottom,
 }: PaneProps) {
   const className = classNames(
     styles.Pane,
     fixed && styles['Pane-fixed'],
+    subdued && styles['Pane-subdued'],
     captureOverscroll && styles['Pane-captureOverscroll'],
   );
   const content = sectioned
@@ -54,6 +61,7 @@ export function Pane({
       className={className}
       style={style}
       onScrolledToBottom={onScrolledToBottom}
+      scrollbarWidth="thin"
     >
       {content}
     </Scrollable>

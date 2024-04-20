@@ -1,8 +1,7 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 
-// eslint-disable-next-line import/no-deprecated
 import {Cell} from './components';
-import styles from './Grid.scss';
+import styles from './Grid.module.css';
 
 type Breakpoints = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
@@ -19,7 +18,12 @@ type Gap = {
 };
 
 export interface GridProps {
-  /* Set grid-template-areas */
+  /**
+   * Set grid-template-areas
+   * @deprecated To avoid a11y issues, nest layout components in individual grid
+   * cells instead. See:
+   * https://polaris.shopify.com/components/layout-and-structure
+   */
   areas?: Areas;
   /* Number of columns */
   columns?: Columns;
@@ -27,9 +31,7 @@ export interface GridProps {
   gap?: Gap;
   children?: React.ReactNode;
 }
-/** @deprecated Use `Columns` instead or a combination of layout primitives (`Columns`, `Inline`, and `AlphaStack`) */
 export const Grid: React.FunctionComponent<GridProps> & {
-  // eslint-disable-next-line import/no-deprecated
   Cell: typeof Cell;
 } = function Grid({gap, areas, children, columns}: GridProps) {
   const style = {
@@ -50,15 +52,6 @@ export const Grid: React.FunctionComponent<GridProps> & {
     '--pc-grid-areas-xl': formatAreas(areas?.xl),
   } as React.CSSProperties;
 
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
-      // eslint-disable-next-line no-console
-      console.warn(
-        'Deprecation: <Grid /> is deprecated. This component will be removed in a future major version of Polaris. Use <Columns /> instead or a combination of <Columns />, <Inline />, and <AlphaStack />',
-      );
-    }
-  }, []);
-
   return (
     <div className={styles.Grid} style={style}>
       {children}
@@ -71,5 +64,4 @@ export function formatAreas(areas?: string[]) {
   return `'${areas?.join(`' '`)}'`;
 }
 
-// eslint-disable-next-line import/no-deprecated
 Grid.Cell = Cell;

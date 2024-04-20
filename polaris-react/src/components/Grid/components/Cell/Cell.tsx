@@ -2,7 +2,7 @@ import React from 'react';
 
 import {classNames} from '../../../../utilities/css';
 
-import styles from './Cell.scss';
+import styles from './Cell.module.css';
 
 type Breakpoints = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
@@ -24,13 +24,18 @@ interface Columns {
 }
 
 export interface CellProps {
+  /**
+   * Set grid-template-areas
+   * @deprecated To avoid a11y issues, nest layout components in individual grid
+   * cells instead. See:
+   * https://polaris.shopify.com/components/layout-and-structure
+   */
   area?: string;
   column?: Cell;
   columnSpan?: Columns;
   row?: Cell;
   children?: React.ReactNode;
 }
-/** @deprecated Use `Columns` instead or a combination of layout primitives (`Columns`, `Inline`, and `AlphaStack`) */
 export function Cell({
   area: gridArea,
   column,

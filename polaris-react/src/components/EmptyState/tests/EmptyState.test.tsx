@@ -7,11 +7,28 @@ import {Text} from '../../Text';
 import {UnstyledLink} from '../../UnstyledLink';
 import {WithinContentContext} from '../../../utilities/within-content-context';
 import {EmptyState} from '../EmptyState';
-import {Inline} from '../../Inline';
+import {InlineStack} from '../../InlineStack';
 
 describe('<EmptyState />', () => {
   let imgSrc =
     'https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg';
+
+  it('renders EmptyState with a skeleton image and hidden <Image> when the image is not loaded', () => {
+    const emptyState = mountWithApp(<EmptyState image={imgSrc} />);
+
+    expect(emptyState).toContainReactComponent('div', {
+      className: 'SkeletonImage',
+    });
+    expect(emptyState).toContainReactComponent('div', {
+      className: expect.not.stringContaining('SkeletonImage loaded'),
+    });
+    expect(emptyState).toContainReactComponent(Image, {
+      className: 'Image',
+    });
+    expect(emptyState).toContainReactComponent(Image, {
+      className: expect.not.stringContaining('Image loaded'),
+    });
+  });
 
   describe('action', () => {
     it('renders a button with the action content if action is set', () => {
@@ -34,7 +51,7 @@ describe('<EmptyState />', () => {
 
       expect(emptyState).toContainReactComponent(Button, {
         size: 'medium',
-        primary: true,
+        variant: 'primary',
       });
     });
 
@@ -50,14 +67,14 @@ describe('<EmptyState />', () => {
       });
     });
 
-    it('adds center align and spacing-2 to Inline', () => {
+    it('adds center align and spacing-2 to InlineStack', () => {
       const emptyState = mountWithApp(
         <EmptyState image={imgSrc} action={{content: 'Add transfer'}} />,
       );
 
-      expect(emptyState).toContainReactComponent(Inline, {
+      expect(emptyState).toContainReactComponent(InlineStack, {
         align: 'center',
-        gap: '2',
+        gap: '200',
       });
     });
 
@@ -150,11 +167,13 @@ describe('<EmptyState />', () => {
       );
       const text = emptyState.find(Text)!;
 
-      expect(text).toHaveReactProps({variant: 'headingXl'});
+      expect(text).toHaveReactProps({
+        variant: expect.stringContaining('heading'),
+      });
       expect(text).toContainReactText(expectedHeading);
     });
 
-    it('renders a headingLg Text when in a content context', () => {
+    it('renders a heading Text when in a content context', () => {
       const emptyStateInContentContext = mountWithApp(
         <WithinContentContext.Provider value>
           <EmptyState heading="Heading" image={imgSrc} />
@@ -162,7 +181,7 @@ describe('<EmptyState />', () => {
       );
 
       expect(emptyStateInContentContext).toContainReactComponent(Text, {
-        variant: 'headingLg',
+        variant: expect.stringContaining('heading'),
       });
     });
   });

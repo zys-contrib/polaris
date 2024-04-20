@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import type {ComponentMeta} from '@storybook/react';
-import {Button, ButtonGroup} from '@shopify/polaris';
+import {Button, ButtonGroup, Icon, BlockStack, Text} from '@shopify/polaris';
+import {DeleteIcon} from '@shopify/polaris-icons';
 
 export default {
   component: ButtonGroup,
@@ -10,14 +11,115 @@ export function Default() {
   return (
     <ButtonGroup>
       <Button>Cancel</Button>
-      <Button primary>Save</Button>
+      <Button variant="primary">Save</Button>
     </ButtonGroup>
   );
 }
 
 export function WithSegmentedButtons() {
+  const [activeButtonIndex, setActiveButtonIndex] = useState(0);
+
+  const handleButtonClick = useCallback(
+    (index: number) => {
+      if (activeButtonIndex === index) return;
+      setActiveButtonIndex(index);
+    },
+    [activeButtonIndex],
+  );
   return (
-    <ButtonGroup segmented>
+    <div>
+      <ButtonGroup variant="segmented">
+        <Button size="slim">Bold</Button>
+        <Button size="slim" pressed>
+          Italic
+        </Button>
+        <Button size="slim">Underline</Button>
+        <Button
+          size="slim"
+          tone="critical"
+          icon={<Icon source={DeleteIcon} />}
+          accessibilityLabel="Delete"
+        />
+      </ButtonGroup>
+      <br />
+      <ButtonGroup variant="segmented">
+        <Button
+          pressed={activeButtonIndex === 0}
+          onClick={() => handleButtonClick(0)}
+        >
+          Mercury
+        </Button>
+        <Button
+          pressed={activeButtonIndex === 1}
+          onClick={() => handleButtonClick(1)}
+        >
+          Venus
+        </Button>
+        <Button
+          pressed={activeButtonIndex === 2}
+          onClick={() => handleButtonClick(2)}
+        >
+          Earth
+        </Button>
+        <Button
+          pressed={activeButtonIndex === 3}
+          onClick={() => handleButtonClick(3)}
+        >
+          Mars
+        </Button>
+        <Button
+          pressed={activeButtonIndex === 4}
+          onClick={() => handleButtonClick(4)}
+        >
+          Jupiter
+        </Button>
+        <Button
+          pressed={activeButtonIndex === 5}
+          onClick={() => handleButtonClick(5)}
+        >
+          Saturn
+        </Button>
+        <Button
+          pressed={activeButtonIndex === 6}
+          onClick={() => handleButtonClick(6)}
+        >
+          Uranus
+        </Button>
+        <Button
+          pressed={activeButtonIndex === 7}
+          onClick={() => handleButtonClick(7)}
+        >
+          Neptune
+        </Button>
+      </ButtonGroup>
+      <br />
+      <ButtonGroup variant="segmented" fullWidth>
+        <Button
+          pressed={activeButtonIndex === 8}
+          onClick={() => handleButtonClick(8)}
+        >
+          Bold
+        </Button>
+        <Button
+          pressed={activeButtonIndex === 9}
+          onClick={() => handleButtonClick(9)}
+        >
+          Italic
+        </Button>
+        <Button
+          pressed={activeButtonIndex === 10}
+          onClick={() => handleButtonClick(10)}
+        >
+          Underline
+        </Button>
+      </ButtonGroup>
+    </div>
+  );
+}
+
+export function OutlineWithSegmentedButtons() {
+  return (
+    <ButtonGroup variant="segmented">
       <Button>Bold</Button>
       <Button>Italic</Button>
       <Button>Underline</Button>
@@ -25,20 +127,34 @@ export function WithSegmentedButtons() {
   );
 }
 
-export function OutlineWithSegmentedButtons() {
+export function WithAllGaps() {
   return (
-    <ButtonGroup segmented>
-      <Button outline>Bold</Button>
-      <Button outline>Italic</Button>
-      <Button outline>Underline</Button>
-    </ButtonGroup>
+    <BlockStack gap="400">
+      <ButtonGroup gap="extraTight" connectedTop>
+        <Button>Bold</Button>
+        <Button>Italic</Button>
+        <Button>Underline</Button>
+      </ButtonGroup>
+      <ButtonGroup gap="tight">
+        <Button>Bold</Button>
+        <Button>Italic</Button>
+        <Button>Underline</Button>
+      </ButtonGroup>
+      <ButtonGroup gap="loose">
+        <Button>Bold</Button>
+        <Button>Italic</Button>
+        <Button>Underline</Button>
+      </ButtonGroup>
+    </BlockStack>
   );
 }
 
 export function NoWrapButtons() {
   return (
     <>
-      <p>Default</p>
+      <Text as="p" variant="bodyMd">
+        Default
+      </Text>
       <div
         style={{
           width: '300px',
@@ -48,14 +164,17 @@ export function NoWrapButtons() {
         }}
       >
         <ButtonGroup>
+          <Button>Fifth</Button>
           <Button>Fourth</Button>
           <Button>Third</Button>
           <Button>Second</Button>
-          <Button primary>First</Button>
+          <Button variant="primary">First</Button>
         </ButtonGroup>
       </div>
       <br />
-      <p>With noWrap</p>
+      <Text as="p" variant="bodyMd">
+        With noWrap
+      </Text>
       <div
         style={{
           width: '300px',
@@ -65,10 +184,11 @@ export function NoWrapButtons() {
         }}
       >
         <ButtonGroup noWrap>
+          <Button>Fifth</Button>
           <Button>Fourth</Button>
           <Button>Third</Button>
           <Button>Second</Button>
-          <Button primary>First</Button>
+          <Button variant="primary">First</Button>
         </ButtonGroup>
       </div>
     </>

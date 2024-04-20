@@ -8,8 +8,9 @@ import Tooltip from '../Tooltip';
 import {figmaColorNames} from '../../data/figmaColorNames';
 import Link from 'next/link';
 import {useGlobalSearchResult} from '../GlobalSearch/GlobalSearch';
-import {ClipboardMinor} from '@shopify/polaris-icons';
+import {ClipboardIcon} from '@shopify/polaris-icons';
 import SearchResultHighlight from '../SearchResultHighlight';
+import {toPxs} from '@shopify/polaris-tokens';
 
 interface ColumnsConfig {
   preview: boolean;
@@ -23,7 +24,7 @@ const defaultColumnsConfig: ColumnsConfig = {
   preview: true,
   name: true,
   value: true,
-  figmaUsage: true,
+  figmaUsage: false,
   description: true,
 };
 
@@ -50,9 +51,9 @@ function TokenList({
             <thead>
               <tr>
                 {columns.preview && <th></th>}
-                {columns.name && <th>Token name</th>}
-                {columns.value && <th>Current value</th>}
-                {columns.figmaUsage && <th>Figma usage</th>}
+                {columns.name && <th>Name</th>}
+                {columns.value && <th>Value</th>}
+                {columns.figmaUsage && <th>Figma</th>}
                 {columns.description && <th>Description</th>}
               </tr>
             </thead>
@@ -90,7 +91,7 @@ function getFigmaUsageForToken(
   const REM = 16;
 
   if (value.startsWith('rgba')) {
-    usage = figmaColorNames[name] ? `Use ${figmaColorNames[name]}` : '-';
+    usage = figmaColorNames[name] ? `Use ${figmaColorNames[name]}` : '—';
   } else if (name.startsWith('shadow')) {
     usage = 'Use shadow styles from UI kit';
   } else if (name.includes('breakpoint')) {
@@ -127,6 +128,7 @@ interface TokenListItemProps {
   customOnClick?: Function;
   searchTerm?: string;
   rank?: number;
+  uuid?: string;
 }
 
 function TokenListItem({
@@ -135,6 +137,7 @@ function TokenListItem({
   customOnClick,
   searchTerm,
   rank,
+  uuid,
 }: TokenListItemProps) {
   const figmaUsage = getFigmaUsageForToken(name, value);
   const tokenNameWithPrefix = `--p-${name}`;
@@ -142,10 +145,12 @@ function TokenListItem({
 
   const searchAttributes = useGlobalSearchResult();
   const isClickableSearchResult = !!searchAttributes?.tabIndex;
-  const url = `/tokens/${category}#${searchAttributes?.id}`;
+  const url = `/tokens/${slugify(category)}#${name}`;
 
   const customOnClickHandler = () => {
-    customOnClick && customOnClick(searchTerm, rank, url);
+    uuid &&
+      customOnClick &&
+      customOnClick(uuid, searchTerm, rank, searchAttributes?.id, url);
   };
 
   return (
@@ -195,14 +200,14 @@ function TokenListItem({
                       }}
                       tabIndex={searchAttributes?.tabIndex}
                     >
-                      <Icon source={ClipboardMinor} width={14} height={14} />
+                      <Icon source={ClipboardIcon} width={14} height={14} />
                     </button>
                   </Tooltip>
                 </div>
               </span>
             </td>
           )}
-          {columns.value && <td className={styles.Value}>{value}</td>}
+          {columns.value && <td className={styles.Value}>{toPxs(value)}</td>}
           {columns.figmaUsage && (
             <td className={styles.FigmaUsage}>{figmaUsage || '—'}</td>
           )}
@@ -228,7 +233,7 @@ function TokenPreview({name, value}: TokenPreviewProps) {
   };
 
   // Colors
-  if (value.startsWith('rgba')) {
+  if (value.startsWith('rgba') || value.includes('color-')) {
     return (
       <div
         {...previewDivAttributes}
@@ -304,8 +309,8 @@ function TokenPreview({name, value}: TokenPreviewProps) {
     );
   }
 
-  // Spacing
-  else if (name.includes('space')) {
+  // Spacing and Width
+  else if (name.includes('space') || name.includes('width')) {
     return (
       <div
         {...previewDivAttributes}
@@ -338,6 +343,53 @@ function TokenPreview({name, value}: TokenPreviewProps) {
             background: 'var(--text)',
           }}
         ></div>
+      </div>
+    );
+  }
+
+  // Height
+  else if (name.includes('height') && !name.includes('line-height')) {
+    return (
+      <div
+        {...previewDivAttributes}
+        style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+        }}
+      >
+        <div
+          {...previewDivAttributes}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <div
+            style={{
+              aspectRatio: '1/1',
+              borderRadius: 100,
+              minHeight: '10px',
+              background: 'var(--text)',
+            }}
+          ></div>
+          <div
+            style={{
+              minWidth: '30px',
+              height: value,
+              background: 'var(--text)',
+              opacity: 0.15,
+            }}
+          ></div>
+          <div
+            style={{
+              aspectRatio: '1/1',
+              borderRadius: 100,
+              minHeight: '10px',
+              background: 'var(--text)',
+            }}
+          ></div>
+        </div>
       </div>
     );
   }
@@ -408,6 +460,22 @@ function TokenPreview({name, value}: TokenPreviewProps) {
     );
   }
 
+  // Letter spacing
+  else if (name.includes('letter-spacing')) {
+    return (
+      <div
+        {...previewDivAttributes}
+        style={{
+          display: 'flex',
+          letterSpacing: value,
+          background: 'transparent',
+        }}
+      >
+        Entrepreneurs
+      </div>
+    );
+  }
+
   // Breakpoints
   else if (name.includes('breakpoints')) {
     const width = (parseInt(value.replace('rem', '')) / 120) * 100;
@@ -442,11 +510,15 @@ function TokenPreview({name, value}: TokenPreviewProps) {
         {...previewDivAttributes}
         style={{
           display: 'flex',
+          background: 'var(--p-color-bg)',
+          borderRadius: 'var(--p-border-radius-200)',
+          padding: 'var(--p-space-400)',
         }}
       >
         <div
           style={{
-            width: 50,
+            width: '100%',
+            minWidth: 50,
             minHeight: 50,
             background: 'white',
             boxShadow: value,
@@ -551,9 +623,9 @@ function TokenPreview({name, value}: TokenPreviewProps) {
   }
 
   // Z-index
-  else if (name.includes('z-')) {
+  else if (name.includes('z-index-')) {
     const layerCount = 12;
-    const number = parseInt(name.replace('z-', ''));
+    const number = parseInt(name.replace('z-index-', ''));
     return (
       <div
         {...previewDivAttributes}

@@ -1,6 +1,9 @@
+const fs = require('fs');
 const path = require('path');
+const yaml = require('js-yaml');
 
-const packages = require('./package.json').workspaces.packages;
+const pnpmWorkspace = path.join(__dirname, './pnpm-workspace.yaml');
+const {packages} = yaml.load(fs.readFileSync(pnpmWorkspace, 'utf8'));
 
 module.exports = {
   root: true,
@@ -17,7 +20,8 @@ module.exports = {
     tsconfigRootDir: __dirname,
     project: [
       './tsconfig.eslint.json',
-      ...packages.map((pkg) => `./${pkg}/tsconfig.json`),
+      '*/tsconfig.json',
+      '!polaris-icons/tsconfig.json',
     ],
   },
   settings: {
@@ -99,12 +103,6 @@ module.exports = {
   overrides: [
     ...packages.map((packageDir) => noExtraneousDependenciesConfig(packageDir)),
     {
-      files: ['polaris-cli/src/**/*.{ts,tsx}'],
-      rules: {
-        'import/no-default-export': 'off',
-      },
-    },
-    {
       files: ['polaris-migrator/src/**/*.{ts,tsx}'],
       rules: {
         'import/no-default-export': 'off',
@@ -133,12 +131,6 @@ module.exports = {
         'import/extensions': 'off',
         'import/no-default-export': 'off',
         'import/no-anonymous-default-export': 'off',
-        // We could omit this if we set `engines` fields properly
-        // As we don't set them then eslint thinks we're using node 8
-        'node/no-unsupported-features/node-builtins': [
-          'error',
-          {version: '>=16.0.0'},
-        ],
       },
     },
     {

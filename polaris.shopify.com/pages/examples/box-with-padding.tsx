@@ -1,46 +1,43 @@
 import React from 'react';
-import {AlphaStack, Box, Text, Inline} from '@shopify/polaris';
+import {BlockStack, Box, Text, InlineStack} from '@shopify/polaris';
 
 import {withPolarisExample} from '../../src/components/PolarisExampleWrapper';
 
 function BoxWithPaddingExample() {
   return (
-    <AlphaStack gap="4">
+    <BlockStack gap="400">
       <div
         style={{
-          backgroundColor: 'var(--p-color-bg-info-strong)',
           width: '586px',
         }}
       >
-        <Box padding="4" width="586px">
+        <Box padding="400" width="586px" background="bg-fill-info">
           <Placeholder label="padding" childAlign="center" />
         </Box>
       </div>
-      <Inline gap="4">
-        <div style={{backgroundColor: 'var(--p-color-bg-info-strong)'}}>
-          <Box paddingInlineStart="4" width="284px">
-            <Placeholder label="paddingInlineStart" childAlign="start" />
-          </Box>
-        </div>
-        <div style={{backgroundColor: 'var(--p-color-bg-info-strong)'}}>
-          <Box paddingInlineEnd="4" width="284px">
-            <Placeholder label="paddingInlineEnd" childAlign="end" />
-          </Box>
-        </div>
-      </Inline>
-      <Inline gap="4">
-        <div style={{backgroundColor: 'var(--p-color-bg-info-strong)'}}>
-          <Box paddingBlockStart="4" width="284px">
-            <Placeholder label="paddingBlockStart" childAlign="center" />
-          </Box>
-        </div>
-        <div style={{backgroundColor: 'var(--p-color-bg-info-strong)'}}>
-          <Box paddingBlockEnd="4" width="284px">
-            <Placeholder label="paddingBlockEnd" childAlign="center" />
-          </Box>
-        </div>
-      </Inline>
-    </AlphaStack>
+      <InlineStack gap="400">
+        <Box paddingInline="400" width="586px" background="bg-fill-info">
+          <Placeholder label="paddingInline" childAlign="center" />
+        </Box>
+        <Box paddingInlineStart="400" width="284px" background="bg-fill-info">
+          <Placeholder label="paddingInlineStart" childAlign="start" />
+        </Box>
+        <Box paddingInlineEnd="400" width="284px" background="bg-fill-info">
+          <Placeholder label="paddingInlineEnd" childAlign="end" />
+        </Box>
+      </InlineStack>
+      <InlineStack gap="400">
+        <Box paddingBlock="400" width="586px" background="bg-fill-info">
+          <Placeholder label="paddingBlock" childAlign="center" />
+        </Box>
+        <Box paddingBlockStart="400" width="284px" background="bg-fill-info">
+          <Placeholder label="paddingBlockStart" childAlign="center" />
+        </Box>
+        <Box paddingBlockEnd="400" width="284px" background="bg-fill-info">
+          <Placeholder label="paddingBlockEnd" childAlign="center" />
+        </Box>
+      </InlineStack>
+    </BlockStack>
   );
 }
 
@@ -63,17 +60,22 @@ const Placeholder = ({
         width: width,
       }}
     >
-      <Inline gap="4" align={childAlign}>
+      <InlineStack gap="400" align={childAlign}>
         <div
           style={{
-            color: 'var(--p-color-text-on-color)',
+            color: 'var(--p-color-text-info-on-bg-fill)',
           }}
         >
-          <Text as="h2" variant="bodyMd" fontWeight="medium">
+          <Text
+            as="h2"
+            variant="bodyMd"
+            fontWeight="medium"
+            tone="text-inverse"
+          >
             {label}
           </Text>
         </div>
-      </Inline>
+      </InlineStack>
     </div>
   );
 };

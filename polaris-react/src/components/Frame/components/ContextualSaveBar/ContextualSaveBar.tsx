@@ -1,9 +1,12 @@
 import React, {useCallback} from 'react';
+import {AlertTriangleIcon} from '@shopify/polaris-icons';
 
 import {Button} from '../../../Button';
 import {Image} from '../../../Image';
+// eslint-disable-next-line import/no-deprecated
 import {LegacyStack} from '../../../LegacyStack';
 import {Text} from '../../../Text';
+import {Icon} from '../../../Icon';
 import {classNames} from '../../../../utilities/css';
 import {useFrame} from '../../../../utilities/frame';
 import type {ContextualSaveBarProps} from '../../../../utilities/frame';
@@ -12,7 +15,7 @@ import {useI18n} from '../../../../utilities/i18n';
 import {useToggle} from '../../../../utilities/use-toggle';
 
 import {DiscardConfirmationModal} from './components';
-import styles from './ContextualSaveBar.scss';
+import styles from './ContextualSaveBar.module.css';
 
 export function ContextualSaveBar({
   alignContentFlush,
@@ -62,6 +65,8 @@ export function ContextualSaveBar({
 
   const discardActionMarkup = discardAction && (
     <Button
+      variant="tertiary"
+      size="large"
       url={discardAction.url}
       onClick={discardActionHandler}
       loading={discardAction.loading}
@@ -79,7 +84,9 @@ export function ContextualSaveBar({
 
   const saveActionMarkup = saveAction && (
     <Button
-      primary
+      variant="primary"
+      tone="success"
+      size="large"
       url={saveAction.url}
       onClick={saveAction.onAction}
       loading={saveAction.loading}
@@ -118,11 +125,14 @@ export function ContextualSaveBar({
         {contextControlMarkup}
         {logoMarkup}
         <div className={contentsClassName}>
-          {message && (
-            <Text as="h2" variant="headingMd" color="text-inverse" truncate>
-              {message}
-            </Text>
-          )}
+          <div className={styles.MessageContainer}>
+            <Icon source={AlertTriangleIcon} />
+            {message && (
+              <Text as="h2" variant="headingMd" tone="text-inverse" truncate>
+                {message}
+              </Text>
+            )}
+          </div>
           <div className={styles.ActionContainer}>
             <LegacyStack spacing="tight" wrap={false}>
               {secondaryMenu}

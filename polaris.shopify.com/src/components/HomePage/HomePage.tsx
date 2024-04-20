@@ -44,7 +44,7 @@ function HomePage({}: Props) {
             </p>
           </Link>
 
-          <Link href="/tokens/colors" className={styles.EntryPoint}>
+          <Link href="/tokens/color" className={styles.EntryPoint}>
             <h3>Tokens</h3>
             <p>
               Coded names that represent design decisions for color, spacing,
@@ -65,18 +65,18 @@ function HomePage({}: Props) {
           <div className={className(styles.Promo, styles.News, 'dark-mode')}>
             <div className={styles.Text}>
               <h3>
-                <span>New</span> Version 10 typography
+                <span>New</span> Version 12
               </h3>
-              <p>Learn about what changes are coming to Polaris typography.</p>
-              <Link href="/whats-new/version-10-typography">Read post</Link>
+              <p>Learn how to upgrade to Polaris&apos; new design language.</p>
+              <Link href="/whats-new/version-12">Read post</Link>
             </div>
             <div className={styles.Image}>
               <Image
                 width={1600}
                 height={800}
                 style={{width: '100%', height: 'auto'}}
-                src="/images/home-news.png"
-                alt="A list showcasing the new font sizes in Polaris"
+                src="/images/home-v12.png"
+                alt="Polaris v12"
               />
             </div>
           </div>

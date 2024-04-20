@@ -1,15 +1,17 @@
 import React, {useContext} from 'react';
+import {UploadIcon} from '@shopify/polaris-icons';
 
+import {Icon} from '../../../Icon';
 import {classNames} from '../../../../utilities/css';
 import {capitalize} from '../../../../utilities/capitalize';
+import {Button} from '../../../Button';
 import {Text} from '../../../Text';
-import {uploadArrow} from '../../images';
 import {DropZoneContext} from '../../context';
 import {useI18n} from '../../../../utilities/i18n';
 import {createAllowMultipleKey} from '../../utils';
-import {AlphaStack} from '../../../AlphaStack';
+import {BlockStack} from '../../../BlockStack';
 
-import styles from './FileUpload.scss';
+import styles from './FileUpload.module.css';
 
 export interface FileUploadProps {
   actionTitle?: string;
@@ -31,12 +33,7 @@ export function FileUpload(props: FileUploadProps) {
     actionHint,
   } = props;
 
-  const actionClassNames = classNames(
-    styles.Action,
-    disabled && styles.disabled,
-  );
-
-  const actionMarkup = <div className={actionClassNames}>{actionTitle}</div>;
+  const actionMarkup = <Button disabled={disabled}>{actionTitle}</Button>;
 
   const fileUploadClassName = classNames(
     styles.FileUpload,
@@ -46,7 +43,7 @@ export function FileUpload(props: FileUploadProps) {
   );
 
   const actionHintMarkup = actionHint && (
-    <Text variant="bodySm" as="p" color="subdued">
+    <Text variant="bodySm" as="p" tone="subdued">
       {actionHint}
     </Text>
   );
@@ -54,23 +51,23 @@ export function FileUpload(props: FileUploadProps) {
   let viewMarkup;
   switch (size) {
     case 'large':
-      viewMarkup = (
-        <AlphaStack inlineAlign="center" gap="2">
-          {actionMarkup}
-          {actionHintMarkup}
-        </AlphaStack>
-      );
-      break;
     case 'medium':
       viewMarkup = (
-        <AlphaStack inlineAlign="center" gap="2">
+        <BlockStack inlineAlign="center" gap="200">
           {actionMarkup}
           {actionHintMarkup}
-        </AlphaStack>
+        </BlockStack>
       );
       break;
     case 'small':
-      viewMarkup = <img width="20" src={uploadArrow} alt="" />;
+      viewMarkup = (
+        <div
+          className={classNames(styles.UploadIcon, disabled && styles.disabled)}
+        >
+          <Icon source={UploadIcon} />
+        </div>
+      );
+
       break;
   }
 

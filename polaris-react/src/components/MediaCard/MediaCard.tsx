@@ -1,19 +1,22 @@
 import React from 'react';
-import {HorizontalDotsMinor} from '@shopify/polaris-icons';
+import {XIcon, MenuHorizontalIcon} from '@shopify/polaris-icons';
 
 import {useToggle} from '../../utilities/use-toggle';
 import {classNames} from '../../utilities/css';
 import {useI18n} from '../../utilities/i18n';
 import type {ActionListItemDescriptor, ComplexAction} from '../../types';
+// eslint-disable-next-line import/no-deprecated
 import {LegacyCard} from '../LegacyCard';
 import {Button, buttonFrom} from '../Button';
 import {Text} from '../Text';
 import {Popover} from '../Popover';
 import {ActionList} from '../ActionList';
 import {ButtonGroup} from '../ButtonGroup';
-import {LegacyStack} from '../LegacyStack';
+import {Box} from '../Box';
+import {InlineStack} from '../InlineStack';
+import {BlockStack} from '../BlockStack';
 
-import styles from './MediaCard.scss';
+import styles from './MediaCard.module.css';
 
 type Size = 'small' | 'medium';
 
@@ -38,6 +41,8 @@ interface MediaCardProps {
    * @default 'medium'
    */
   size?: Size;
+  /** Callback when MediaCard is dismissed */
+  onDismiss?: () => void;
 }
 
 export function MediaCard({
@@ -49,6 +54,7 @@ export function MediaCard({
   popoverActions = [],
   portrait = false,
   size = 'medium',
+  onDismiss,
 }: MediaCardProps) {
   const i18n = useI18n();
   const {value: popoverActive, toggle: togglePopoverActive} = useToggle(false);
@@ -57,51 +63,59 @@ export function MediaCard({
   if (title) {
     const headerContent =
       typeof title === 'string' ? (
-        <Text variant="headingMd" as="h2">
+        <Text variant="headingSm" as="h2">
           {title}
         </Text>
       ) : (
         title
       );
-    headerMarkup = <div className={styles.Heading}>{headerContent}</div>;
+    headerMarkup = <div>{headerContent}</div>;
   }
 
-  const popoverActivator = (
+  const dismissButtonMarkup = onDismiss ? (
     <Button
-      icon={HorizontalDotsMinor}
-      onClick={togglePopoverActive}
+      icon={XIcon}
+      onClick={onDismiss}
       size="slim"
-      plain
-      accessibilityLabel={i18n.translate('Polaris.MediaCard.popoverButton')}
+      accessibilityLabel={i18n.translate('Polaris.MediaCard.dismissButton')}
+      variant="tertiary"
     />
+  ) : null;
+
+  const popoverActivator = (
+    <InlineStack blockAlign="center">
+      <Button
+        icon={MenuHorizontalIcon}
+        onClick={togglePopoverActive}
+        size="slim"
+        accessibilityLabel={i18n.translate('Polaris.MediaCard.popoverButton')}
+        variant="tertiary"
+      />
+    </InlineStack>
   );
 
   const popoverActionsMarkup =
     popoverActions.length > 0 ? (
-      <div className={styles.Popover}>
-        <Popover
-          active={popoverActive}
-          activator={popoverActivator}
-          onClose={togglePopoverActive}
-          preferredAlignment="left"
-          preferredPosition="below"
-        >
-          <ActionList
-            items={popoverActions}
-            onActionAnyItem={togglePopoverActive}
-          />
-        </Popover>
-      </div>
+      <Popover
+        active={popoverActive}
+        activator={popoverActivator}
+        onClose={togglePopoverActive}
+        preferredAlignment="left"
+        preferredPosition="below"
+      >
+        <ActionList
+          items={popoverActions}
+          onActionAnyItem={togglePopoverActive}
+        />
+      </Popover>
     ) : null;
 
   const primaryActionMarkup = primaryAction ? (
-    <div className={styles.PrimaryAction}>{buttonFrom(primaryAction)}</div>
+    <div>{buttonFrom(primaryAction)}</div>
   ) : null;
 
   const secondaryActionMarkup = secondaryAction ? (
-    <div className={styles.SecondaryAction}>
-      {buttonFrom(secondaryAction, {plain: true})}
-    </div>
+    <div>{buttonFrom(secondaryAction)}</div>
   ) : null;
 
   const actionClassName = classNames(
@@ -136,19 +150,33 @@ export function MediaCard({
     size === 'small' && styles.sizeSmall,
   );
 
+  const popoverOrDismissMarkup =
+    popoverActionsMarkup || dismissButtonMarkup ? (
+      <Box position="absolute" insetInlineEnd="500" zIndex="var(--p-z-index-2)">
+        <InlineStack gap="100" wrap={false}>
+          {popoverActionsMarkup}
+          {dismissButtonMarkup}
+        </InlineStack>
+      </Box>
+    ) : null;
+
   return (
     <LegacyCard>
       <div className={mediaCardClassName}>
         <div className={mediaContainerClassName}>{children}</div>
         <div className={infoContainerClassName}>
-          <LegacyCard.Section>
-            {popoverActionsMarkup}
-            <LegacyStack vertical spacing="tight">
-              {headerMarkup}
-              <p className={styles.Description}>{description}</p>
+          <Box padding="500">
+            <BlockStack gap="200">
+              <InlineStack wrap={false} align="space-between" gap="200">
+                {headerMarkup}
+                {popoverOrDismissMarkup}
+              </InlineStack>
+              <Text as="p" variant="bodySm">
+                {description}
+              </Text>
               {actionMarkup}
-            </LegacyStack>
-          </LegacyCard.Section>
+            </BlockStack>
+          </Box>
         </div>
       </div>
     </LegacyCard>

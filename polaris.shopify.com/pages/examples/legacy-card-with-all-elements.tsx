@@ -28,7 +28,7 @@ function LegacyCardExample() {
         <Popover
           active={false}
           activator={
-            <Button disclosure plain>
+            <Button disclosure variant="plain">
               View Sales
             </Button>
           }
@@ -65,9 +65,10 @@ function LegacyCardExample() {
             const {sales, amount, url} = item;
             return (
               <ResourceList.Item
-                id={item.sales.toLocaleLowerCase()}
+                id={sales.toLocaleLowerCase()}
                 url={url}
                 accessibilityLabel={`View Sales for ${sales}`}
+                onClick={() => console.log('clicked item', item)}
               >
                 <LegacyStack>
                   <LegacyStack.Item fill>{sales}</LegacyStack.Item>

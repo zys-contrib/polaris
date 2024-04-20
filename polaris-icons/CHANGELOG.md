@@ -1,5 +1,1307 @@
 # Changelog
 
+## 9.0.0
+
+### Major Changes
+
+- [#11844](https://github.com/Shopify/polaris/pull/11844) [`a89e61478`](https://github.com/Shopify/polaris/commit/a89e61478fb7c5f588021e542101aba8a3898ec8) Thanks [@jesstelford](https://github.com/jesstelford)! - Miniumum required node version updated to v20.10.0
+
+* [#11799](https://github.com/Shopify/polaris/pull/11799) [`aa8e0f42b`](https://github.com/Shopify/polaris/commit/aa8e0f42b956622e826646c809c57eb79bb2b892) Thanks [@ryanwilsonperkin](https://github.com/ryanwilsonperkin)! - [Internal] Migrate repo from yarn to pnpm. No action required.
+
+- [#11799](https://github.com/Shopify/polaris/pull/11799) [`aa8e0f42b`](https://github.com/Shopify/polaris/commit/aa8e0f42b956622e826646c809c57eb79bb2b892) Thanks [@ryanwilsonperkin](https://github.com/ryanwilsonperkin)! - `react` is now a required peerDependency (even when importing non-React SVG assets). [More info](https://github.com/Shopify/polaris/pull/11825#pullrequestreview-1974881032)
+
+## 8.11.1
+
+### Patch Changes
+
+- [#11824](https://github.com/Shopify/polaris/pull/11824) [`79130eeea`](https://github.com/Shopify/polaris/commit/79130eeea0785c41bb06d5135421106d7ce9ff5b) Thanks [@ryanwilsonperkin](https://github.com/ryanwilsonperkin)! - Added missing `svgo` dev dependency
+
+## 8.11.0
+
+### Minor Changes
+
+- [#11841](https://github.com/Shopify/polaris/pull/11841) [`7750bfa4c`](https://github.com/Shopify/polaris/commit/7750bfa4c2c45215935cedcc21746e8fc3dd400e) Thanks [@heyjoethomas](https://github.com/heyjoethomas)! - Adds BulletIcon to repository
+
+## 8.10.0
+
+### Minor Changes
+
+- [#11816](https://github.com/Shopify/polaris/pull/11816) [`4b730c84d`](https://github.com/Shopify/polaris/commit/4b730c84dc3a636ea04570e36ad7b3bb39b24277) Thanks [@dGoligorsky](https://github.com/dGoligorsky)! - Added some icons for image editing
+
+### Patch Changes
+
+- [#11825](https://github.com/Shopify/polaris/pull/11825) [`fd5b31d59`](https://github.com/Shopify/polaris/commit/fd5b31d59f8452e487a4696f907fbbb606749ae9) Thanks [@ryanwilsonperkin](https://github.com/ryanwilsonperkin)! - Add missing peer dependency on React
+
+## 8.9.0
+
+### Minor Changes
+
+- [#11778](https://github.com/Shopify/polaris/pull/11778) [`d689bd8f4`](https://github.com/Shopify/polaris/commit/d689bd8f485ba36247bddf9da705f014cb701f4c) Thanks [@heyjoethomas](https://github.com/heyjoethomas)! - Added `PersonSegment` icon
+
+## 8.8.0
+
+### Minor Changes
+
+- [#11680](https://github.com/Shopify/polaris/pull/11680) [`423ffb755`](https://github.com/Shopify/polaris/commit/423ffb7554fae7dda5fce95004156d1801425a6f) Thanks [@Rusty-UX](https://github.com/Rusty-UX)! - Update metafield icon design
+
+## 8.7.0
+
+### Minor Changes
+
+- [#11682](https://github.com/Shopify/polaris/pull/11682) [`9eebf1a45`](https://github.com/Shopify/polaris/commit/9eebf1a458d20cc59f902b93feda620126e6189d) Thanks [@heyjoethomas](https://github.com/heyjoethomas)! - Fixes clipping on mobile
+
+* [#11686](https://github.com/Shopify/polaris/pull/11686) [`9b1b74447`](https://github.com/Shopify/polaris/commit/9b1b7444783560ccb2281451c6deec63923ce58b) Thanks [@heyjoethomas](https://github.com/heyjoethomas)! - Update icons for mobile clipping
+
+- [#11687](https://github.com/Shopify/polaris/pull/11687) [`eeea3b96c`](https://github.com/Shopify/polaris/commit/eeea3b96c2e19dcf0076d16f0182ffb1420694ac) Thanks [@heyjoethomas](https://github.com/heyjoethomas)! - Minus and Plus icons to big and unbalanced
+
+### Patch Changes
+
+- [#11685](https://github.com/Shopify/polaris/pull/11685) [`ac563025e`](https://github.com/Shopify/polaris/commit/ac563025ef83ff3ce049e0db10e2356341dd4e9e) Thanks [@sam-b-rose](https://github.com/sam-b-rose)! - Removed REM units from SkeletonIcon
+
+## 8.6.0
+
+### Minor Changes
+
+- [#11642](https://github.com/Shopify/polaris/pull/11642) [`abb3bf0e4`](https://github.com/Shopify/polaris/commit/abb3bf0e4fcecfab87d0888b9c0846fe9ea45f1e) Thanks [@heyjoethomas](https://github.com/heyjoethomas)! - Adds sun icon to library
+
+* [#11641](https://github.com/Shopify/polaris/pull/11641) [`adf8600ad`](https://github.com/Shopify/polaris/commit/adf8600ad61b33adb903fe995bd79f71e99bb8bb) Thanks [@heyjoethomas](https://github.com/heyjoethomas)! - Added `MoonIcon`
+
+## 8.5.0
+
+### Minor Changes
+
+- [#11639](https://github.com/Shopify/polaris/pull/11639) [`4db32af27`](https://github.com/Shopify/polaris/commit/4db32af27edb547d5c3f6fe1fbd81b1737cc5152) Thanks [@ardakaracizmeli](https://github.com/ardakaracizmeli)! - Added a new icon: ArrowDiagonal
+
+### Patch Changes
+
+- [#11633](https://github.com/Shopify/polaris/pull/11633) [`8a9225306`](https://github.com/Shopify/polaris/commit/8a92253064a2a2e572f58eae71312dc895b5fbf1) Thanks [@heyjoethomas](https://github.com/heyjoethomas)! - Update mobile icon design
+
+## 8.4.0
+
+### Minor Changes
+
+- [#11609](https://github.com/Shopify/polaris/pull/11609) [`c9e217d9d`](https://github.com/Shopify/polaris/commit/c9e217d9d7e1291ce7b83e51c1e1876718895e93) Thanks [@sam-b-rose](https://github.com/sam-b-rose)! - Updated icon set with consistency improvements
+
+## 8.3.0
+
+### Minor Changes
+
+- [#11526](https://github.com/Shopify/polaris/pull/11526) [`b65f1e679`](https://github.com/Shopify/polaris/commit/b65f1e679bd96db4ff9097b36d719b371cf33f8a) Thanks [@j-wanita](https://github.com/j-wanita)! - Add list icons for product, collection, metaobject and text
+
+* [#11531](https://github.com/Shopify/polaris/pull/11531) [`78ed5fe0d`](https://github.com/Shopify/polaris/commit/78ed5fe0d616db8c2cf76f59f9528211f81c23b3) Thanks [@j-wanita](https://github.com/j-wanita)! - Updated metaobject, metaobject reference, and metaobject filled icons
+
+## 8.2.0
+
+### Minor Changes
+
+- [#11420](https://github.com/Shopify/polaris/pull/11420) [`7bb7054e8`](https://github.com/Shopify/polaris/commit/7bb7054e86aec66ce0824884e350c9ebf5f50430) Thanks [@jonarnaldo](https://github.com/jonarnaldo)! - Added `IncentiveIcon`
+
+## 8.1.0
+
+### Minor Changes
+
+- [#11478](https://github.com/Shopify/polaris/pull/11478) [`b786bb93c`](https://github.com/Shopify/polaris/commit/b786bb93c153f853323ac2c2170ec4fb5bdfbecb) Thanks [@Rusty-UX](https://github.com/Rusty-UX)! - Added DatabaseConnectIcon
+
+## 8.0.0
+
+### Major Changes
+
+- [#11138](https://github.com/Shopify/polaris/pull/11138) [`f91c4b661`](https://github.com/Shopify/polaris/commit/f91c4b661b1d9540dd515c6f073aeeb62e914023) Thanks [@alex-page](https://github.com/alex-page)! - This is a major update for `polaris-icons`. Please use the migration to update icon names to the latest version:
+
+  ```shell
+  npx @shopify/polaris-migrator icons-v8-update-names <path>
+  ```
+
+  Removed Major and Minor icon sizing. All icons are the same size.
+
+  Added `BillIcon`, `BillFilledIcon`, `LogoCriteoIcon`, `LogoMetaIcon`, `LogoGoogleIcon`, `MetaobjectFilledIcon`, `PriceListIcon`, `BlankFilledIcon`, `BlankIcon`, `CursorBannerIcon`, `CursorOptionIcon`, `DomainIcon`, `EmailIcon`, `PersonExitIcon` and `PriceListFilledIcon`
+
+  Updated icon design for `JobsIcon`, `JobsFilledIcon`, `AutomationIcon`, `AutomationFilledIcon`, `GiftCardIcon`, `InventoryFilledIcon`, `ReportsIcon`, `ShipmentFilledIcon`, `AppsFilledIcon`, `MarketsIcon`, `MarketsFilledIcon`, `BillingStatementDollarFilledIcon`, `BillingStatementEuroFilledIcon`, `BillingStatementPoundFilledIcon`, `BillingStatementRupeeFilledIcon`, `BillingStatementYenFilledIcon`, `LegalFilledIcon`, `IdentityCardIcon`, `IdentityCardFilledIcon`, `DomainsIcon`, `DomainNewIcon`, `DomainsFilledIcon`, `StoreIcon`, `StoreOnlineIcon`, `ManagedStoreIcon`, `ImportStoreIcon`, `TaxIcon`, `TaxFilledIcon`, `PackageFilledIcon`, `LocationIcon`, `LocationFilledIcon`, `InactiveLocationIcon`, `PinIcon`, `GlobeIcon`, `TransportIcon`, `NatureIcon`, `FoodIcon`, `ColorsIcon`, `DomainIcon`, `DragHandleIcon`, `EmailIcon`
+
+  Removed `version` `exclusive_use` and `set` from icon `.yml` files
+
+  Renamed many icons and replaced `Major` and `Minor` suffixes with `Icon`. See table:
+
+  | Old name                            | New name                        |
+  | ----------------------------------- | ------------------------------- |
+  | `AbandonedCartMajor`                | `CartAbandonedIcon`             |
+  | `AbandonedCartMinor`                | `CartAbandonedIcon`             |
+  | `AbandonedCartFilledMajor`          | `CartAbandonedFilledIcon`       |
+  | `AbandonedCartFilledMinor`          | `CartAbandonedFilledIcon`       |
+  | `AccessibilityMajor`                | `EyeCheckMarkIcon`              |
+  | `AccessibilityMinor`                | `EyeCheckMarkIcon`              |
+  | `ActivitiesMajor`                   | `SportsIcon`                    |
+  | `ActivitiesMinor`                   | `SportsIcon`                    |
+  | `ActivityLogMajor`                  | `PageClockIcon`                 |
+  | `ActivityLogMinor`                  | `PageClockIcon`                 |
+  | `ActivityLogFilledMajor`            | `PageClockFilledIcon`           |
+  | `ActivityLogFilledMinor`            | `PageClockFilledIcon`           |
+  | `AddMajor`                          | `PlusIcon`                      |
+  | `AddMinor`                          | `PlusIcon`                      |
+  | `AddCodeMajor`                      | `CodeAddIcon`                   |
+  | `AddCodeMinor`                      | `CodeAddIcon`                   |
+  | `AddImageMajor`                     | `ImageAddIcon`                  |
+  | `AddImageMinor`                     | `ImageAddIcon`                  |
+  | `AddNoteMajor`                      | `NoteAddIcon`                   |
+  | `AddNoteMinor`                      | `NoteAddIcon`                   |
+  | `AddProductMajor`                   | `ProductAddIcon`                |
+  | `AddProductMinor`                   | `ProductAddIcon`                |
+  | `AdjustMajor`                       | `AdjustIcon`                    |
+  | `AdjustMinor`                       | `AdjustIcon`                    |
+  | `AffiliateMajor`                    | `AffiliateIcon`                 |
+  | `AffiliateMinor`                    | `AffiliateIcon`                 |
+  | `AlertMajor`                        | `AlertCircleIcon`               |
+  | `AlertMinor`                        | `AlertCircleIcon`               |
+  | `AnalyticsMajor`                    | `ChartVerticalIcon`             |
+  | `AnalyticsMinor`                    | `ChartVerticalIcon`             |
+  | `AnalyticsBarHorizontalMajor`       | `ChartHorizontalIcon`           |
+  | `AnalyticsBarHorizontalMinor`       | `ChartHorizontalIcon`           |
+  | `AnalyticsBarStackedMajor`          | `ChartStackedIcon`              |
+  | `AnalyticsBarStackedMinor`          | `ChartStackedIcon`              |
+  | `AnalyticsCohortMajor`              | `ChartCohortIcon`               |
+  | `AnalyticsCohortMinor`              | `ChartCohortIcon`               |
+  | `AnalyticsDonutMajor`               | `ChartDonutIcon`                |
+  | `AnalyticsDonutMinor`               | `ChartDonutIcon`                |
+  | `AnalyticsFilledMajor`              | `ChartVerticalFilledIcon`       |
+  | `AnalyticsFilledMinor`              | `ChartVerticalFilledIcon`       |
+  | `AnalyticsFunnelMajor`              | `ChartFunnelIcon`               |
+  | `AnalyticsFunnelMinor`              | `ChartFunnelIcon`               |
+  | `AnalyticsLineMajor`                | `ChartLineIcon`                 |
+  | `AnalyticsLineMinor`                | `ChartLineIcon`                 |
+  | `AnalyticsTableMajor`               | `DataTableIcon`                 |
+  | `AnalyticsTableMinor`               | `DataTableIcon`                 |
+  | `AnyClickModelMajor`                | `ChartHistogramFullIcon`        |
+  | `AnyClickModelMinor`                | `ChartHistogramFullIcon`        |
+  | `AppExtensionMajor`                 | `AppExtensionIcon`              |
+  | `AppExtensionMinor`                 | `AppExtensionIcon`              |
+  | `AppsMajor`                         | `AppsIcon`                      |
+  | `AppsMinor`                         | `AppsIcon`                      |
+  | `AppsFilledMajor`                   | `AppsFilledIcon`                |
+  | `AppsFilledMinor`                   | `AppsFilledIcon`                |
+  | `ArchiveMajor`                      | `ArchiveIcon`                   |
+  | `ArchiveMinor`                      | `ArchiveIcon`                   |
+  | `ArrowDownMajor`                    | `ArrowDownIcon`                 |
+  | `ArrowDownMinor`                    | `ArrowDownIcon`                 |
+  | `ArrowLeftMajor`                    | `ArrowLeftIcon`                 |
+  | `ArrowLeftMinor`                    | `ArrowLeftIcon`                 |
+  | `ArrowRightMajor`                   | `ArrowRightIcon`                |
+  | `ArrowRightMinor`                   | `ArrowRightIcon`                |
+  | `ArrowUpMajor`                      | `ArrowUpIcon`                   |
+  | `ArrowUpMinor`                      | `ArrowUpIcon`                   |
+  | `AttachmentMajor`                   | `AttachmentIcon`                |
+  | `AttachmentMinor`                   | `AttachmentIcon`                |
+  | `AttachmentFilledMajor`             | `AttachmentFilledIcon`          |
+  | `AttachmentFilledMinor`             | `AttachmentFilledIcon`          |
+  | `AutomationMajor`                   | `AutomationIcon`                |
+  | `AutomationMinor`                   | `AutomationIcon`                |
+  | `AutomationFilledMajor`             | `AutomationFilledIcon`          |
+  | `AutomationFilledMinor`             | `AutomationFilledIcon`          |
+  | `BackspaceMajor`                    | `BackspaceIcon`                 |
+  | `BackspaceMinor`                    | `BackspaceIcon`                 |
+  | `BalanceMajor`                      | `WalletIcon`                    |
+  | `BalanceMinor`                      | `WalletIcon`                    |
+  | `BalanceFilledMajor`                | `WalletFilledIcon`              |
+  | `BalanceFilledMinor`                | `WalletFilledIcon`              |
+  | `BankMajor`                         | `BankIcon`                      |
+  | `BankMinor`                         | `BankIcon`                      |
+  | `BankFilledMajor`                   | `BankFilledIcon`                |
+  | `BankFilledMinor`                   | `BankFilledIcon`                |
+  | `BarcodeMajor`                      | `BarcodeIcon`                   |
+  | `BarcodeMinor`                      | `BarcodeIcon`                   |
+  | `BehaviorMajor`                     | `CursorIcon`                    |
+  | `BehaviorMinor`                     | `CursorIcon`                    |
+  | `BehaviorFilledMajor`               | `CursorFilledIcon`              |
+  | `BehaviorFilledMinor`               | `CursorFilledIcon`              |
+  | `BillingStatementDollarMajor`       | `ReceiptDollarIcon`             |
+  | `BillingStatementDollarMinor`       | `ReceiptDollarIcon`             |
+  | `BillingStatementDollarFilledMajor` | `ReceiptDollarFilledIcon`       |
+  | `BillingStatementDollarFilledMinor` | `ReceiptDollarFilledIcon`       |
+  | `BillingStatementEuroMajor`         | `ReceiptEuroIcon`               |
+  | `BillingStatementEuroMinor`         | `ReceiptEuroIcon`               |
+  | `BillingStatementEuroFilledMajor`   | `ReceiptEuroFilledIcon`         |
+  | `BillingStatementEuroFilledMinor`   | `ReceiptEuroFilledIcon`         |
+  | `BillingStatementPoundMajor`        | `ReceiptPoundIcon`              |
+  | `BillingStatementPoundMinor`        | `ReceiptPoundIcon`              |
+  | `BillingStatementPoundFilledMajor`  | `ReceiptPoundFilledIcon`        |
+  | `BillingStatementPoundFilledMinor`  | `ReceiptPoundFilledIcon`        |
+  | `BillingStatementRupeeMajor`        | `ReceiptRupeeIcon`              |
+  | `BillingStatementRupeeMinor`        | `ReceiptRupeeIcon`              |
+  | `BillingStatementRupeeFilledMajor`  | `ReceiptRupeeFilledIcon`        |
+  | `BillingStatementRupeeFilledMinor`  | `ReceiptRupeeFilledIcon`        |
+  | `BillingStatementYenMajor`          | `ReceiptYenIcon`                |
+  | `BillingStatementYenMinor`          | `ReceiptYenIcon`                |
+  | `BillingStatementYenFilledMajor`    | `ReceiptYenFilledIcon`          |
+  | `BillingStatementYenFilledMinor`    | `ReceiptYenFilledIcon`          |
+  | `BillPayMajor`                      | `ReceiptFoldedIcon`             |
+  | `BillPayMinor`                      | `ReceiptFoldedIcon`             |
+  | `BillPayFilledMajor`                | `ReceiptFoldedFilledIcon`       |
+  | `BillPayFilledMinor`                | `ReceiptFoldedFilledIcon`       |
+  | `BlockMajor`                        | `LayoutBlockIcon`               |
+  | `BlockMinor`                        | `LayoutBlockIcon`               |
+  | `BlockquoteMajor`                   | `TextQuoteIcon`                 |
+  | `BlockquoteMinor`                   | `TextQuoteIcon`                 |
+  | `BlogMajor`                         | `BlogIcon`                      |
+  | `BlogMinor`                         | `BlogIcon`                      |
+  | `BoldMajor`                         | `TextBoldIcon`                  |
+  | `BoldMinor`                         | `TextBoldIcon`                  |
+  | `BugMajor`                          | `BugIcon`                       |
+  | `BugMinor`                          | `BugIcon`                       |
+  | `ButtonMajor`                       | `ButtonIcon`                    |
+  | `ButtonMinor`                       | `ButtonIcon`                    |
+  | `ButtonCornerPillMajor`             | `CornerPillIcon`                |
+  | `ButtonCornerPillMinor`             | `CornerPillIcon`                |
+  | `ButtonCornerRoundedMajor`          | `CornerRoundIcon`               |
+  | `ButtonCornerRoundedMinor`          | `CornerRoundIcon`               |
+  | `ButtonCornerSquareMajor`           | `CornerSquareIcon`              |
+  | `ButtonCornerSquareMinor`           | `CornerSquareIcon`              |
+  | `BuyButtonMajor`                    | `ButtonPressIcon`               |
+  | `BuyButtonMinor`                    | `ButtonPressIcon`               |
+  | `BuyButtonButtonLayoutMajor`        | `LayoutBuyButtonIcon`           |
+  | `BuyButtonButtonLayoutMinor`        | `LayoutBuyButtonIcon`           |
+  | `BuyButtonHorizontalLayoutMajor`    | `LayoutBuyButtonHorizontalIcon` |
+  | `BuyButtonHorizontalLayoutMinor`    | `LayoutBuyButtonHorizontalIcon` |
+  | `BuyButtonVerticalLayoutMajor`      | `LayoutBuyButtonVerticalIcon`   |
+  | `BuyButtonVerticalLayoutMinor`      | `LayoutBuyButtonVerticalIcon`   |
+  | `CalendarMajor`                     | `CalendarIcon`                  |
+  | `CalendarMinor`                     | `CalendarIcon`                  |
+  | `CalendarTickMajor`                 | `CalendarCheckIcon`             |
+  | `CalendarTickMinor`                 | `CalendarCheckIcon`             |
+  | `CalendarTimeMajor`                 | `CalendarTimeIcon`              |
+  | `CalendarTimeMinor`                 | `CalendarTimeIcon`              |
+  | `CameraMajor`                       | `CameraIcon`                    |
+  | `CameraMinor`                       | `CameraIcon`                    |
+  | `CancelMajor`                       | `XIcon`                         |
+  | `CancelMinor`                       | `XIcon`                         |
+  | `CancelSmallMajor`                  | `XSmallIcon`                    |
+  | `CancelSmallMinor`                  | `XSmallIcon`                    |
+  | `CapitalMajor`                      | `FlowerIcon`                    |
+  | `CapitalMinor`                      | `FlowerIcon`                    |
+  | `CapitalFilledMajor`                | `FlowerFilledIcon`              |
+  | `CapitalFilledMinor`                | `FlowerFilledIcon`              |
+  | `CapturePaymentMajor`               | `PaymentCaptureIcon`            |
+  | `CapturePaymentMinor`               | `PaymentCaptureIcon`            |
+  | `CardReaderMajor`                   | `CreditCardReaderIcon`          |
+  | `CardReaderMinor`                   | `CreditCardReaderIcon`          |
+  | `CardReaderChipMajor`               | `CreditCardReaderChipIcon`      |
+  | `CardReaderChipMinor`               | `CreditCardReaderChipIcon`      |
+  | `CardReaderTapMajor`                | `CreditCardReaderTapIcon`       |
+  | `CardReaderTapMinor`                | `CreditCardReaderTapIcon`       |
+  | `CaretDownMajor`                    | `CaretDownIcon`                 |
+  | `CaretDownMinor`                    | `CaretDownIcon`                 |
+  | `CaretUpMajor`                      | `CaretUpIcon`                   |
+  | `CaretUpMinor`                      | `CaretUpIcon`                   |
+  | `CartMajor`                         | `CartIcon`                      |
+  | `CartMinor`                         | `CartIcon`                      |
+  | `CartDownMajor`                     | `CartDownIcon`                  |
+  | `CartDownMinor`                     | `CartDownIcon`                  |
+  | `CartDownFilledMajor`               | `CartDownFilledIcon`            |
+  | `CartDownFilledMinor`               | `CartDownFilledIcon`            |
+  | `CartFilledMajor`                   | `CartFilledIcon`                |
+  | `CartFilledMinor`                   | `CartFilledIcon`                |
+  | `CartUpMajor`                       | `CartUpIcon`                    |
+  | `CartUpMinor`                       | `CartUpIcon`                    |
+  | `CashDollarMajor`                   | `CashDollarIcon`                |
+  | `CashDollarMinor`                   | `CashDollarIcon`                |
+  | `CashDollarFilledMajor`             | `CashDollarFilledIcon`          |
+  | `CashDollarFilledMinor`             | `CashDollarFilledIcon`          |
+  | `CashEuroMajor`                     | `CashEuroIcon`                  |
+  | `CashEuroMinor`                     | `CashEuroIcon`                  |
+  | `CashPoundMajor`                    | `CashPoundIcon`                 |
+  | `CashPoundMinor`                    | `CashPoundIcon`                 |
+  | `CashRupeeMajor`                    | `CashRupeeIcon`                 |
+  | `CashRupeeMinor`                    | `CashRupeeIcon`                 |
+  | `CashYenMajor`                      | `CashYenIcon`                   |
+  | `CashYenMinor`                      | `CashYenIcon`                   |
+  | `CategoriesMajor`                   | `CategoriesIcon`                |
+  | `CategoriesMinor`                   | `CategoriesIcon`                |
+  | `ChannelsMajor`                     | `ChannelsIcon`                  |
+  | `ChannelsMinor`                     | `ChannelsIcon`                  |
+  | `ChatMajor`                         | `ChatIcon`                      |
+  | `ChatMinor`                         | `ChatIcon`                      |
+  | `ChecklistMajor`                    | `ClipboardCheckIcon`            |
+  | `ChecklistMinor`                    | `ClipboardCheckIcon`            |
+  | `ChecklistAlternateMajor`           | `ClipboardChecklistIcon`        |
+  | `ChecklistAlternateMinor`           | `ClipboardChecklistIcon`        |
+  | `CheckoutMajor`                     | `CartIcon`                      |
+  | `CheckoutMinor`                     | `CartIcon`                      |
+  | `ChevronDownMajor`                  | `ChevronDownIcon`               |
+  | `ChevronDownMinor`                  | `ChevronDownIcon`               |
+  | `ChevronLeftMajor`                  | `ChevronLeftIcon`               |
+  | `ChevronLeftMinor`                  | `ChevronLeftIcon`               |
+  | `ChevronRightMajor`                 | `ChevronRightIcon`              |
+  | `ChevronRightMinor`                 | `ChevronRightIcon`              |
+  | `ChevronUpMajor`                    | `ChevronUpIcon`                 |
+  | `ChevronUpMinor`                    | `ChevronUpIcon`                 |
+  | `CircleAlertMajor`                  | `AlertCircleIcon`               |
+  | `CircleAlertMinor`                  | `AlertCircleIcon`               |
+  | `CircleCancelMajor`                 | `XCircleIcon`                   |
+  | `CircleCancelMinor`                 | `XCircleIcon`                   |
+  | `CircleChevronDownMajor`            | `CircleChevronDownIcon`         |
+  | `CircleChevronDownMinor`            | `CircleChevronDownIcon`         |
+  | `CircleChevronLeftMajor`            | `CircleChevronLeftIcon`         |
+  | `CircleChevronLeftMinor`            | `CircleChevronLeftIcon`         |
+  | `CircleChevronRightMajor`           | `CircleChevronRightIcon`        |
+  | `CircleChevronRightMinor`           | `CircleChevronRightIcon`        |
+  | `CircleChevronUpMajor`              | `CircleChevronUpIcon`           |
+  | `CircleChevronUpMinor`              | `CircleChevronUpIcon`           |
+  | `CircleDisabledMajor`               | `DisabledIcon`                  |
+  | `CircleDisableMinor`                | `DisabledIcon`                  |
+  | `CircleDotsMajor`                   | `MenuHorizontalIcon`            |
+  | `CircleDotsMinor`                   | `MenuHorizontalIcon`            |
+  | `CircleDownMajor`                   | `CircleDownIcon`                |
+  | `CircleDownMinor`                   | `CircleDownIcon`                |
+  | `CircleInformationMajor`            | `InfoIcon`                      |
+  | `CircleInformationMinor`            | `InfoIcon`                      |
+  | `CircleLeftMajor`                   | `CircleLeftIcon`                |
+  | `CircleLeftMinor`                   | `CircleLeftIcon`                |
+  | `CircleMinusMajor`                  | `MinusCircleIcon`               |
+  | `CircleMinusMinor`                  | `MinusCircleIcon`               |
+  | `CircleMinusOutlineMajor`           | `MinusCircleIcon`               |
+  | `CircleMinusOutlineMinor`           | `MinusCircleIcon`               |
+  | `CirclePlusMajor`                   | `PlusCircleIcon`                |
+  | `CirclePlusMinor`                   | `PlusCircleIcon`                |
+  | `CirclePlusOutlineMajor`            | `PlusCircleIcon`                |
+  | `CirclePlusOutlineMinor`            | `PlusCircleIcon`                |
+  | `CircleRightMajor`                  | `CircleRightIcon`               |
+  | `CircleRightMinor`                  | `CircleRightIcon`               |
+  | `CircleTickMajor`                   | `CheckCircleIcon`               |
+  | `CircleTickMinor`                   | `CheckCircleIcon`               |
+  | `CircleTickOutlineMajor`            | `CheckCircleIcon`               |
+  | `CircleTickOutlineMinor`            | `CheckCircleIcon`               |
+  | `CircleUpMajor`                     | `CircleUpIcon`                  |
+  | `CircleUpMinor`                     | `CircleUpIcon`                  |
+  | `ClipboardMajor`                    | `ClipboardIcon`                 |
+  | `ClipboardMinor`                    | `ClipboardIcon`                 |
+  | `ClockMajor`                        | `ClockIcon`                     |
+  | `ClockMinor`                        | `ClockIcon`                     |
+  | `CodeMajor`                         | `CodeIcon`                      |
+  | `CodeMinor`                         | `CodeIcon`                      |
+  | `CollectionReferenceMajor`          | `CollectionReferenceIcon`       |
+  | `CollectionReferenceMinor`          | `CollectionReferenceIcon`       |
+  | `CollectionsMajor`                  | `CollectionIcon`                |
+  | `CollectionsMinor`                  | `CollectionIcon`                |
+  | `CollectionsFilledMajor`            | `CollectionFilledIcon`          |
+  | `CollectionsFilledMinor`            | `CollectionFilledIcon`          |
+  | `ColorNoneMajor`                    | `ColorNoneIcon`                 |
+  | `ColorNoneMinor`                    | `ColorNoneIcon`                 |
+  | `ColorsMajor`                       | `ColorIcon`                     |
+  | `ColorsMinor`                       | `ColorIcon`                     |
+  | `Column1Major`                      | `LayoutColumn1Icon`             |
+  | `Column1Minor`                      | `LayoutColumn1Icon`             |
+  | `Columns2Major`                     | `LayoutColumns2Icon`            |
+  | `Columns2Minor`                     | `LayoutColumns2Icon`            |
+  | `Columns3Major`                     | `LayoutColumns3Icon`            |
+  | `Columns3Minor`                     | `LayoutColumns3Icon`            |
+  | `ColumnWithTextMajor`               | `TextInColumnsIcon`             |
+  | `ColumnWithTextMinor`               | `TextInColumnsIcon`             |
+  | `ComposeMajor`                      | `ComposeIcon`                   |
+  | `ComposeMinor`                      | `ComposeIcon`                   |
+  | `ConfettiMajor`                     | `ConfettiIcon`                  |
+  | `ConfettiMinor`                     | `ConfettiIcon`                  |
+  | `ConnectMajor`                      | `ConnectIcon`                   |
+  | `ConnectMinor`                      | `ConnectIcon`                   |
+  | `ContentMajor`                      | `ContentIcon`                   |
+  | `ContentMinor`                      | `ContentIcon`                   |
+  | `ContentFilledMajor`                | `ContentFilledIcon`             |
+  | `ContentFilledMinor`                | `ContentFilledIcon`             |
+  | `ConversationMajor`                 | `ChatIcon`                      |
+  | `ConversationMinor`                 | `ChatIcon`                      |
+  | `CreditCardMajor`                   | `CreditCardIcon`                |
+  | `CreditCardMinor`                   | `CreditCardIcon`                |
+  | `CreditCardCancelMajor`             | `CreditCardCancelIcon`          |
+  | `CreditCardCancelMinor`             | `CreditCardCancelIcon`          |
+  | `CreditCardPercentMajor`            | `CreditCardPercentIcon`         |
+  | `CreditCardPercentMinor`            | `CreditCardPercentIcon`         |
+  | `CreditCardSecureMajor`             | `CreditCardSecureIcon`          |
+  | `CreditCardSecureMinor`             | `CreditCardSecureIcon`          |
+  | `CurrencyConvertMajor`              | `CurrencyConvertIcon`           |
+  | `CurrencyConvertMinor`              | `CurrencyConvertIcon`           |
+  | `CustomerMinusMajor`                | `PersonRemoveIcon`              |
+  | `CustomerMinusMinor`                | `PersonRemoveIcon`              |
+  | `CustomerPlusMajor`                 | `PersonAddIcon`                 |
+  | `CustomerPlusMinor`                 | `PersonAddIcon`                 |
+  | `CustomersMajor`                    | `PersonIcon`                    |
+  | `CustomersMinor`                    | `PersonIcon`                    |
+  | `CustomersFilledMajor`              | `PersonFilledIcon`              |
+  | `CustomersFilledMinor`              | `PersonFilledIcon`              |
+  | `DataDrivenModelMajor`              | `ChartVerticalIcon`             |
+  | `DataDrivenModelMinor`              | `ChartVerticalIcon`             |
+  | `DataVisualizationMajor`            | `DataPresentationIcon`          |
+  | `DataVisualizationMinor`            | `DataPresentationIcon`          |
+  | `DecimalMajor`                      | `HashtagDecimalIcon`            |
+  | `DecimalMinor`                      | `HashtagDecimalIcon`            |
+  | `DeleteMajor`                       | `DeleteIcon`                    |
+  | `DeleteMinor`                       | `DeleteIcon`                    |
+  | `DesktopMajor`                      | `DesktopIcon`                   |
+  | `DesktopMinor`                      | `DesktopIcon`                   |
+  | `DetailedPopUpMajor`                | `LayoutPopupIcon`               |
+  | `DetailedPopUpMinor`                | `LayoutPopupIcon`               |
+  | `DiamondAlertMajor`                 | `AlertDiamondIcon`              |
+  | `DiamondAlertMinor`                 | `AlertDiamondIcon`              |
+  | `DigitalMediaReceiverMajor`         | `MediaReceiverIcon`             |
+  | `DigitalMediaReceiverMinor`         | `MediaReceiverIcon`             |
+  | `DiscountAutomaticMajor`            | `CartDiscountIcon`              |
+  | `DiscountAutomaticMinor`            | `CartDiscountIcon`              |
+  | `DiscountCodeMajor`                 | `DiscountCodeIcon`              |
+  | `DiscountCodeMinor`                 | `DiscountCodeIcon`              |
+  | `DiscountsMajor`                    | `DiscountIcon`                  |
+  | `DiscountsMinor`                    | `DiscountIcon`                  |
+  | `DiscountsFilledMajor`              | `DiscountFilledIcon`            |
+  | `DiscountsFilledMinor`              | `DiscountFilledIcon`            |
+  | `DisputeMajor`                      | `AlertBubbleIcon`               |
+  | `DisputeMinor`                      | `AlertBubbleIcon`               |
+  | `DnsSettingsMajor`                  | `DnsSettingsIcon`               |
+  | `DnsSettingsMinor`                  | `DnsSettingsIcon`               |
+  | `DockFloatingMajor`                 | `DockFloatingIcon`              |
+  | `DockFloatingMinor`                 | `DockFloatingIcon`              |
+  | `DockSideMajor`                     | `DockSideIcon`                  |
+  | `DockSideMinor`                     | `DockSideIcon`                  |
+  | `DomainNewMajor`                    | `DomainNewIcon`                 |
+  | `DomainNewMinor`                    | `DomainNewIcon`                 |
+  | `DomainRedirectMajor`               | `DomainRedirectIcon`            |
+  | `DomainRedirectMinor`               | `DomainRedirectIcon`            |
+  | `DomainsMajor`                      | `DomainIcon`                    |
+  | `DomainsMinor`                      | `DomainIcon`                    |
+  | `DomainsFilledMajor`                | `DomainFilledIcon`              |
+  | `DomainsFilledMinor`                | `DomainFilledIcon`              |
+  | `DraftOrdersMajor`                  | `OrderDraftIcon`                |
+  | `DraftOrdersMinor`                  | `OrderDraftIcon`                |
+  | `DraftOrdersFilledMajor`            | `OrderDraftFilledIcon`          |
+  | `DraftOrdersFilledMinor`            | `OrderDraftFilledIcon`          |
+  | `DragDropMajor`                     | `DragDropIcon`                  |
+  | `DragDropMinor`                     | `DragDropIcon`                  |
+  | `DragHandleMajor`                   | `DragHandleIcon`                |
+  | `DragHandleMinor`                   | `DragHandleIcon`                |
+  | `DropdownMajor`                     | `CaretDownIcon`                 |
+  | `DropdownMinor`                     | `CaretDownIcon`                 |
+  | `DuplicateMajor`                    | `DuplicateIcon`                 |
+  | `DuplicateMinor`                    | `DuplicateIcon`                 |
+  | `DynamicSourceMajor`                | `DatabaseIcon`                  |
+  | `DynamicSourceMinor`                | `DatabaseIcon`                  |
+  | `EditMajor`                         | `EditIcon`                      |
+  | `EditMinor`                         | `EditIcon`                      |
+  | `EmailMajor`                        | `EmailIcon`                     |
+  | `EmailMinor`                        | `EmailIcon`                     |
+  | `EmailNewsletterMajor`              | `EmailNewsletterIcon`           |
+  | `EmailNewsletterMinor`              | `EmailNewsletterIcon`           |
+  | `EmbedMajor`                        | `CodeIcon`                      |
+  | `EmbedMinor`                        | `CodeIcon`                      |
+  | `EnableSelectionMajor`              | `CheckboxIcon`                  |
+  | `EnableSelectionMinor`              | `CheckboxIcon`                  |
+  | `EnterMajor`                        | `EnterIcon`                     |
+  | `EnterMinor`                        | `EnterIcon`                     |
+  | `EnvelopeMajor`                     | `EnvelopeIcon`                  |
+  | `EnvelopeMinor`                     | `EnvelopeIcon`                  |
+  | `ExchangeMajor`                     | `ExchangeIcon`                  |
+  | `ExchangeMinor`                     | `ExchangeIcon`                  |
+  | `ExistingInventoryMajor`            | `InventoryIcon`                 |
+  | `ExistingInventoryMinor`            | `InventoryIcon`                 |
+  | `ExitMajor`                         | `ExitIcon`                      |
+  | `ExitMinor`                         | `ExitIcon`                      |
+  | `ExploreImagesMajor`                | `ImageExploreIcon`              |
+  | `ExploreImagesMinor`                | `ImageExploreIcon`              |
+  | `ExportMajor`                       | `ExportIcon`                    |
+  | `ExportMinor`                       | `ExportIcon`                    |
+  | `ExtendMajor`                       | `ArrowsOutHorizontalIcon`       |
+  | `ExtendMinor`                       | `ArrowsOutHorizontalIcon`       |
+  | `ExternalMajor`                     | `ExternalIcon`                  |
+  | `ExternalMinor`                     | `ExternalIcon`                  |
+  | `ExternalSmallMajor`                | `ExternalSmallIcon`             |
+  | `ExternalSmallMinor`                | `ExternalSmallIcon`             |
+  | `EyeDropperMajor`                   | `EyeDropperIcon`                |
+  | `EyeDropperMinor`                   | `EyeDropperIcon`                |
+  | `FacebookMajor`                     | `LogoFacebookIcon`              |
+  | `FacebookMinor`                     | `LogoFacebookIcon`              |
+  | `FaviconMajor`                      | `FaviconIcon`                   |
+  | `FaviconMinor`                      | `FaviconIcon`                   |
+  | `FavoriteMajor`                     | `StarIcon`                      |
+  | `FavoriteMinor`                     | `StarIcon`                      |
+  | `FeaturedCollectionMajor`           | `CollectionFeaturedIcon`        |
+  | `FeaturedCollectionMinor`           | `CollectionFeaturedIcon`        |
+  | `FeaturedContentMajor`              | `PageHeartIcon`                 |
+  | `FeaturedContentMinor`              | `PageHeartIcon`                 |
+  | `FileMajor`                         | `FileIcon`                      |
+  | `FileMinor`                         | `FileIcon`                      |
+  | `FileFilledMajor`                   | `FileFilledIcon`                |
+  | `FileFilledMinor`                   | `FileFilledIcon`                |
+  | `FilterMajor`                       | `FilterIcon`                    |
+  | `FilterMinor`                       | `FilterIcon`                    |
+  | `FinancesMajor`                     | `MoneyIcon`                     |
+  | `FinancesMinor`                     | `BankIcon`                      |
+  | `FinancesFilledMajor`               | `MoneyFilledIcon`               |
+  | `FinancesFilledMinor`               | `MoneyFilledIcon`               |
+  | `FirstClickModelMajor`              | `ChartHistogramFirstIcon`       |
+  | `FirstClickModelMinor`              | `ChartHistogramFirstIcon`       |
+  | `FirstOrderMajor`                   | `OrderFirstIcon`                |
+  | `FirstOrderMinor`                   | `OrderFirstIcon`                |
+  | `FirstVisitMajor`                   | `EyeFirstIcon`                  |
+  | `FirstVisitMinor`                   | `EyeFirstIcon`                  |
+  | `FlagMajor`                         | `FlagIcon`                      |
+  | `FlagMinor`                         | `FlagIcon`                      |
+  | `FlipCameraMajor`                   | `CameraFlipIcon`                |
+  | `FlipCameraMinor`                   | `CameraFlipIcon`                |
+  | `FolderMajor`                       | `FolderIcon`                    |
+  | `FolderMinor`                       | `FolderIcon`                    |
+  | `FolderDownMajor`                   | `FolderDownIcon`                |
+  | `FolderDownMinor`                   | `FolderDownIcon`                |
+  | `FolderMinusMajor`                  | `FolderRemoveIcon`              |
+  | `FolderMinusMinor`                  | `FolderRemoveIcon`              |
+  | `FolderPlusMajor`                   | `FolderAddIcon`                 |
+  | `FolderPlusMinor`                   | `FolderAddIcon`                 |
+  | `FolderUpMajor`                     | `FolderUpIcon`                  |
+  | `FolderUpMinor`                     | `FolderUpIcon`                  |
+  | `FollowUpEmailMajor`                | `EmailFollowUpIcon`             |
+  | `FollowUpEmailMinor`                | `EmailFollowUpIcon`             |
+  | `FoodMajor`                         | `FoodIcon`                      |
+  | `FoodMinor`                         | `FoodIcon`                      |
+  | `FooterMajor`                       | `LayoutFooterIcon`              |
+  | `FooterMinor`                       | `LayoutFooterIcon`              |
+  | `FormsMajor`                        | `FormsIcon`                     |
+  | `FormsMinor`                        | `FormsIcon`                     |
+  | `FraudProtectMajor`                 | `ShieldPersonIcon`              |
+  | `FraudProtectMinor`                 | `ShieldPersonIcon`              |
+  | `FraudProtectPendingMajor`          | `ShieldPendingIcon`             |
+  | `FraudProtectPendingMinor`          | `ShieldPendingIcon`             |
+  | `FraudProtectUnprotectedMajor`      | `ShieldNoneIcon`                |
+  | `FraudProtectUnprotectedMinor`      | `ShieldNoneIcon`                |
+  | `FulfillmentFulfilledMajor`         | `PackageFulfilledIcon`          |
+  | `FulfillmentFulfilledMinor`         | `PackageFulfilledIcon`          |
+  | `FulfillmentOnHoldMajor`            | `PackageOnHoldIcon`             |
+  | `FulfillmentOnHoldMinor`            | `PackageOnHoldIcon`             |
+  | `GamesConsoleMajor`                 | `GamesIcon`                     |
+  | `GamesConsoleMinor`                 | `GamesIcon`                     |
+  | `GaugeMajor`                        | `GaugeIcon`                     |
+  | `GaugeMinor`                        | `GaugeIcon`                     |
+  | `GiftCardMajor`                     | `GiftCardIcon`                  |
+  | `GiftCardMinor`                     | `GiftCardIcon`                  |
+  | `GiftCardFilledMajor`               | `GiftCardFilledIcon`            |
+  | `GiftCardFilledMinor`               | `GiftCardFilledIcon`            |
+  | `GlobeMajor`                        | `GlobeIcon`                     |
+  | `GlobeMinor`                        | `GlobeIcon`                     |
+  | `GrammarMajor`                      | `TextGrammarIcon`               |
+  | `GrammarMinor`                      | `TextGrammarIcon`               |
+  | `HashtagMajor`                      | `HashtagIcon`                   |
+  | `HashtagMinor`                      | `HashtagIcon`                   |
+  | `HeaderMajor`                       | `LayoutHeaderIcon`              |
+  | `HeaderMinor`                       | `LayoutHeaderIcon`              |
+  | `HeartMajor`                        | `HeartIcon`                     |
+  | `HeartMinor`                        | `HeartIcon`                     |
+  | `HideMajor`                         | `HideIcon`                      |
+  | `HideMinor`                         | `HideIcon`                      |
+  | `HideKeyboardMajor`                 | `KeyboardHideIcon`              |
+  | `HideKeyboardMinor`                 | `KeyboardHideIcon`              |
+  | `HintMajor`                         | `LightbulbIcon`                 |
+  | `HintMinor`                         | `LightbulbIcon`                 |
+  | `HomeMajor`                         | `HomeIcon`                      |
+  | `HomeMinor`                         | `HomeIcon`                      |
+  | `HomeFilledMajor`                   | `HomeFilledIcon`                |
+  | `HomeFilledMinor`                   | `HomeFilledIcon`                |
+  | `HorizontalDotsMajor`               | `MenuHorizontalIcon`            |
+  | `HorizontalDotsMinor`               | `MenuHorizontalIcon`            |
+  | `IconsMajor`                        | `IconsIcon`                     |
+  | `IconsMinor`                        | `IconsIcon`                     |
+  | `IconsFilledMajor`                  | `IconsFilledIcon`               |
+  | `IconsFilledMinor`                  | `IconsFilledIcon`               |
+  | `IdentityCardMajor`                 | `IdentityCardIcon`              |
+  | `IdentityCardMinor`                 | `IdentityCardIcon`              |
+  | `IdentityCardFilledMajor`           | `IdentityCardFilledIcon`        |
+  | `IdentityCardFilledMinor`           | `IdentityCardFilledIcon`        |
+  | `IllustrationMajor`                 | `PaintBrushRoundIcon`           |
+  | `IllustrationMinor`                 | `PaintBrushRoundIcon`           |
+  | `ImageMajor`                        | `ImageIcon`                     |
+  | `ImageMinor`                        | `ImageIcon`                     |
+  | `ImageAltMajor`                     | `ImageAltIcon`                  |
+  | `ImageAltMinor`                     | `ImageAltIcon`                  |
+  | `ImagesMajor`                       | `ImagesIcon`                    |
+  | `ImagesMinor`                       | `ImagesIcon`                    |
+  | `ImageWithTextMajor`                | `TextWithImageIcon`             |
+  | `ImageWithTextMinor`                | `TextWithImageIcon`             |
+  | `ImageWithTextOverlayMajor`         | `ImageWithTextOverlayIcon`      |
+  | `ImageWithTextOverlayMinor`         | `ImageWithTextOverlayIcon`      |
+  | `ImportMajor`                       | `ImportIcon`                    |
+  | `ImportMinor`                       | `ImportIcon`                    |
+  | `ImportStoreMajor`                  | `StoreImportIcon`               |
+  | `ImportStoreMinor`                  | `StoreImportIcon`               |
+  | `IncomingMajor`                     | `IncomingIcon`                  |
+  | `IncomingMinor`                     | `IncomingIcon`                  |
+  | `IndentMajor`                       | `TextIndentIcon`                |
+  | `IndentMinor`                       | `TextIndentIcon`                |
+  | `InfoMajor`                         | `InfoIcon`                      |
+  | `InfoMinor`                         | `InfoIcon`                      |
+  | `InsertDynamicSourceMajor`          | `DatabaseAddIcon`               |
+  | `InsertDynamicSourceMinor`          | `DatabaseAddIcon`               |
+  | `InstagramMajor`                    | `LogoInstagramIcon`             |
+  | `InstagramMinor`                    | `LogoInstagramIcon`             |
+  | `InstallMajor`                      | `ImportIcon`                    |
+  | `InstallMinor`                      | `ImportIcon`                    |
+  | `InventoryMajor`                    | `InventoryIcon`                 |
+  | `InventoryMinor`                    | `InventoryIcon`                 |
+  | `InventoryFilledMajor`              | `InventoryFilledIcon`           |
+  | `InventoryFilledMinor`              | `InventoryFilledIcon`           |
+  | `InviteMajor`                       | `EmailIcon`                     |
+  | `InviteMinor`                       | `EmailIcon`                     |
+  | `IqMajor`                           | `IqIcon`                        |
+  | `IqMinor`                           | `IqIcon`                        |
+  | `ItalicMajor`                       | `TextItalicIcon`                |
+  | `ItalicMinor`                       | `TextItalicIcon`                |
+  | `JobsMajor`                         | `WorkIcon`                      |
+  | `JobsMinor`                         | `WorkIcon`                      |
+  | `JobsFilledMajor`                   | `WorkFilledIcon`                |
+  | `JobsFilledMinor`                   | `WorkFilledIcon`                |
+  | `KeyMajor`                          | `KeyIcon`                       |
+  | `KeyMinor`                          | `KeyIcon`                       |
+  | `KeyboardMajor`                     | `KeyboardIcon`                  |
+  | `KeyboardMinor`                     | `KeyboardIcon`                  |
+  | `LabelPrinterMajor`                 | `LabelPrinterIcon`              |
+  | `LabelPrinterMinor`                 | `LabelPrinterIcon`              |
+  | `LandingPageMajor`                  | `DomainLandingPageIcon`         |
+  | `LandingPageMinor`                  | `DomainLandingPageIcon`         |
+  | `LanguageMajor`                     | `LanguageIcon`                  |
+  | `LanguageMinor`                     | `LanguageIcon`                  |
+  | `LanguageFilledMajor`               | `LanguageFilledIcon`            |
+  | `LanguageFilledMinor`               | `LanguageFilledIcon`            |
+  | `LastClickModelMajor`               | `ChartHistogramLastIcon`        |
+  | `LastClickModelMinor`               | `ChartHistogramLastIcon`        |
+  | `LastNonDirectClickModelMajor`      | `ChartHistogramSecondLastIcon`  |
+  | `LastNonDirectClickModelMinor`      | `ChartHistogramSecondLastIcon`  |
+  | `LegalMajor`                        | `ContractIcon`                  |
+  | `LegalMinor`                        | `ContractIcon`                  |
+  | `LegalFilledMajor`                  | `ContractFilledIcon`            |
+  | `LegalFilledMinor`                  | `ContractFilledIcon`            |
+  | `LinearModelMajor`                  | `ChartHistogramFlatIcon`        |
+  | `LinearModelMinor`                  | `ChartHistogramFlatIcon`        |
+  | `LinkMajor`                         | `LinkIcon`                      |
+  | `LinkMinor`                         | `LinkIcon`                      |
+  | `ListMajor`                         | `ListBulletedIcon`              |
+  | `ListMinor`                         | `ListBulletedIcon`              |
+  | `LiveViewMajor`                     | `LiveIcon`                      |
+  | `LiveViewMinor`                     | `LiveIcon`                      |
+  | `LiveViewFilledMajor`               | `LiveFilledIcon`                |
+  | `LiveViewFilledMinor`               | `LiveFilledIcon`                |
+  | `LocationMajor`                     | `LocationIcon`                  |
+  | `LocationMinor`                     | `LocationIcon`                  |
+  | `LocationFilledMajor`               | `LocationFilledIcon`            |
+  | `LocationFilledMinor`               | `LocationFilledIcon`            |
+  | `InactiveLocationMajor`             | `LocationNoneIcon`              |
+  | `InactiveLocationMinor`             | `LocationNoneIcon`              |
+  | `LocationsMajor`                    | `LocationIcon`                  |
+  | `LocationsMinor`                    | `LocationIcon`                  |
+  | `LocationsInactiveMajor`            | `LocationNoneIcon`              |
+  | `LocationsInactiveMinor`            | `LocationNoneIcon`              |
+  | `LockMajor`                         | `LockIcon`                      |
+  | `LockMinor`                         | `LockIcon`                      |
+  | `LockFilledMajor`                   | `LockFilledIcon`                |
+  | `LockFilledMinor`                   | `LockFilledIcon`                |
+  | `LogoBlockMajor`                    | `LayoutLogoBlockIcon`           |
+  | `LogoBlockMinor`                    | `LayoutLogoBlockIcon`           |
+  | `LogOutMajor`                       | `ExitIcon`                      |
+  | `LogOutMinor`                       | `ExitIcon`                      |
+  | `MagicMajor`                        | `MagicIcon`                     |
+  | `MagicMinor`                        | `MagicIcon`                     |
+  | `ManagedStoreMajor`                 | `StoreManagedIcon`              |
+  | `ManagedStoreMinor`                 | `StoreManagedIcon`              |
+  | `MarketingMajor`                    | `TargetIcon`                    |
+  | `MarketingMinor`                    | `TargetIcon`                    |
+  | `MarketingFilledMajor`              | `TargetFilledIcon`              |
+  | `MarketingFilledMinor`              | `TargetFilledIcon`              |
+  | `MarketsMajor`                      | `MarketsIcon`                   |
+  | `MarketsMinor`                      | `MarketsIcon`                   |
+  | `MarketsFilledMajor`                | `MarketsFilledIcon`             |
+  | `MarketsFilledMinor`                | `MarketsFilledIcon`             |
+  | `MarkFulfilledMajor`                | `OrderFulfilledIcon`            |
+  | `MarkFulfilledMinor`                | `OrderFulfilledIcon`            |
+  | `MarkPaidMajor`                     | `ReceiptPaidIcon`               |
+  | `MarkPaidMinor`                     | `ReceiptPaidIcon`               |
+  | `MaximizeMajor`                     | `MaximizeIcon`                  |
+  | `MaximizeMinor`                     | `MaximizeIcon`                  |
+  | `MeasurementMajor`                  | `MeasurementSizeIcon`           |
+  | `MeasurementMinor`                  | `MeasurementSizeIcon`           |
+  | `MentionMajor`                      | `MentionIcon`                   |
+  | `MentionMinor`                      | `MentionIcon`                   |
+  | `MergeMajor`                        | `MergeIcon`                     |
+  | `MergeMinor`                        | `MergeIcon`                     |
+  | `MetafieldsMajor`                   | `MetafieldsIcon`                |
+  | `MetafieldsMinor`                   | `MetafieldsIcon`                |
+  | `MetafieldsFilledMajor`             | `MetafieldsFilledIcon`          |
+  | `MetafieldsFilledMinor`             | `MetafieldsFilledIcon`          |
+  | `MetaobjectMajor`                   | `MetaobjectIcon`                |
+  | `MetaobjectMinor`                   | `MetaobjectIcon`                |
+  | `MetaobjectFilledMajor`             | `MetaobjectFilledIcon`          |
+  | `MetaobjectFilledMinor`             | `MetaobjectFilledIcon`          |
+  | `MetaobjectReferenceMajor`          | `MetaobjectReferenceIcon`       |
+  | `MetaobjectReferenceMinor`          | `MetaobjectReferenceIcon`       |
+  | `MicrophoneMajor`                   | `MicrophoneIcon`                |
+  | `MicrophoneMinor`                   | `MicrophoneIcon`                |
+  | `MinimizeMajor`                     | `MinimizeIcon`                  |
+  | `MinimizeMinor`                     | `MinimizeIcon`                  |
+  | `MinusMajor`                        | `MinusIcon`                     |
+  | `MinusMinor`                        | `MinusIcon`                     |
+  | `MobileMajor`                       | `MobileIcon`                    |
+  | `MobileMinor`                       | `MobileIcon`                    |
+  | `MobileAcceptMajor`                 | `CheckIcon`                     |
+  | `MobileAcceptMinor`                 | `CheckIcon`                     |
+  | `MobileBackArrowMajor`              | `ArrowLeftIcon`                 |
+  | `MobileBackArrowMinor`              | `ArrowLeftIcon`                 |
+  | `MobileCancelMajor`                 | `XIcon`                         |
+  | `MobileCancelMinor`                 | `XIcon`                         |
+  | `MobileChevronMajor`                | `ChevronLeftIcon`               |
+  | `MobileChevronMinor`                | `ChevronLeftIcon`               |
+  | `MobileHamburgerMajor`              | `MenuIcon`                      |
+  | `MobileHamburgerMinor`              | `MenuIcon`                      |
+  | `MobileHorizontalDotsMajor`         | `MenuHorizontalIcon`            |
+  | `MobileHorizontalDotsMinor`         | `MenuHorizontalIcon`            |
+  | `MobilePlusMajor`                   | `PlusIcon`                      |
+  | `MobilePlusMinor`                   | `PlusIcon`                      |
+  | `MobileVerticalDotsMajor`           | `MenuVerticalIcon`              |
+  | `MobileVerticalDotsMinor`           | `MenuVerticalIcon`              |
+  | `MonerisMajor`                      | `CalculatorIcon`                |
+  | `MonerisMinor`                      | `CalculatorIcon`                |
+  | `MoneyMajor`                        | `MoneyIcon`                     |
+  | `MoneyMinor`                        | `MoneyIcon`                     |
+  | `MoneyFilledMajor`                  | `MoneyFilledIcon`               |
+  | `MoneyFilledMinor`                  | `MoneyFilledIcon`               |
+  | `NatureMajor`                       | `NatureIcon`                    |
+  | `NatureMinor`                       | `NatureIcon`                    |
+  | `NavigationMajor`                   | `CompassIcon`                   |
+  | `NavigationMinor`                   | `CompassIcon`                   |
+  | `NoteMajor`                         | `NoteIcon`                      |
+  | `NoteMinor`                         | `NoteIcon`                      |
+  | `NotificationMajor`                 | `NotificationIcon`              |
+  | `NotificationMinor`                 | `NotificationIcon`              |
+  | `NotificationFilledMajor`           | `NotificationFilledIcon`        |
+  | `NotificationFilledMinor`           | `NotificationFilledIcon`        |
+  | `OnlineStoreMajor`                  | `StoreOnlineIcon`               |
+  | `OnlineStoreMinor`                  | `StoreOnlineIcon`               |
+  | `OrderedListMajor`                  | `ListNumberedIcon`              |
+  | `OrderedListMinor`                  | `ListNumberedIcon`              |
+  | `OrdersMajor`                       | `OrderIcon`                     |
+  | `OrdersMinor`                       | `OrderIcon`                     |
+  | `OrdersFilledMajor`                 | `OrderFilledIcon`               |
+  | `OrdersFilledMinor`                 | `OrderFilledIcon`               |
+  | `OrderStatusMajor`                  | `OrdersStatusIcon`              |
+  | `OrderStatusMinor`                  | `OrdersStatusIcon`              |
+  | `OrganizationMajor`                 | `OrganizationIcon`              |
+  | `OrganizationMinor`                 | `OrganizationIcon`              |
+  | `OutdateMajor`                      | `TextIndentRemoveIcon`          |
+  | `OutdateMinor`                      | `TextIndentRemoveIcon`          |
+  | `OutdentMajor`                      | `Outdent`                       |
+  | `OutdentMinor`                      | `Outdent`                       |
+  | `OutgoingMajor`                     | `OutgoingIcon`                  |
+  | `OutgoingMinor`                     | `OutgoingIcon`                  |
+  | `PackageMajor`                      | `PackageIcon`                   |
+  | `PackageMinor`                      | `PackageIcon`                   |
+  | `PackageFilledMajor`                | `PackageFilledIcon`             |
+  | `PackageFilledMinor`                | `PackageFilledIcon`             |
+  | `PageMajor`                         | `PageIcon`                      |
+  | `PageMinor`                         | `PageIcon`                      |
+  | `PageClockMajor`                    | `PageClockIcon`                 |
+  | `PageClockFilledMinor`              | `PageClockFilledIcon`           |
+  | `PageDownMajor`                     | `PageDownIcon`                  |
+  | `PageDownMinor`                     | `PageDownIcon`                  |
+  | `PageMinusMajor`                    | `PageRemoveIcon`                |
+  | `PageMinusMinor`                    | `PageRemoveIcon`                |
+  | `PagePlusMajor`                     | `PageAddIcon`                   |
+  | `PagePlusMinor`                     | `PageAddIcon`                   |
+  | `PageReferenceMajor`                | `PageReferenceIcon`             |
+  | `PageReferenceMinor`                | `PageReferenceIcon`             |
+  | `PageUpMajor`                       | `PageUpIcon`                    |
+  | `PageUpMinor`                       | `PageUpIcon`                    |
+  | `PaginationEndMajor`                | `PaginationEndIcon`             |
+  | `PaginationEndMinor`                | `PaginationEndIcon`             |
+  | `PaginationStartMajor`              | `PaginationStartIcon`           |
+  | `PaginationStartMinor`              | `PaginationStartIcon`           |
+  | `PaintBrushMajor`                   | `PaintBrushFlatIcon`            |
+  | `PaintBrushMinor`                   | `PaintBrushFlatIcon`            |
+  | `PaperCheckMajor`                   | `PaperCheckIcon`                |
+  | `PaperCheckMinor`                   | `PaperCheckIcon`                |
+  | `PasskeyMajor`                      | `PasskeyIcon`                   |
+  | `PasskeyMinor`                      | `PasskeyIcon`                   |
+  | `PasskeyFilledMajor`                | `PasskeyFilledIcon`             |
+  | `PasskeyFilledMinor`                | `PasskeyFilledIcon`             |
+  | `PauseMajor`                        | `PauseCircleIcon`               |
+  | `PauseMinor`                        | `PauseCircleIcon`               |
+  | `PauseCircleMajor`                  | `PauseCircleIcon`               |
+  | `PauseCircleMinor`                  | `PauseCircleIcon`               |
+  | `PaymentsMajor`                     | `PaymentIcon`                   |
+  | `PaymentsMinor`                     | `PaymentIcon`                   |
+  | `PaymentsFilledMajor`               | `PaymentFilledIcon`             |
+  | `PaymentsFilledMinor`               | `PaymentFilledIcon`             |
+  | `PayoutsBlockedMajor`               | `MoneyNoneIcon`                 |
+  | `PayoutsBlockedMinor`               | `MoneyNoneIcon`                 |
+  | `PersonalizedTextMajor`             | `PersonalizedTextIcon`          |
+  | `PersonalizedTextMinor`             | `PersonalizedTextIcon`          |
+  | `PhoneMajor`                        | `PhoneIcon`                     |
+  | `PhoneMinor`                        | `PhoneIcon`                     |
+  | `PhoneInMajor`                      | `PhoneInIcon`                   |
+  | `PhoneInMinor`                      | `PhoneInIcon`                   |
+  | `PhoneOutMajor`                     | `PhoneOutIcon`                  |
+  | `PhoneOutMinor`                     | `PhoneOutIcon`                  |
+  | `PinMajor`                          | `PinFilledIcon`                 |
+  | `PinMinor`                          | `PinFilledIcon`                 |
+  | `PintrestMajor`                     | `LogoPinterestIcon`             |
+  | `PintrestMinor`                     | `LogoPinterestIcon`             |
+  | `PinUnfilledMajor`                  | `PinIcon`                       |
+  | `PinUnfilledMinor`                  | `PinIcon`                       |
+  | `PlanMajor`                         | `PlanIcon`                      |
+  | `PlanMinor`                         | `PlanIcon`                      |
+  | `PlanFilledMajor`                   | `PlanFilledIcon`                |
+  | `PlanFilledMinor`                   | `PlanFilledIcon`                |
+  | `PlayMajor`                         | `PlayIcon`                      |
+  | `PlayMinor`                         | `PlayIcon`                      |
+  | `PlayCircleMajor`                   | `PlayCircleIcon`                |
+  | `PlayCircleMinor`                   | `PlayCircleIcon`                |
+  | `PlusMajor`                         | `PlusIcon`                      |
+  | `PlusMinor`                         | `PlusIcon`                      |
+  | `PointOfSaleMajor`                  | `PointOfSaleIcon`               |
+  | `PointOfSaleMinor`                  | `PointOfSaleIcon`               |
+  | `PopularMajor`                      | `ChartPopularIcon`              |
+  | `PopularMinor`                      | `ChartPopularIcon`              |
+  | `PositionBasedModelMajor`           | `ChartHistogramFirstLastIcon`   |
+  | `PositionBasedModelMinor`           | `ChartHistogramFirstLastIcon`   |
+  | `PriceListMajor`                    | `PriceListIcon`                 |
+  | `PriceListMinor`                    | `PriceListIcon`                 |
+  | `PriceListFilledMajor`              | `PriceListFilledIcon`           |
+  | `PriceListFilledMinor`              | `PriceListFilledIcon`           |
+  | `PriceLookupMajor`                  | `SearchListIcon`                |
+  | `PriceLookupMinor`                  | `SearchListIcon`                |
+  | `PrintMajor`                        | `PrintIcon`                     |
+  | `PrintMinor`                        | `PrintIcon`                     |
+  | `ProductCostMajor`                  | `ProductCostIcon`               |
+  | `ProductCostMinor`                  | `ProductCostIcon`               |
+  | `ProductReferenceMajor`             | `ProductReferenceIcon`          |
+  | `ProductReferenceMinor`             | `ProductReferenceIcon`          |
+  | `ProductReturnsMajor`               | `ProductReturnIcon`             |
+  | `ProductReturnsMinor`               | `ProductReturnIcon`             |
+  | `ProductsMajor`                     | `ProductIcon`                   |
+  | `ProductsMinor`                     | `ProductIcon`                   |
+  | `ProductsFilledMajor`               | `ProductFilledIcon`             |
+  | `ProductsFilledMinor`               | `ProductFilledIcon`             |
+  | `ProfileMajor`                      | `ProfileIcon`                   |
+  | `ProfileMinor`                      | `ProfileIcon`                   |
+  | `PromoteMajor`                      | `MegaphoneIcon`                 |
+  | `PromoteMinor`                      | `MegaphoneIcon`                 |
+  | `PromoteFilledMajor`                | `MegaphoneFilledIcon`           |
+  | `PromoteFilledMinor`                | `MegaphoneFilledIcon`           |
+  | `QuestionMarkMajor`                 | `QuestionCircleIcon`            |
+  | `QuestionMarkMinor`                 | `QuestionCircleIcon`            |
+  | `QuestionMarkInverseMajor`          | `QuestionCircleIcon`            |
+  | `QuestionMarkInverseMinor`          | `QuestionCircleIcon`            |
+  | `QuickSaleMajor`                    | `CartSaleIcon`                  |
+  | `QuickSaleMinor`                    | `CartSaleIcon`                  |
+  | `ReadTimeMajor`                     | `BookIcon`                      |
+  | `ReadTimeMinor`                     | `BookIcon`                      |
+  | `ReceiptMajor`                      | `ReceiptIcon`                   |
+  | `ReceiptMinor`                      | `ReceiptIcon`                   |
+  | `RecentSearchesMajor`               | `SearchRecentIcon`              |
+  | `RecentSearchesMinor`               | `SearchRecentIcon`              |
+  | `RedoMajor`                         | `RedoIcon`                      |
+  | `RedoMinor`                         | `RedoIcon`                      |
+  | `ReferralMajor`                     | `ChatReferralIcon`              |
+  | `ReferralMinor`                     | `ChatReferralIcon`              |
+  | `ReferralCodeMajor`                 | `ReferralCodeIcon`              |
+  | `ReferralCodeMinor`                 | `ReferralCodeIcon`              |
+  | `RefreshMajor`                      | `RefreshIcon`                   |
+  | `RefreshMinor`                      | `RefreshIcon`                   |
+  | `RefundMajor`                       | `ReceiptRefundIcon`             |
+  | `RefundMinor`                       | `ReceiptRefundIcon`             |
+  | `RemoveProductMajor`                | `ProductRemoveIcon`             |
+  | `RemoveProductMinor`                | `ProductRemoveIcon`             |
+  | `RepeatOrderMajor`                  | `OrderRepeatIcon`               |
+  | `RepeatOrderMinor`                  | `OrderRepeatIcon`               |
+  | `ReplaceMajor`                      | `ReplaceIcon`                   |
+  | `ReplaceMinor`                      | `ReplaceIcon`                   |
+  | `ReplayMajor`                       | `ReplayIcon`                    |
+  | `ReplayMinor`                       | `ReplayIcon`                    |
+  | `ReportMajor`                       | `SearchResourceIcon`            |
+  | `ReportMinor`                       | `SearchResourceIcon`            |
+  | `ReportsMajor`                      | `SearchResourceIcon`            |
+  | `ReportsMinor`                      | `SearchResourceIcon`            |
+  | `ReportFilledMinor`                 | `SearchResourceIcon`            |
+  | `ResetMajor`                        | `ResetIcon`                     |
+  | `ResetMinor`                        | `ResetIcon`                     |
+  | `ResourcesMajor`                    | `EyeglassesIcon`                |
+  | `ResourcesMinor`                    | `EyeglassesIcon`                |
+  | `ReturnMajor`                       | `ReturnIcon`                    |
+  | `ReturnMinor`                       | `ReturnIcon`                    |
+  | `ReturnsMajor`                      | `PackageReturnedIcon`           |
+  | `ReturnsMinor`                      | `PackageReturnedIcon`           |
+  | `RichTextMajor`                     | `TextWithImageIcon`             |
+  | `RichTextMinor`                     | `TextWithImageIcon`             |
+  | `RiskMajor`                         | `AlertTriangleIcon`             |
+  | `RiskMinor`                         | `AlertTriangleIcon`             |
+  | `Rows2Major`                        | `LayoutRows2Icon`               |
+  | `Rows2Minor`                        | `LayoutRows2Icon`               |
+  | `SandboxMajor`                      | `SandboxIcon`                   |
+  | `SandboxMinor`                      | `SandboxIcon`                   |
+  | `SaveMajor`                         | `SaveIcon`                      |
+  | `SaveMinor`                         | `SaveIcon`                      |
+  | `SearchMajor`                       | `SearchIcon`                    |
+  | `SearchMinor`                       | `SearchIcon`                    |
+  | `SectionMajor`                      | `LayoutSectionIcon`             |
+  | `SectionMinor`                      | `LayoutSectionIcon`             |
+  | `SecureMajor`                       | `ShieldCheckMarkIcon`           |
+  | `SecureMinor`                       | `ShieldCheckMarkIcon`           |
+  | `SelectMajor`                       | `SelectIcon`                    |
+  | `SelectMinor`                       | `SelectIcon`                    |
+  | `SendMajor`                         | `SendIcon`                      |
+  | `SendMinor`                         | `SendIcon`                      |
+  | `SettingsMajor`                     | `SettingsIcon`                  |
+  | `SettingsMinor`                     | `SettingsIcon`                  |
+  | `SettingsFilledMajor`               | `SettingsFilledIcon`            |
+  | `SettingsFilledMinor`               | `SettingsFilledIcon`            |
+  | `ShareMajor`                        | `ShareIcon`                     |
+  | `ShareMinor`                        | `ShareIcon`                     |
+  | `ShareIosMajor`                     | `ShareIcon`                     |
+  | `ShareIosMinor`                     | `ShareIcon`                     |
+  | `ShipmentMajor`                     | `DeliveryIcon`                  |
+  | `ShipmentMinor`                     | `DeliveryIcon`                  |
+  | `ShipmentFilledMajor`               | `DeliveryFilledIcon`            |
+  | `ShipmentFilledMinor`               | `DeliveryFilledIcon`            |
+  | `ShippingLabelsMajor`               | `ShippingLabelIcon`             |
+  | `ShippingLabelsMinor`               | `ShippingLabelIcon`             |
+  | `ShippingLabelsFilledMajor`         | `ShippingLabelFilledIcon`       |
+  | `ShippingLabelsFilledMinor`         | `ShippingLabelFilledIcon`       |
+  | `ShopcodesMajor`                    | `ShopcodesIcon`                 |
+  | `ShopcodesMinor`                    | `ShopcodesIcon`                 |
+  | `SidebarLeftMajor`                  | `LayoutSidebarLeftIcon`         |
+  | `SidebarLeftMinor`                  | `LayoutSidebarLeftIcon`         |
+  | `SidebarRightMajor`                 | `LayoutSidebarRightIcon`        |
+  | `SidebarRightMinor`                 | `LayoutSidebarRightIcon`        |
+  | `SidekickMajor`                     | `SidekickIcon`                  |
+  | `SidekickMinor`                     | `SidekickIcon`                  |
+  | `SimplifyMajor`                     | `ArrowsInHorizontalIcon`        |
+  | `SimplifyMinor`                     | `ArrowsInHorizontalIcon`        |
+  | `SlideshowMajor`                    | `SlideshowIcon`                 |
+  | `SlideshowMinor`                    | `SlideshowIcon`                 |
+  | `SmileyHappyMajor`                  | `SmileyHappyIcon`               |
+  | `SmileyHappyMinor`                  | `SmileyHappyIcon`               |
+  | `SmileyJoyMajor`                    | `SmileyJoyIcon`                 |
+  | `SmileyJoyMinor`                    | `SmileyJoyIcon`                 |
+  | `SmileyNeutralMajor`                | `SmileyNeutralIcon`             |
+  | `SmileyNeutralMinor`                | `SmileyNeutralIcon`             |
+  | `SmileySadMajor`                    | `SmileySadIcon`                 |
+  | `SmileySadMinor`                    | `SmileySadIcon`                 |
+  | `SnapchatMajor`                     | `LogoSnapchatIcon`              |
+  | `SnapchatMinor`                     | `LogoSnapchatIcon`              |
+  | `SocialAdMajor`                     | `SocialAdIcon`                  |
+  | `SocialAdMinor`                     | `SocialAdIcon`                  |
+  | `SocialPostMajor`                   | `SocialPostIcon`                |
+  | `SocialPostMinor`                   | `SocialPostIcon`                |
+  | `SoftPackMajor`                     | `EnvelopeSoftPackIcon`          |
+  | `SoftPackMinor`                     | `EnvelopeSoftPackIcon`          |
+  | `SortMajor`                         | `SortIcon`                      |
+  | `SortMinor`                         | `SortIcon`                      |
+  | `SortAscendingMajor`                | `SortAscendingIcon`             |
+  | `SortAscendingMinor`                | `SortAscendingIcon`             |
+  | `SortDescendingMajor`               | `SortDescendingIcon`            |
+  | `SortDescendingMinor`               | `SortDescendingIcon`            |
+  | `SoundMajor`                        | `SoundIcon`                     |
+  | `SoundMinor`                        | `SoundIcon`                     |
+  | `StarFilledMajor`                   | `StarFilledIcon`                |
+  | `StarFilledMinor`                   | `StarFilledIcon`                |
+  | `StarOutlineMajor`                  | `StarIcon`                      |
+  | `StarOutlineMinor`                  | `StarIcon`                      |
+  | `StatusActiveMajor`                 | `StatusActiveIcon`              |
+  | `StatusActiveMinor`                 | `StatusActiveIcon`              |
+  | `StopMajor`                         | `StopCircleIcon`                |
+  | `StopMinor`                         | `StopCircleIcon`                |
+  | `StoreMajor`                        | `StoreIcon`                     |
+  | `StoreMinor`                        | `StoreIcon`                     |
+  | `StoreDetailsMajor`                 | `TextInRowsIcon`                |
+  | `StoreDetailsMinor`                 | `TextInRowsIcon`                |
+  | `StoreDetailsFilledMajor`           | `TextInRowsFilledIcon`          |
+  | `StoreDetailsFilledMinor`           | `TextInRowsFilledIcon`          |
+  | `StoreFilledMajor`                  | `StoreFilledIcon`               |
+  | `StoreFilledMinor`                  | `StoreFilledIcon`               |
+  | `StoreStatusMajor`                  | `StatusIcon`                    |
+  | `StoreStatusMinor`                  | `StatusIcon`                    |
+  | `TabletMajor`                       | `TabletIcon`                    |
+  | `TabletMinor`                       | `TabletIcon`                    |
+  | `TapChipMajor`                      | `CreditCardTapChipIcon`         |
+  | `TapChipMinor`                      | `CreditCardTapChipIcon`         |
+  | `TaxMajor`                          | `TaxIcon`                       |
+  | `TaxMinor`                          | `TaxIcon`                       |
+  | `TaxFilledMajor`                    | `TaxFilledIcon`                 |
+  | `TaxFilledMinor`                    | `TaxFilledIcon`                 |
+  | `TeamMajor`                         | `TeamIcon`                      |
+  | `TeamMinor`                         | `TeamIcon`                      |
+  | `TemplateMajor`                     | `ThemeTemplateIcon`             |
+  | `TemplateMinor`                     | `ThemeTemplateIcon`             |
+  | `TextMajor`                         | `TextIcon`                      |
+  | `TextMinor`                         | `TextIcon`                      |
+  | `TextAlignmentCenterMajor`          | `TextAlignCenterIcon`           |
+  | `TextAlignmentCenterMinor`          | `TextAlignCenterIcon`           |
+  | `TextAlignmentLeftMajor`            | `TextAlignLeftIcon`             |
+  | `TextAlignmentLeftMinor`            | `TextAlignLeftIcon`             |
+  | `TextAlignmentRightMajor`           | `TextAlignRightIcon`            |
+  | `TextAlignmentRightMinor`           | `TextAlignRightIcon`            |
+  | `TextBlockMajor`                    | `TextBlockIcon`                 |
+  | `TextBlockMinor`                    | `TextBlockIcon`                 |
+  | `TextColorMajor`                    | `TextColorIcon`                 |
+  | `TextColorMinor`                    | `TextColorIcon`                 |
+  | `ThemeEditMajor`                    | `ThemeEditIcon`                 |
+  | `ThemeEditMinor`                    | `ThemeEditIcon`                 |
+  | `ThemesMajor`                       | `ThemeIcon`                     |
+  | `ThemesMinor`                       | `ThemeIcon`                     |
+  | `ThemeStoreMajor`                   | `ThemeStoreIcon`                |
+  | `ThemeStoreMinor`                   | `ThemeStoreIcon`                |
+  | `ThumbsDownMajor`                   | `ThumbsDownIcon`                |
+  | `ThumbsDownMinor`                   | `ThumbsDownIcon`                |
+  | `ThumbsUpMajor`                     | `ThumbsUpIcon`                  |
+  | `ThumbsUpMinor`                     | `ThumbsUpIcon`                  |
+  | `TickMajor`                         | `CheckIcon`                     |
+  | `TickMinor`                         | `CheckIcon`                     |
+  | `TickSmallMajor`                    | `CheckSmallIcon`                |
+  | `TickSmallMinor`                    | `CheckSmallIcon`                |
+  | `TiktokMajor`                       | `LogoTiktokIcon`                |
+  | `TiktokMinor`                       | `LogoTiktokIcon`                |
+  | `TimeDecayModelMajor`               | `ChartHistogramGrowthIcon`      |
+  | `TimeDecayModelMinor`               | `ChartHistogramGrowthIcon`      |
+  | `TimelineAttachmentMajor`           | `PageAttachmentIcon`            |
+  | `TimelineAttachmentMinor`           | `PageAttachmentIcon`            |
+  | `TipsMajor`                         | `TipJarIcon`                    |
+  | `TipsMinor`                         | `TipJarIcon`                    |
+  | `TitleMajor`                        | `TextTitleIcon`                 |
+  | `TitleMinor`                        | `TextTitleIcon`                 |
+  | `ToggleMajor`                       | `ToggleOffIcon`                 |
+  | `ToggleMinor`                       | `ToggleOffIcon`                 |
+  | `ToolsMajor`                        | `WrenchIcon`                    |
+  | `ToolsMinor`                        | `WrenchIcon`                    |
+  | `TransactionMajor`                  | `TransactionIcon`               |
+  | `TransactionMinor`                  | `TransactionIcon`               |
+  | `TransactionFeeDollarMajor`         | `TransactionFeeDollarIcon`      |
+  | `TransactionFeeDollarMinor`         | `TransactionFeeDollarIcon`      |
+  | `TransactionFeeEuroMajor`           | `TransactionFeeEuroIcon`        |
+  | `TransactionFeeEuroMinor`           | `TransactionFeeEuroIcon`        |
+  | `TransactionFeePoundMajor`          | `TransactionFeePoundIcon`       |
+  | `TransactionFeePoundMinor`          | `TransactionFeePoundIcon`       |
+  | `TransactionFeeRupeeMajor`          | `TransactionFeeRupeeIcon`       |
+  | `TransactionFeeRupeeMinor`          | `TransactionFeeRupeeIcon`       |
+  | `TransactionFeeYenMajor`            | `TransactionFeeYenIcon`         |
+  | `TransactionFeeYenMinor`            | `TransactionFeeYenIcon`         |
+  | `TransferMajor`                     | `TransferIcon`                  |
+  | `TransferMinor`                     | `TransferIcon`                  |
+  | `TransferInMajor`                   | `TransferInIcon`                |
+  | `TransferInMinor`                   | `TransferInIcon`                |
+  | `TransferOutMajor`                  | `TransferOutIcon`               |
+  | `TransferOutMinor`                  | `TransferOutIcon`               |
+  | `TransferFilledMajor`               | `ArrowsOutHorizontalFilledIcon` |
+  | `TransfersFilledMinor`              | `ArrowsOutHorizontalFilledIcon` |
+  | `TransferWithinShopifyMajor`        | `TransferInternalIcon`          |
+  | `TransferWithinShopifyMinor`        | `TransferInternalIcon`          |
+  | `TranslateMajor`                    | `LanguageTranslateIcon`         |
+  | `TranslateMinor`                    | `LanguageTranslateIcon`         |
+  | `TransportMajor`                    | `AirplaneIcon`                  |
+  | `TransportMinor`                    | `AirplaneIcon`                  |
+  | `TroubleshootMajor`                 | `WrenchIcon`                    |
+  | `TroubleshootMinor`                 | `WrenchIcon`                    |
+  | `TumblrMajor`                       | `LogoTumblrIcon`                |
+  | `TumblrMinor`                       | `LogoTumblrIcon`                |
+  | `TwitchMajor`                       | `LogoTwitchIcon`                |
+  | `TwitchMinor`                       | `LogoTwitchIcon`                |
+  | `TwitterMajor`                      | `LogoXIcon`                     |
+  | `TwitterMinor`                      | `LogoXIcon`                     |
+  | `TypeMajor`                         | `TextFontIcon`                  |
+  | `TypeMinor`                         | `TextFontIcon`                  |
+  | `UnderlineMajor`                    | `TextUnderlineIcon`             |
+  | `UnderlineMinor`                    | `TextUnderlineIcon`             |
+  | `UndoMajor`                         | `UndoIcon`                      |
+  | `UndoMinor`                         | `UndoIcon`                      |
+  | `UnfulfilledMajor`                  | `OrderUnfulfilledIcon`          |
+  | `UnfulfilledMinor`                  | `OrderUnfulfilledIcon`          |
+  | `UnknownDeviceMajor`                | `UnknownDeviceIcon`             |
+  | `UnknownDeviceMinor`                | `UnknownDeviceIcon`             |
+  | `UpdateInventoryMajor`              | `InventoryUpdatedIcon`          |
+  | `UpdateInventoryMinor`              | `InventoryUpdatedIcon`          |
+  | `UploadMajor`                       | `UploadIcon`                    |
+  | `UploadMinor`                       | `UploadIcon`                    |
+  | `UsersAndPermissionsMajor`          | `PersonLockIcon`                |
+  | `UsersAndPermissionsMinor`          | `PersonLockIcon`                |
+  | `UsersAndPermissionsFilledMajor`    | `PersonLockFilledIcon`          |
+  | `UsersAndPermissionsFilledMinor`    | `PersonLockFilledIcon`          |
+  | `VariantMajor`                      | `VariantIcon`                   |
+  | `VariantMinor`                      | `VariantIcon`                   |
+  | `ViewMajor`                         | `ViewIcon`                      |
+  | `ViewMinor`                         | `ViewIcon`                      |
+  | `ViewportNarrowMajor`               | `ViewportNarrowIcon`            |
+  | `ViewportNarrowMinor`               | `ViewportNarrowIcon`            |
+  | `ViewportShortMajor`                | `ViewportShortIcon`             |
+  | `ViewportShortMinor`                | `ViewportShortIcon`             |
+  | `ViewportTallMajor`                 | `ViewportTallIcon`              |
+  | `ViewportTallMinor`                 | `ViewportTallIcon`              |
+  | `ViewportWideMajor`                 | `ViewportWideIcon`              |
+  | `ViewportWideMinor`                 | `ViewportWideIcon`              |
+  | `VimeoMajor`                        | `LogoVimeoIcon`                 |
+  | `VimeoMinor`                        | `LogoVimeoIcon`                 |
+  | `VocabularyMajor`                   | `BookOpenIcon`                  |
+  | `VocabularyMinor`                   | `BookOpenIcon`                  |
+  | `VolumeMajor`                       | `MeasurementVolumeIcon`         |
+  | `VolumeMinor`                       | `MeasurementVolumeIcon`         |
+  | `WandMajor`                         | `WandIcon`                      |
+  | `WandMinor`                         | `WandIcon`                      |
+  | `WearableMajor`                     | `WatchIcon`                     |
+  | `WearableMinor`                     | `WatchIcon`                     |
+  | `WeightMajor`                       | `MeasurementWeightIcon`         |
+  | `WeightMinor`                       | `MeasurementWeightIcon`         |
+  | `WholesaleMajor`                    | `ForkliftIcon`                  |
+  | `WholesaleMinor`                    | `ForkliftIcon`                  |
+  | `WifiMajor`                         | `WifiIcon`                      |
+  | `WifiMinor`                         | `WifiIcon`                      |
+  | `YoutubeMajor`                      | `LogoYoutubeIcon`               |
+  | `YoutubeMinor`                      | `LogoYoutubeIcon`               |
+
+## 7.13.0
+
+### Minor Changes
+
+- [#11349](https://github.com/Shopify/polaris/pull/11349) [`0a2f1659d`](https://github.com/Shopify/polaris/commit/0a2f1659d1141dba5cb93f6d64aeceab89155cfb) Thanks [@alex-page](https://github.com/alex-page)! - Add PageClock and PageClockFilled icons
+
+## 7.12.0
+
+### Minor Changes
+
+- [#11316](https://github.com/Shopify/polaris/pull/11316) [`235bc7d0c`](https://github.com/Shopify/polaris/commit/235bc7d0c327c450f94650ffe6f64d68eee2a28e) Thanks [@aaronccasanova](https://github.com/aaronccasanova)! - Added `SkeletonMajor`
+
+## 7.11.0
+
+### Minor Changes
+
+- [#11292](https://github.com/Shopify/polaris/pull/11292) [`2b5ecf8df`](https://github.com/Shopify/polaris/commit/2b5ecf8df3dcc07a3a6a75939e6f3b588f710ea1) Thanks [@alex-page](https://github.com/alex-page)! - Add ClipboardCheckFilledMajor icon
+
+### Patch Changes
+
+- [#11271](https://github.com/Shopify/polaris/pull/11271) [`bd0cede27`](https://github.com/Shopify/polaris/commit/bd0cede27d266ec827220ad9da1016b788811922) Thanks [@alex-page](https://github.com/alex-page)! - - Remove fill as we already remove it as a plugin with rollup
+  - Fix svgo config as the convertPathData was not correctly running with the overridden option
+  - Add a new test to make sure that optimized svg code matches the code in the .svg file
+  - Remove unnecessary tests that are resolved with svgo config
+  - Reduce icons library SVG size by 383.75kb
+
+## 7.10.0
+
+### Minor Changes
+
+- [#11073](https://github.com/Shopify/polaris/pull/11073) [`c3cad73cb`](https://github.com/Shopify/polaris/commit/c3cad73cb58217577ebd6c9b94ce184a1d362f0d) Thanks [@lntn2022](https://github.com/lntn2022)! - Add PayoutsBlocked icon
+
+* [#11136](https://github.com/Shopify/polaris/pull/11136) [`0b1961c16`](https://github.com/Shopify/polaris/commit/0b1961c162c6401589acf7d1ac5b9f12ab3b8f97) Thanks [@alex-page](https://github.com/alex-page)! - Update Metaobject and MetaobjectReference icon SVGs
+
+## 7.9.0
+
+### Minor Changes
+
+- [#9856](https://github.com/Shopify/polaris/pull/9856) [`47652f7d6`](https://github.com/Shopify/polaris/commit/47652f7d67f98d7bef8ef8485fae803b9f3c1056) Thanks [@heyjoethomas](https://github.com/heyjoethomas)! - Updates social media icons, removing them from their containers and adds a one for the Twitch platform.
+
+## 7.8.1
+
+### Patch Changes
+
+- [#9879](https://github.com/Shopify/polaris/pull/9879) [`d1bee0f87`](https://github.com/Shopify/polaris/commit/d1bee0f87879c7dba57e0b3c4585d0addbe835c9) Thanks [@kyledurand](https://github.com/kyledurand)! - Optimized some unoptimized icons
+
+## 7.8.0
+
+### Minor Changes
+
+- [#9858](https://github.com/Shopify/polaris/pull/9858) [`3fc3d5923`](https://github.com/Shopify/polaris/commit/3fc3d5923b5ed23c4a460bb2c40f31eab21e5f89) Thanks [@ardakaracizmeli](https://github.com/ardakaracizmeli)! - Added SidekickMajor
+
+* [#9871](https://github.com/Shopify/polaris/pull/9871) [`bac86a621`](https://github.com/Shopify/polaris/commit/bac86a6212467ed4695c4c979f7b5f5f4c6bf8e2) Thanks [@fortmarek](https://github.com/fortmarek)! - Added displayName to transpiled icons
+
+- [#9854](https://github.com/Shopify/polaris/pull/9854) [`5dabf0fe0`](https://github.com/Shopify/polaris/commit/5dabf0fe050ababf9bd5f78fd4a1fa69098c95b2) Thanks [@heyjoethomas](https://github.com/heyjoethomas)! - Updated CancelMajor and CancelMinor icons
+
+## 7.7.0
+
+### Minor Changes
+
+- [#9810](https://github.com/Shopify/polaris/pull/9810) [`6bb284d11`](https://github.com/Shopify/polaris/commit/6bb284d11f100b5813c27ded6cc9779eb7fc9a49) Thanks [@heyjoethomas](https://github.com/heyjoethomas)! - Updated FirstViewMajor icon
+
+## 7.6.0
+
+### Minor Changes
+
+- [#9777](https://github.com/Shopify/polaris/pull/9777) [`8228de0f6`](https://github.com/Shopify/polaris/commit/8228de0f61e49caeab538de36b19616e19daecce) Thanks [@heyjoethomas](https://github.com/heyjoethomas)! - Added social media icons
+
+## 7.5.0
+
+### Minor Changes
+
+- [#9756](https://github.com/Shopify/polaris/pull/9756) [`c8e5779f0`](https://github.com/Shopify/polaris/commit/c8e5779f097c6509ff84deacf17c41d1b5ecfd41) Thanks [@heyjoethomas](https://github.com/heyjoethomas)! - Updated bold and italic icon sets
+
+## 7.4.0
+
+### Minor Changes
+
+- [#9727](https://github.com/Shopify/polaris/pull/9727) [`ad287e384`](https://github.com/Shopify/polaris/commit/ad287e3842eb7e1ebf2f63079e3ffbc20271f8bb) Thanks [@kyledurand](https://github.com/kyledurand)! - Updated LanguageFilledMinor, LanguageMinor, and added TranslateMajor
+
+* [#9718](https://github.com/Shopify/polaris/pull/9718) [`ae40558df`](https://github.com/Shopify/polaris/commit/ae40558dfc5ed5faabd7ba5812307a077b00a27f) Thanks [@kyledurand](https://github.com/kyledurand)! - Updated pin minor and pin unfilled minor
+
+### Patch Changes
+
+- [#9730](https://github.com/Shopify/polaris/pull/9730) [`639395406`](https://github.com/Shopify/polaris/commit/6393954066675721b9d9a8c9543b78d97e8af19b) Thanks [@lgriffee](https://github.com/lgriffee)! - Fixed distinction between ascending and descending sorting icons
+
+## 7.3.0
+
+### Minor Changes
+
+- [#9520](https://github.com/Shopify/polaris/pull/9520) [`e566211ef`](https://github.com/Shopify/polaris/commit/e566211ef79c9d178615a85895007bdef45d755e) Thanks [@kyledurand](https://github.com/kyledurand)! - Updated all icon styles
+
+## 7.2.0
+
+### Minor Changes
+
+- [#9581](https://github.com/Shopify/polaris/pull/9581) [`991d9fe69`](https://github.com/Shopify/polaris/commit/991d9fe696faaee22f112d30820943bff9f5ee35) Thanks [@Rusty-UX](https://github.com/Rusty-UX)! - Added BoldMajor, BoldMinor, IndentMajor, IndentMinor, ItalicMajor, ItalicMinor, OrderedListMajor, OrderedListMinor, OutdentMajor, OutdentMinor, TextColorMajor, TextColorMinor, UnderlineMajor, UnderlineMinor icons
+
+* [#9580](https://github.com/Shopify/polaris/pull/9580) [`75f08f32c`](https://github.com/Shopify/polaris/commit/75f08f32c2cf594a73d3d32276bab5bcf87490bf) Thanks [@kyledurand](https://github.com/kyledurand)! - Added optimize script
+
+## 7.1.0
+
+### Minor Changes
+
+- [#9328](https://github.com/Shopify/polaris/pull/9328) [`f907a55a1`](https://github.com/Shopify/polaris/commit/f907a55a1e144fb9d448ad55c5009b535bc598a4) Thanks [@richardmarquezshopify](https://github.com/richardmarquezshopify)! - Added GaugeMajor, GaugeMinor
+
+## 7.0.1
+
+### Patch Changes
+
+- [#9305](https://github.com/Shopify/polaris/pull/9305) [`753ff148f`](https://github.com/Shopify/polaris/commit/753ff148fbc5a74f0b1dd85d817bb2c0522d3001) Thanks [@samrose3](https://github.com/samrose3)! - Fixed npm release conflict with 7.0.0
+
+## 7.0.0
+
+### Major Changes
+
+- [#7597](https://github.com/Shopify/polaris/pull/7597) [`9e1350e22`](https://github.com/Shopify/polaris/commit/9e1350e22f286ead5a735e0c4dc6623f530f9806) Thanks [@lgriffee](https://github.com/lgriffee)! - Removed support for NodeJS version 14 and set version 16 as minimum supported version
+
+## 6.16.0
+
+### Minor Changes
+
+- [#9153](https://github.com/Shopify/polaris/pull/9153) [`4e343a180`](https://github.com/Shopify/polaris/commit/4e343a180c837ef29d8117c10053f82eb17bc29b) Thanks [@dGoligorsky](https://github.com/dGoligorsky)! - Updated thumbs up and down icons, major and minor sets
+
+* [#9109](https://github.com/Shopify/polaris/pull/9109) [`5be210bd5`](https://github.com/Shopify/polaris/commit/5be210bd54e95ad694e898750c3f40259b9216be) Thanks [@heyjoethomas](https://github.com/heyjoethomas)! - Updated design for MarketingMajor icon
+
+## 6.15.0
+
+### Minor Changes
+
+- [#9104](https://github.com/Shopify/polaris/pull/9104) [`92fbd1308`](https://github.com/Shopify/polaris/commit/92fbd1308b6ea0ec22c3f628775e4fbbd5b0921e) Thanks [@pbojinov](https://github.com/pbojinov)! - Added AnalyticsBarHorizontalMinor, AnalyticsBardStackedMinor, AnalyticsCohortMinor, AnalyticsDonutMinor, AnalyticsFunnelMinor, AnalyticsLineMinor, AnalyticsTableMinor, ListMinor.
+
+  Updated ListMajor
+
+* [#9125](https://github.com/Shopify/polaris/pull/9125) [`c28ed7a9e`](https://github.com/Shopify/polaris/commit/c28ed7a9eaf99c856943d1caefa6742b0390b108) Thanks [@jonrundle](https://github.com/jonrundle)! - New icons added for Magic Chat
+
+## 6.14.0
+
+### Minor Changes
+
+- [#9049](https://github.com/Shopify/polaris/pull/9049) [`13b1a9109`](https://github.com/Shopify/polaris/commit/13b1a9109b996dd19f996b9bdf2a15b96c519c49) Thanks [@vngauv](https://github.com/vngauv)! - Added any click attribution model icon
+
+## 6.13.0
+
+### Minor Changes
+
+- [#8924](https://github.com/Shopify/polaris/pull/8924) [`4880e3ed7`](https://github.com/Shopify/polaris/commit/4880e3ed71cade2f88d6211025e662ecb4a9e8ce) Thanks [@tal87](https://github.com/tal87)! - Added PersonalizedTextMajor icon
+
+* [#8861](https://github.com/Shopify/polaris/pull/8861) [`2bc90503d`](https://github.com/Shopify/polaris/commit/2bc90503d88cac89b021dc0114812c37c2f3258e) Thanks [@AlejandroE](https://github.com/AlejandroE)! - Added ExploreImagesMajor
+
+- [#8919](https://github.com/Shopify/polaris/pull/8919) [`7349d4108`](https://github.com/Shopify/polaris/commit/7349d4108f22d1173aa6f4802df1c430bfc3c5ee) Thanks [@skparkk](https://github.com/skparkk)! - Added new keyboard major + minor icons
+
 ## 6.12.0
 
 ### Minor Changes

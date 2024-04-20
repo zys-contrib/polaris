@@ -1,20 +1,11 @@
 import React from 'react';
 import {mountWithApp} from 'tests/utilities';
-import {matchMedia} from '@shopify/jest-dom-mocks';
 
 import {Avatar} from '../../Avatar';
 import {Button} from '../../Button';
 import {AccountConnection} from '../AccountConnection';
 
 describe('<AccountConnection />', () => {
-  beforeEach(() => {
-    matchMedia.mock();
-  });
-
-  afterEach(() => {
-    matchMedia.restore();
-  });
-
   describe('title', () => {
     it('shows the title when one is provided', () => {
       const title = 'Example app';
@@ -63,7 +54,7 @@ describe('<AccountConnection />', () => {
       expect(accountConnection).toContainReactComponent(Button, {
         children: action.content,
         onClick: action.onAction,
-        primary: true,
+        variant: 'primary',
       });
     });
 
@@ -78,7 +69,6 @@ describe('<AccountConnection />', () => {
       expect(accountConnection).toContainReactComponent(Button, {
         children: action.content,
         onClick: action.onAction,
-        primary: false,
       });
     });
   });

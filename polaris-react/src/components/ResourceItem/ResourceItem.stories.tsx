@@ -57,6 +57,71 @@ export function Default() {
   );
 }
 
+export function SelectableWithMedia() {
+  const [selectedItems, setSelectedItems] = useState<
+    ResourceListProps['selectedItems']
+  >([]);
+
+  return (
+    <LegacyCard>
+      <ResourceList
+        resourceName={{singular: 'customer', plural: 'customers'}}
+        selectable
+        selectedItems={selectedItems}
+        onSelectionChange={setSelectedItems}
+        items={[
+          {
+            id: '145',
+            url: '#',
+            avatarSource:
+              'https://burst.shopifycdn.com/photos/freelance-designer-working-on-laptop.jpg?width=746',
+            name: 'Yi So-Yeon',
+            location: 'Gwangju, South Korea',
+          },
+          {
+            id: '146',
+            url: '#',
+            avatarSource:
+              'https://burst.shopifycdn.com/photos/woman-standing-in-front-of-yellow-background.jpg?width=746',
+            name: 'Jane Smith',
+            location: 'Manhattan, New York',
+          },
+          {
+            id: '147',
+            url: '#',
+            avatarSource:
+              'https://burst.shopifycdn.com/photos/relaxing-in-headphones.jpg?width=746',
+            name: 'Grace Baker',
+            location: 'Los Angeles, California',
+          },
+        ]}
+        renderItem={(item) => {
+          const {id, url, avatarSource, name, location} = item;
+
+          return (
+            <ResourceItem
+              id={id}
+              url={url}
+              media={
+                <Avatar customer size="md" name={name} source={avatarSource} />
+              }
+              accessibilityLabel={`View details for ${name}`}
+              name={name}
+            >
+              <h3>
+                <Text fontWeight="bold" as="span">
+                  {name}
+                </Text>
+              </h3>
+              <div>{location}</div>
+            </ResourceItem>
+          );
+        }}
+      />
+    </LegacyCard>
+  );
+}
+
 export function WithMedia() {
   return (
     <LegacyCard>
@@ -80,12 +145,7 @@ export function WithMedia() {
               id={id}
               url={url}
               media={
-                <Avatar
-                  customer
-                  size="medium"
-                  name={name}
-                  source={avatarSource}
-                />
+                <Avatar customer size="md" name={name} source={avatarSource} />
               }
               accessibilityLabel={`View details for ${name}`}
               name={name}
@@ -117,7 +177,7 @@ export function WithShortcutActions() {
               'https://burst.shopifycdn.com/photos/freelance-designer-working-on-laptop.jpg?width=746',
             name: 'Yi So-Yeon',
             location: 'Gwangju, South Korea',
-            latestOrderUrl: '#',
+            latestOrderUrl: '#latestOrderUrl',
           },
         ]}
         renderItem={(item) => {
@@ -128,12 +188,7 @@ export function WithShortcutActions() {
               id={id}
               url={url}
               media={
-                <Avatar
-                  customer
-                  size="medium"
-                  name={name}
-                  source={avatarSource}
-                />
+                <Avatar customer size="md" name={name} source={avatarSource} />
               }
               shortcutActions={[
                 {content: 'View latest order', url: latestOrderUrl},
@@ -168,7 +223,7 @@ export function WithPersistedShortcutActions() {
               'https://burst.shopifycdn.com/photos/freelance-designer-working-on-laptop.jpg?width=746',
             name: 'Yi So-Yeon',
             location: 'Gwangju, South Korea',
-            latestOrderUrl: '#',
+            latestOrderUrl: '#latestOrderUrl',
           },
         ]}
         renderItem={(item) => {
@@ -182,12 +237,7 @@ export function WithPersistedShortcutActions() {
               id={id}
               url={url}
               media={
-                <Avatar
-                  customer
-                  size="medium"
-                  name={name}
-                  source={avatarSource}
-                />
+                <Avatar customer size="md" name={name} source={avatarSource} />
               }
               persistActions
               shortcutActions={shortcutActions}
@@ -232,12 +282,7 @@ export function WithVerticalAlignment() {
               id={id}
               url={url}
               media={
-                <Avatar
-                  customer
-                  size="medium"
-                  name={name}
-                  source={avatarSource}
-                />
+                <Avatar customer size="md" name={name} source={avatarSource} />
               }
               accessibilityLabel={`View details for ${name}`}
               name={name}
@@ -249,6 +294,72 @@ export function WithVerticalAlignment() {
               </h3>
               <div>{location}</div>
               <div>{lastOrder}</div>
+            </ResourceItem>
+          );
+        }}
+      />
+    </LegacyCard>
+  );
+}
+
+export function WithDisabledState() {
+  const [selectedItems, setSelectedItems] = useState<
+    ResourceListProps['selectedItems']
+  >([]);
+
+  return (
+    <LegacyCard>
+      <ResourceList
+        resourceName={{singular: 'customer', plural: 'customers'}}
+        selectable
+        selectedItems={selectedItems}
+        onSelectionChange={setSelectedItems}
+        items={[
+          {
+            id: '145',
+            url: '#',
+            avatarSource:
+              'https://burst.shopifycdn.com/photos/freelance-designer-working-on-laptop.jpg?width=746',
+            name: 'Yi So-Yeon',
+            location: 'Gwangju, South Korea',
+          },
+          {
+            id: '146',
+            url: '#',
+            avatarSource:
+              'https://burst.shopifycdn.com/photos/woman-standing-in-front-of-yellow-background.jpg?width=746',
+            name: 'Jane Smith',
+            location: 'Manhattan, New York',
+          },
+          {
+            id: '147',
+            url: '#',
+            avatarSource:
+              'https://burst.shopifycdn.com/photos/relaxing-in-headphones.jpg?width=746',
+            name: 'Grace Baker',
+            location: 'Los Angeles, California',
+          },
+        ]}
+        renderItem={(item) => {
+          const {id, url, avatarSource, name, location} = item;
+
+          return (
+            <ResourceItem
+              disabled={id === '145'}
+              id={id}
+              url={url}
+              media={
+                <Avatar customer size="md" name={name} source={avatarSource} />
+              }
+              accessibilityLabel={`View details for ${name}`}
+              name={name}
+            >
+              <h3>
+                <Text fontWeight="bold" as="span">
+                  {name}
+                </Text>
+              </h3>
+              <div>{location}</div>
             </ResourceItem>
           );
         }}

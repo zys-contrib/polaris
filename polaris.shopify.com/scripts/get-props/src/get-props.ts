@@ -1,3 +1,5 @@
+#!/usr/bin/env ts-node
+
 import * as ts from 'typescript';
 import * as fs from 'fs';
 import path from 'path';
@@ -22,7 +24,7 @@ export function normalizePath(path: string): string {
   if (normalizedPath.startsWith('.')) {
     normalizedPath = normalizedPath.replace(/^\.{1,2}\//, '');
   } else if (normalizedPath.includes('/polaris/')) {
-    normalizedPath = normalizedPath.split('/polaris/')[1];
+    normalizedPath = normalizedPath.split(/\/(polaris\/)+/).at(-1)!;
   } else if (normalizedPath.startsWith('/')) {
     normalizedPath = normalizedPath.replace('/', '');
   }
@@ -282,14 +284,15 @@ if (isExecutedThroughCommandLine) {
     let filesWithoutTests = files.filter((file) => !file.endsWith('test.tsx'));
     const ast = getProps(filesWithoutTests);
 
-    const cacheDir = path.join(__dirname, '../../../../../.cache');
+    const cacheDir = path.join(__dirname, '../../../.cache');
     if (!fs.existsSync(cacheDir)) {
       fs.mkdirSync(cacheDir, {recursive: true});
     }
 
     fs.writeFileSync(
-      path.join(cacheDir, 'props.json'),
-      JSON.stringify(ast, undefined, 2),
+      path.join(cacheDir, 'props.ts'),
+      `import type {AllTypes} from '../src/types';
+export default ${JSON.stringify(ast)} satisfies AllTypes;`,
     );
   });
 }
@@ -309,7 +312,12 @@ export function getRelevantTypes(
   ast: AllTypes,
   name: string,
   filePath: string,
+  status: string,
 ): FilteredTypes {
+  if (status === 'Deprecated') {
+    return {};
+  }
+
   let matchingNode = ast[name][filePath];
 
   if (!matchingNode) {

@@ -9,9 +9,9 @@ import {Text} from '../../../Text';
 // eslint-disable-next-line import/no-deprecated
 import {EventListener} from '../../../EventListener';
 import {Key} from '../../../../types';
-import sharedStyles from '../../RangeSlider.scss';
+import sharedStyles from '../../RangeSlider.module.css';
 
-import styles from './DualThumb.scss';
+import styles from './DualThumb.module.css';
 
 interface State {
   value: DualValue;
@@ -190,7 +190,7 @@ export class DualThumb extends Component<DualThumbProps, State> {
           }}
         >
           <div className={styles.OutputBubble}>
-            <Text as="span" variant="headingXs" alignment="center">
+            <Text as="span" variant="headingSm" alignment="center">
               {value[0]}
             </Text>
           </div>
@@ -208,7 +208,7 @@ export class DualThumb extends Component<DualThumbProps, State> {
           }}
         >
           <div className={styles.OutputBubble}>
-            <Text as="span" variant="headingXs" alignment="center">
+            <Text as="span" variant="headingSm" alignment="center">
               {value[1]}
             </Text>
           </div>
@@ -248,7 +248,7 @@ export class DualThumb extends Component<DualThumbProps, State> {
               ref={this.trackWrapper}
             >
               <div className={styles.Track} style={cssVars} ref={this.track} />
-              <div className={styles['Track--dashed']} />
+              <div className={sharedStyles['Track--dashed']} />
               <div
                 id={idLower}
                 className={thumbLowerClassName}

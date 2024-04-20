@@ -10,7 +10,7 @@ import {
   EmptySearchResult,
   Text,
 } from '@shopify/polaris';
-import {SearchMinor} from '@shopify/polaris-icons';
+import {SearchIcon} from '@shopify/polaris-icons';
 
 import {withPolarisExample} from '../../src/components/PolarisExampleWrapper';
 
@@ -180,9 +180,9 @@ function PopoverWithSearchableListboxExample() {
   const activator = (
     <div
       style={{
-        fontSize: 'var(--p-font-size-300)',
-        color: 'var(--p-text)',
-        borderBottom: '1px dashed var(--p-border)',
+        fontSize: 'var(--p-font-size-500)',
+        color: 'var(--p-color-text)',
+        borderBottom: '1px dashed var(--p-color-border)',
       }}
     >
       <Link monochrome removeUnderline onClick={handleOpenPicker}>
@@ -204,7 +204,7 @@ function PopoverWithSearchableListboxExample() {
           placeholder="Search segments"
           autoComplete="off"
           value={query}
-          prefix={<Icon source={SearchMinor} />}
+          prefix={<Icon source={SearchIcon} />}
           ariaActiveDescendant={activeOptionId}
           ariaControls={listboxId}
           onChange={handleQueryChange}
@@ -235,7 +235,9 @@ function PopoverWithSearchableListboxExample() {
 
   const showAllMarkup = showFooterAction ? (
     <Listbox.Action value={actionValue}>
-      <span style={{color: 'var(--p-interactive)'}}>Show all 111 segments</span>
+      <span style={{color: 'var(--p-color-text-emphasis)'}}>
+        Show all 111 segments
+      </span>
     </Listbox.Action>
   ) : null;
 
@@ -303,9 +305,9 @@ function PopoverWithSearchableListboxExample() {
                 position: 'relative',
                 width: '310px',
                 height: '292px',
-                padding: 'var(--p-space-2) 0',
-                borderBottomLeftRadius: 'var(--p-border-radius-2)',
-                borderBottomRightRadius: 'var(--p-border-radius-2)',
+                padding: 'var(--p-space-200) 0',
+                borderBottomLeftRadius: 'var(--p-border-radius-200)',
+                borderBottomRightRadius: 'var(--p-border-radius-200)',
               }}
               onScrolledToBottom={handleLazyLoadSegments}
             >

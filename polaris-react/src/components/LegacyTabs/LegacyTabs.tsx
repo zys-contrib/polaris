@@ -1,17 +1,17 @@
 import React, {PureComponent} from 'react';
-import {HorizontalDotsMinor, CaretDownMinor} from '@shopify/polaris-icons';
+import {MenuHorizontalIcon, ChevronDownIcon} from '@shopify/polaris-icons';
 
-import {classNames} from '../../utilities/css';
+import {Box} from '../Box';
 import {Icon} from '../Icon';
 import {Popover} from '../Popover';
+import {classNames} from '../../utilities/css';
 import {useI18n} from '../../utilities/i18n';
-import {Box} from '../Box';
 
 import type {TabDescriptor} from './types';
 import {getVisibleAndHiddenTabIndices} from './utilities';
 import {List, Panel, Tab, TabMeasurer} from './components';
 import type {TabMeasurerProps} from './components';
-import styles from './LegacyTabs.scss';
+import styles from './LegacyTabs.module.css';
 
 export interface LegacyTabsProps {
   /** Content to display in tabs */
@@ -130,10 +130,10 @@ class TabsInner extends PureComponent<CombinedProps, State> {
     const disclosureButtonContent = hasCustomDisclosure ? (
       <>
         {disclosureText}
-        <Icon source={CaretDownMinor} color="subdued" />
+        <Icon source={ChevronDownIcon} tone="subdued" />
       </>
     ) : (
-      <Icon source={HorizontalDotsMinor} color="subdued" />
+      <Icon source={MenuHorizontalIcon} tone="subdued" />
     );
 
     const disclosureButton = (
@@ -158,9 +158,10 @@ class TabsInner extends PureComponent<CombinedProps, State> {
     return (
       <div>
         <Box
-          borderBlockEnd="divider"
-          paddingInlineStart="2"
-          paddingInlineEnd="2"
+          borderBlockEndWidth="025"
+          borderColor="border-secondary"
+          paddingInlineStart="200"
+          paddingInlineEnd="200"
         >
           <TabMeasurer
             tabToFocus={tabToFocus}
@@ -385,7 +386,7 @@ function handleKeyDown(event: React.KeyboardEvent<HTMLElement>) {
     event.stopPropagation();
   }
 }
-
+/** @deprecated Use the Tabs component instead */
 export function LegacyTabs(props: LegacyTabsProps) {
   const i18n = useI18n();
 

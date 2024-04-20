@@ -1,6 +1,6 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
 import Fuse from 'fuse.js';
-import {metadata, MetadataProperties} from '@shopify/polaris-tokens';
+import {metaThemeDefault, MetaTokenProperties} from '@shopify/polaris-tokens';
 import iconMetadata from '@shopify/polaris-icons/metadata';
 
 import {
@@ -8,29 +8,47 @@ import {
   GroupedSearchResults,
   searchResultCategories,
   SearchResultCategory,
+  FoundationsCategory,
   Status,
-  SiteJSON,
   PatternFrontMatter,
+  FrontMatter,
 } from '../../../../src/types';
 
 import {slugify, stripMarkdownLinks} from '../../../../src/utils/various';
 
-import siteJson from '../../../../.cache/site.json';
+import pages from '../../../../.cache/site';
 
-const pages: SiteJSON = siteJson;
+type IndexablePages = {
+  [K in keyof typeof pages as typeof pages[K]['frontMatter'] extends {
+    noIndex: true;
+  }
+    ? never
+    : K]: typeof pages[K];
+};
 
-const componentSlugs = Object.keys(pages).filter((slug) =>
-  slug.startsWith('components/'),
-);
-const patternSlugs = Object.keys(pages).filter((slug) =>
-  slug.startsWith('patterns/'),
-);
-const foundationSlugs = Object.keys(pages).filter(
+const searchablePages = Object.fromEntries(
+  Object.entries(pages).filter(
+    ([, {frontMatter}]) => !(frontMatter as FrontMatter).noIndex,
+  ),
+) as IndexablePages;
+
+type Slugs = keyof typeof searchablePages;
+type StartsWith<T, Start extends string> = Extract<T, `${Start}${string}`>;
+
+const componentSlugs = Object.keys(searchablePages).filter((slug) =>
+  slug.startsWith('/components/'),
+) as StartsWith<Slugs, '/components/'>[];
+
+const patternSlugs = Object.keys(searchablePages).filter((slug) =>
+  slug.startsWith('/patterns/'),
+) as StartsWith<Slugs, '/patterns/'>[];
+
+const foundationSlugs = Object.keys(searchablePages).filter(
   (slug) =>
-    slug.startsWith('foundations/') ||
-    slug.startsWith('design/') ||
-    slug.startsWith('content/'),
-);
+    slug.startsWith('/foundations/') ||
+    slug.startsWith('/design/') ||
+    slug.startsWith('/content/'),
+) as StartsWith<Slugs, '/foundations/' | '/design/' | '/content/'>[];
 
 const MAX_RESULTS: {[key in SearchResultCategory]: number} = {
   foundations: 8,
@@ -52,11 +70,16 @@ const getSearchResults = (query?: string) => {
       title,
       description = '',
       category = '',
-    } = pages[slug].frontMatter;
+      internalOnly,
+    } = searchablePages[slug].frontMatter as FrontMatter;
 
     const url = category
       ? `/components/${slugify(category)}/${slugify(title)}`
       : `/components/${slugify(title)}`;
+
+    if (internalOnly) {
+      return;
+    }
 
     results.push({
       id: slugify(`components ${title}`),
@@ -74,20 +97,20 @@ const getSearchResults = (query?: string) => {
     });
   });
 
-  const {colors, depth, font, motion, shape, spacing, zIndex} = metadata;
+  const {color, border, font, motion, shadow, space, zIndex} = metaThemeDefault;
   const tokenGroups = {
-    colors,
-    depth,
+    color,
+    border,
     font,
     motion,
-    shape,
-    spacing,
+    shadow,
+    space,
     zIndex,
   };
 
   Object.entries(tokenGroups).forEach(([groupSlug, tokenGroup]) => {
     Object.entries(tokenGroup).forEach(
-      ([tokenName, tokenProperties]: [string, MetadataProperties]) => {
+      ([tokenName, tokenProperties]: [string, MetaTokenProperties]) => {
         results.push({
           id: slugify(`tokens ${tokenName}`),
           category: 'tokens',
@@ -111,7 +134,7 @@ const getSearchResults = (query?: string) => {
   // Add icons
   Object.keys(iconMetadata).forEach((fileName) => {
     results.push({
-      id: slugify(`icons ${fileName} ${iconMetadata[fileName].set}`),
+      id: slugify(`icons ${fileName}`),
       category: 'icons',
       url: `/icons?icon=${fileName}`,
       score: 0,
@@ -125,14 +148,18 @@ const getSearchResults = (query?: string) => {
 
   // Add foundations
   foundationSlugs.forEach((slug) => {
-    const {title, icon = '', description = ''} = pages[slug].frontMatter;
-    const category = slug.split('/')[0].toLowerCase();
+    const {
+      title,
+      icon = '',
+      description = '',
+    } = searchablePages[slug].frontMatter as FrontMatter;
+    const category = slug.split('/')[1].toLowerCase() as FoundationsCategory;
 
     results.push({
       id: slugify(`foundations ${title}`),
       category: 'foundations',
       score: 0,
-      url: `/${slug}`,
+      url: slug,
       meta: {
         foundations: {
           title,
@@ -149,13 +176,13 @@ const getSearchResults = (query?: string) => {
       title,
       description = '',
       previewImg,
-    } = pages[slug].frontMatter as PatternFrontMatter;
+    } = searchablePages[slug].frontMatter as PatternFrontMatter;
 
     results.push({
       id: slugify(`pattern ${title}`),
       category: 'patterns',
       score: 0,
-      url: `/${slug}`,
+      url: slug,
       meta: {
         patterns: {
           title,
@@ -188,7 +215,6 @@ const getSearchResults = (query?: string) => {
       {name: 'meta.icons.icon.fileName', weight: 50},
       {name: 'meta.icons.icon.name', weight: 50},
       {name: 'meta.icons.icon.keywords', weight: 20},
-      {name: 'meta.icons.icon.set', weight: 20},
       {name: 'meta.icons.icon.description', weight: 50},
     ],
     includeScore: true,

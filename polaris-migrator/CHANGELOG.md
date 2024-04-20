@@ -1,5 +1,459 @@
 # @shopify/polaris-migrator
 
+## 1.0.0
+
+### Major Changes
+
+- [#11844](https://github.com/Shopify/polaris/pull/11844) [`a89e61478`](https://github.com/Shopify/polaris/commit/a89e61478fb7c5f588021e542101aba8a3898ec8) Thanks [@jesstelford](https://github.com/jesstelford)! - Miniumum required node version updated to v20.10.0
+
+* [#11799](https://github.com/Shopify/polaris/pull/11799) [`aa8e0f42b`](https://github.com/Shopify/polaris/commit/aa8e0f42b956622e826646c809c57eb79bb2b892) Thanks [@ryanwilsonperkin](https://github.com/ryanwilsonperkin)! - [Internal] Migrate repo from yarn to pnpm. No action required.
+
+### Patch Changes
+
+- Updated dependencies [[`a89e61478`](https://github.com/Shopify/polaris/commit/a89e61478fb7c5f588021e542101aba8a3898ec8), [`aa8e0f42b`](https://github.com/Shopify/polaris/commit/aa8e0f42b956622e826646c809c57eb79bb2b892)]:
+  - @shopify/polaris-tokens@9.0.0
+  - @shopify/stylelint-polaris@16.0.0
+
+## 0.29.0
+
+### Minor Changes
+
+- [#11831](https://github.com/Shopify/polaris/pull/11831) [`99972a50b`](https://github.com/Shopify/polaris/commit/99972a50b1e57b83374ea9fc71211ca0b2c11172) Thanks [@lgriffee](https://github.com/lgriffee)! - Created migration to replace deprecated `text` custom properties in polaris-react v14.0.0
+
+## 0.28.6
+
+### Patch Changes
+
+- [#11813](https://github.com/Shopify/polaris/pull/11813) [`c49809998`](https://github.com/Shopify/polaris/commit/c498099988dbc37490a3ccde92fda48151b00993) Thanks [@lgriffee](https://github.com/lgriffee)! - Removed `Text` `heading2xl` and associated tokens from v14 font migration
+
+## 0.28.5
+
+### Patch Changes
+
+- Updated dependencies [[`f6308995e`](https://github.com/Shopify/polaris/commit/f6308995e3ef8b5f8f017471d23a08577243b323)]:
+  - @shopify/polaris-tokens@8.10.0
+  - @shopify/stylelint-polaris@15.5.1
+
+## 0.28.4
+
+### Patch Changes
+
+- Updated dependencies [[`df5276317`](https://github.com/Shopify/polaris/commit/df527631730eccbbb259c43b7b7d1c5fc8e47264)]:
+  - @shopify/stylelint-polaris@15.5.0
+
+## 0.28.3
+
+### Patch Changes
+
+- Updated dependencies [[`1e613de8b`](https://github.com/Shopify/polaris/commit/1e613de8b3938bc30c722382a8e78e75e50be9cd)]:
+  - @shopify/polaris-tokens@8.9.0
+  - @shopify/stylelint-polaris@15.4.1
+
+## 0.28.2
+
+### Patch Changes
+
+- [#11754](https://github.com/Shopify/polaris/pull/11754) [`f57db81df`](https://github.com/Shopify/polaris/commit/f57db81df961e9147d4da00abecbe2fd89cc1702) Thanks [@jesstelford](https://github.com/jesstelford)! - Move migrations to v14 since the node v20 requirement will be the only change in v13
+
+- Updated dependencies [[`f6ba2b2a8`](https://github.com/Shopify/polaris/commit/f6ba2b2a8a8beae9ab235437caf5bfbacc50741f)]:
+  - @shopify/stylelint-polaris@15.4.0
+
+## 0.28.1
+
+### Patch Changes
+
+- Updated dependencies [[`dfcdaa109`](https://github.com/Shopify/polaris/commit/dfcdaa109a699db0d08d046fefda9eb336ddb60f)]:
+  - @shopify/stylelint-polaris@15.3.0
+
+## 0.28.0
+
+### Minor Changes
+
+- [#11596](https://github.com/Shopify/polaris/pull/11596) [`c8fabc011`](https://github.com/Shopify/polaris/commit/c8fabc011f375787acbf13bfa62fc2f47b66bf3d) Thanks [@lgriffee](https://github.com/lgriffee)! - Created migration to replace deprecated `font` custom properties in polaris-react v14.0.0
+
+### Patch Changes
+
+- [#11603](https://github.com/Shopify/polaris/pull/11603) [`2c53d6476`](https://github.com/Shopify/polaris/commit/2c53d64762ff545f56787e932e0b0935c45b5fdc) Thanks [@lgriffee](https://github.com/lgriffee)! - Updated migration to replace deprecated `font` custom properties in polaris-react v14.0.0
+
+## 0.27.4
+
+### Patch Changes
+
+- Updated dependencies [[`04e462816`](https://github.com/Shopify/polaris/commit/04e462816b2082cb0bac341f3827f1c767213499)]:
+  - @shopify/polaris-tokens@8.8.0
+  - @shopify/stylelint-polaris@15.2.2
+
+## 0.27.3
+
+### Patch Changes
+
+- Updated dependencies [[`27cf15c98`](https://github.com/Shopify/polaris/commit/27cf15c982cffebe8cca7c3587f8b8f81467e26e), [`5a1ada35a`](https://github.com/Shopify/polaris/commit/5a1ada35a73fd2ca1f6a0ce388abc1b788c114ff)]:
+  - @shopify/polaris-tokens@8.7.0
+  - @shopify/stylelint-polaris@15.2.1
+
+## 0.27.2
+
+### Patch Changes
+
+- Updated dependencies [[`ffd231e28`](https://github.com/Shopify/polaris/commit/ffd231e28543bdb2912aa95f323c4afc69c763eb)]:
+  - @shopify/stylelint-polaris@15.2.0
+
+## 0.27.1
+
+### Patch Changes
+
+- Updated dependencies [[`c9abd3c0c`](https://github.com/Shopify/polaris/commit/c9abd3c0cb532f2fcb49a716507d5dd478ce10d9), [`2ee7dbd30`](https://github.com/Shopify/polaris/commit/2ee7dbd30f54f9f795ea3c52ab8fb750e9daade3), [`c9abd3c0c`](https://github.com/Shopify/polaris/commit/c9abd3c0cb532f2fcb49a716507d5dd478ce10d9)]:
+  - @shopify/stylelint-polaris@15.1.0
+  - @shopify/polaris-tokens@8.6.0
+
+## 0.27.0
+
+### Minor Changes
+
+- [#11138](https://github.com/Shopify/polaris/pull/11138) [`f91c4b661`](https://github.com/Shopify/polaris/commit/f91c4b661b1d9540dd515c6f073aeeb62e914023) Thanks [@alex-page](https://github.com/alex-page)! - Added `icons-v8-update-names` migration. This migration will update all icons from `@shopfiy/polaris-icons` from the deprecated Major and Minor suffixes to the new Icon suffix (ex: `AppsMajor` -> `AppsIcon`).
+
+## 0.26.7
+
+### Patch Changes
+
+- Updated dependencies [[`9f7e5b682`](https://github.com/Shopify/polaris/commit/9f7e5b682f93a3f241e7162eef35dd42b25f7afa)]:
+  - @shopify/polaris-tokens@8.5.0
+  - @shopify/stylelint-polaris@15.0.7
+
+## 0.26.6
+
+### Patch Changes
+
+- Updated dependencies [[`4a7e090bc`](https://github.com/Shopify/polaris/commit/4a7e090bca1c9f5c647f53a93832424ff1cfcf82)]:
+  - @shopify/polaris-tokens@8.4.0
+  - @shopify/stylelint-polaris@15.0.6
+
+## 0.26.5
+
+### Patch Changes
+
+- Updated dependencies [[`d0babcc9b`](https://github.com/Shopify/polaris/commit/d0babcc9b15b8ef8251425795bec26e876f03756)]:
+  - @shopify/polaris-tokens@8.3.0
+  - @shopify/stylelint-polaris@15.0.5
+
+## 0.26.4
+
+### Patch Changes
+
+- Updated dependencies [[`c58632afa`](https://github.com/Shopify/polaris/commit/c58632afa1141c467533b7564e725f99ebbed71c), [`32cfbecb1`](https://github.com/Shopify/polaris/commit/32cfbecb136f57077bb5beefb58a4cc554dc8f71), [`97683ac05`](https://github.com/Shopify/polaris/commit/97683ac052fcc69c6f689520c15fde555d14fbfa), [`fe8491507`](https://github.com/Shopify/polaris/commit/fe8491507f7cd77af6866bd6f5d49229923dbad0)]:
+  - @shopify/polaris-tokens@8.2.0
+  - @shopify/stylelint-polaris@15.0.4
+
+## 0.26.3
+
+### Patch Changes
+
+- Updated dependencies [[`23055adcf`](https://github.com/Shopify/polaris/commit/23055adcfa97decbfbc51924bd121d1dae76ac6f)]:
+  - @shopify/polaris-tokens@8.1.0
+  - @shopify/stylelint-polaris@15.0.3
+
+## 0.26.2
+
+### Patch Changes
+
+- [#11029](https://github.com/Shopify/polaris/pull/11029) [`ca67934e0`](https://github.com/Shopify/polaris/commit/ca67934e0f4164a3f78b8db71e067c3411e39d5d) Thanks [@lgriffee](https://github.com/lgriffee)! - Update `v12-styles-replace-custom-property-color` migration with additional tokens
+
+- Updated dependencies [[`73b1d5d2c`](https://github.com/Shopify/polaris/commit/73b1d5d2ccf0a9f203fdf045b752dfbf536aeee5)]:
+  - @shopify/polaris-tokens@8.0.2
+  - @shopify/stylelint-polaris@15.0.2
+
+## 0.26.1
+
+### Patch Changes
+
+- Updated dependencies [[`f1d256fce`](https://github.com/Shopify/polaris/commit/f1d256fcee9594bcb5a03ab8fee591d3832f12c4)]:
+  - @shopify/polaris-tokens@8.0.1
+  - @shopify/stylelint-polaris@15.0.1
+
+## 0.26.0
+
+### Minor Changes
+
+- [#10950](https://github.com/Shopify/polaris/pull/10950) [`da2466f41`](https://github.com/Shopify/polaris/commit/da2466f41eeecc325e1ffdd22146e5a6dd9ecc9e) Thanks [@aaronccasanova](https://github.com/aaronccasanova)! - Updated the CLI to accept a file list via `stdin`
+
+## 0.25.0
+
+### Minor Changes
+
+- [#10878](https://github.com/Shopify/polaris/pull/10878) [`f185fb99d`](https://github.com/Shopify/polaris/commit/f185fb99dacdb7c6db1f3fdb91f28042d4662da5) Thanks [@aaronccasanova](https://github.com/aaronccasanova)! - Added generic `react-update-component-prop` migration
+
+## 0.24.0
+
+### Minor Changes
+
+- [#10874](https://github.com/Shopify/polaris/pull/10874) [`471c3d5af`](https://github.com/Shopify/polaris/commit/471c3d5afe9cd894fdf25c22aef5a7b374dc7531) Thanks [@lgriffee](https://github.com/lgriffee)! - Ported `v12-react-avatar-component` migration from [Avatar] Remove customer prop and experimental values [#10283](https://github.com/Shopify/polaris/pull/10283) to main branch
+
+## 0.23.0
+
+### Minor Changes
+
+- [#10579](https://github.com/Shopify/polaris/pull/10579) [`b5a3622ca`](https://github.com/Shopify/polaris/commit/b5a3622caa2c7601cc14435eae3daab80f015d18) Thanks [@aaronccasanova](https://github.com/aaronccasanova)! - Created migration to replace deprecated `color` custom properties in Polaris v12.0.0
+
+* [#10304](https://github.com/Shopify/polaris/pull/10304) [`eb93b7f1c`](https://github.com/Shopify/polaris/commit/eb93b7f1ccfd3a3778860b50de95465147207fab) Thanks [@lgriffee](https://github.com/lgriffee)! - Created migration to replace deprecated `font` custom properties in polaris-react v12.0.0
+
+- [#10506](https://github.com/Shopify/polaris/pull/10506) [`d901a07a3`](https://github.com/Shopify/polaris/commit/d901a07a3a146378663e728478b120033b0ebf3c) Thanks [@lgriffee](https://github.com/lgriffee)! - Created migration to replace deprecated `border` custom properties in polaris-react v12.0.0
+
+* [#10305](https://github.com/Shopify/polaris/pull/10305) [`1b36b9256`](https://github.com/Shopify/polaris/commit/1b36b92561710882a48d79eb48c231dc0626925e) Thanks [@lgriffee](https://github.com/lgriffee)! - Created migration to replace deprecated `space` custom properties in polaris-react v12.0.0
+
+- [#10306](https://github.com/Shopify/polaris/pull/10306) [`dbae87e58`](https://github.com/Shopify/polaris/commit/dbae87e5844811ea4e6c8dd83e71c19b41444b18) Thanks [@lgriffee](https://github.com/lgriffee)! - Created migration to replace deprecated `shadow` custom properties in polaris-react v12.0.0
+
+## 0.22.8
+
+### Patch Changes
+
+- Updated dependencies [[`f23af6fdd`](https://github.com/Shopify/polaris/commit/f23af6fdd3a52d93700d3aeab43305bcf3989e98)]:
+  - @shopify/polaris-tokens@7.12.1
+  - @shopify/stylelint-polaris@14.1.1
+
+## 0.22.7
+
+### Patch Changes
+
+- Updated dependencies [[`45fc3a01f`](https://github.com/Shopify/polaris/commit/45fc3a01f959f6eea2c1bf03b981811a6f13f344)]:
+  - @shopify/polaris-tokens@7.12.0
+  - @shopify/stylelint-polaris@14.1.0
+
+## 0.22.6
+
+### Patch Changes
+
+- Updated dependencies [[`f26cebe99`](https://github.com/Shopify/polaris/commit/f26cebe99e486730bce2ca1d9add89e24ef9c648), [`2359e5f5a`](https://github.com/Shopify/polaris/commit/2359e5f5a4e6a93f8dd70997c4ae9a1ab732911c)]:
+  - @shopify/polaris-tokens@7.11.0
+  - @shopify/stylelint-polaris@14.0.6
+
+## 0.22.5
+
+### Patch Changes
+
+- [#10575](https://github.com/Shopify/polaris/pull/10575) [`ea6b54284`](https://github.com/Shopify/polaris/commit/ea6b542841a7b16037964d7b64d06399741be45c) Thanks [@aveline](https://github.com/aveline)! - Handled `buttonFrom` and `buttonsFrom` functions in `Button` migration
+
+- Updated dependencies [[`fe1aac1b5`](https://github.com/Shopify/polaris/commit/fe1aac1b5a9868c3decda53b94150e0242905d04), [`790a001cd`](https://github.com/Shopify/polaris/commit/790a001cd1942a0cd32e90b98339236fe2800afc), [`63cf3ad24`](https://github.com/Shopify/polaris/commit/63cf3ad2405f75589869a6f1aa33c277f559df3c), [`120e96eae`](https://github.com/Shopify/polaris/commit/120e96eaeb8ebda3dcf99d3917167e442bd19cdf)]:
+  - @shopify/polaris-tokens@7.10.0
+  - @shopify/stylelint-polaris@14.0.5
+
+## 0.22.4
+
+### Patch Changes
+
+- Updated dependencies [[`5e073c209`](https://github.com/Shopify/polaris/commit/5e073c2095c51154f27740f4c4bc3d00122c0218), [`2bccc2291`](https://github.com/Shopify/polaris/commit/2bccc22918eab571136b925bdf7ce07281658248), [`033424546`](https://github.com/Shopify/polaris/commit/03342454611a71a0a57e48cf8a013c1ca27837b3), [`66b2599da`](https://github.com/Shopify/polaris/commit/66b2599dabcb4bfb5cb4964c7a9bfce4fc12617b), [`c07de6ca4`](https://github.com/Shopify/polaris/commit/c07de6ca4aed19c643b2681d498432fd7414475e)]:
+  - @shopify/polaris-tokens@7.9.0
+  - @shopify/stylelint-polaris@14.0.4
+
+## 0.22.3
+
+### Patch Changes
+
+- Updated dependencies [[`26ab8ce7d`](https://github.com/Shopify/polaris/commit/26ab8ce7df10609316eccc75b7bed6f8cebc9120), [`7514dd1a3`](https://github.com/Shopify/polaris/commit/7514dd1a36a9988ede48085b80c6e7e214f98968), [`16c61668a`](https://github.com/Shopify/polaris/commit/16c61668ac3916aacaeb759f2052d0a3a7ed762e)]:
+  - @shopify/polaris-tokens@7.8.0
+  - @shopify/stylelint-polaris@14.0.3
+
+## 0.22.2
+
+### Patch Changes
+
+- Updated dependencies [[`101abb835`](https://github.com/Shopify/polaris/commit/101abb83599ce67372c411cde396613306dc06de)]:
+  - @shopify/polaris-tokens@7.7.0
+  - @shopify/stylelint-polaris@14.0.2
+
+## 0.22.1
+
+### Patch Changes
+
+- Updated dependencies [[`5939b49cf`](https://github.com/Shopify/polaris/commit/5939b49cf4616d6994cc17095e79ba5600ca7fe4)]:
+  - @shopify/polaris-tokens@7.6.0
+  - @shopify/stylelint-polaris@14.0.1
+
+## 0.22.0
+
+### Minor Changes
+
+- [#10263](https://github.com/Shopify/polaris/pull/10263) [`67699cb88`](https://github.com/Shopify/polaris/commit/67699cb88c8a5f85a4623b403fddb444c5104b24) Thanks [@aveline](https://github.com/aveline)! - Added migration for `Button` component
+
+## 0.21.0
+
+### Minor Changes
+
+- [#10246](https://github.com/Shopify/polaris/pull/10246) [`1947b4691`](https://github.com/Shopify/polaris/commit/1947b469144f8e0567fb69f06391a3fecbfe5b11) Thanks [@kyledurand](https://github.com/kyledurand)! - Added the ability to migrate prop values
+
+### Patch Changes
+
+- [#10215](https://github.com/Shopify/polaris/pull/10215) [`e4a6d47ab`](https://github.com/Shopify/polaris/commit/e4a6d47abd338b820737fec5acb1a566c38a1913) Thanks [@aveline](https://github.com/aveline)! - Fixed a bug in the rename prop migration
+
+## 0.20.0
+
+### Minor Changes
+
+- [#10101](https://github.com/Shopify/polaris/pull/10101) [`e6a2d352a`](https://github.com/Shopify/polaris/commit/e6a2d352aeb628c662ca86bb7c8b91ce695ff640) Thanks [@samrose3](https://github.com/samrose3)! - Removed the `@shopify/polaris-cli` and `@shopify/polaris-codemods` package in favor of using only the `@shopify/polaris-migrator`.
+
+  Removing these packages will provide the following benefits:
+
+  - Improve CI time by removing extra packages from our build, test, and lint workflows
+  - Reduce confusion on where to add new migrations or update previous migrations
+  - Clean up ESLint configs, reduce changelog entries, and remove package dependencies
+
+* [#10071](https://github.com/Shopify/polaris/pull/10071) [`23c1391aa`](https://github.com/Shopify/polaris/commit/23c1391aa694526ce467c74de7c19d330f03ea67) Thanks [@kyledurand](https://github.com/kyledurand)! - Added support for compound components and adding new prop values in the react-rename-component-prop migration
+
+## 0.19.9
+
+### Patch Changes
+
+- Updated dependencies [[`a3da87e2e`](https://github.com/Shopify/polaris/commit/a3da87e2e52b7e4c3fc421bbe4122e763c39c1a1), [`36e4ee8af`](https://github.com/Shopify/polaris/commit/36e4ee8afbc7dbec6e65225384629afa83f64a75)]:
+  - @shopify/stylelint-polaris@14.0.0
+  - @shopify/polaris-tokens@7.5.3
+
+## 0.19.8
+
+### Patch Changes
+
+- Updated dependencies [[`5b85401fe`](https://github.com/Shopify/polaris/commit/5b85401fe56ee07f107358548669ed8f1d6ecceb), [`799819b68`](https://github.com/Shopify/polaris/commit/799819b687a319328bf36917ba79c6324197aba9)]:
+  - @shopify/polaris-tokens@7.5.2
+  - @shopify/stylelint-polaris@13.0.8
+
+## 0.19.7
+
+### Patch Changes
+
+- Updated dependencies [[`bed52546f`](https://github.com/Shopify/polaris/commit/bed52546f3852fea8f3c98505846a6f553dbd3c1)]:
+  - @shopify/polaris-tokens@7.5.1
+  - @shopify/stylelint-polaris@13.0.7
+
+## 0.19.6
+
+### Patch Changes
+
+- Updated dependencies [[`6d4baffde`](https://github.com/Shopify/polaris/commit/6d4baffdeb63d4cb1265b201b8490677d25e8c5e), [`3536e3aa0`](https://github.com/Shopify/polaris/commit/3536e3aa006896ae31c9148832230322ceaa823d), [`58406fd98`](https://github.com/Shopify/polaris/commit/58406fd98db3561fb4e3f55fc44f51202a98024f), [`26053bd3f`](https://github.com/Shopify/polaris/commit/26053bd3f13920ff30ff29c78d55b000b017cef2)]:
+  - @shopify/polaris-tokens@7.5.0
+  - @shopify/stylelint-polaris@13.0.6
+
+## 0.19.5
+
+### Patch Changes
+
+- Updated dependencies [[`af6337d60`](https://github.com/Shopify/polaris/commit/af6337d60e18cfd8adcc99aa425e1cc697b41ca0)]:
+  - @shopify/polaris-tokens@7.4.0
+  - @shopify/stylelint-polaris@13.0.5
+
+## 0.19.4
+
+### Patch Changes
+
+- Updated dependencies [[`5065fc199`](https://github.com/Shopify/polaris/commit/5065fc1991518507607d81d1f1b667c26773cf4d)]:
+  - @shopify/polaris-tokens@7.3.1
+  - @shopify/stylelint-polaris@13.0.4
+
+## 0.19.3
+
+### Patch Changes
+
+- Updated dependencies [[`b73666e63`](https://github.com/Shopify/polaris/commit/b73666e63c5ec5d0f47ecfb66683d8de0f79ab97), [`f9ceb4d02`](https://github.com/Shopify/polaris/commit/f9ceb4d0224b613b0ba1680bcb575714b1ad8300), [`84c015547`](https://github.com/Shopify/polaris/commit/84c015547c3b85938f326604216d819e1f31f6ab), [`bc141cf54`](https://github.com/Shopify/polaris/commit/bc141cf54497deb488f3b8e589e94741f06efd54)]:
+  - @shopify/polaris-tokens@7.3.0
+  - @shopify/stylelint-polaris@13.0.3
+
+## 0.19.2
+
+### Patch Changes
+
+- Updated dependencies [[`91ebe5792`](https://github.com/Shopify/polaris/commit/91ebe57922d26e3acb61047c79d7a157952d5486)]:
+  - @shopify/polaris-tokens@7.2.0
+  - @shopify/stylelint-polaris@13.0.2
+
+## 0.19.1
+
+### Patch Changes
+
+- Updated dependencies [[`9c9e80ed1`](https://github.com/Shopify/polaris/commit/9c9e80ed132715e1c91ee2dc0b9fcc13adb3afea)]:
+  - @shopify/polaris-tokens@7.1.0
+  - @shopify/stylelint-polaris@13.0.1
+
+## 0.19.0
+
+### Minor Changes
+
+- [#7597](https://github.com/Shopify/polaris/pull/7597) [`9e1350e22`](https://github.com/Shopify/polaris/commit/9e1350e22f286ead5a735e0c4dc6623f530f9806) Thanks [@lgriffee](https://github.com/lgriffee)! - Removed support for NodeJS version 14 and set version 16 as minimum supported version
+
+### Patch Changes
+
+- Updated dependencies [[`9e1350e22`](https://github.com/Shopify/polaris/commit/9e1350e22f286ead5a735e0c4dc6623f530f9806)]:
+  - @shopify/polaris-tokens@7.0.0
+  - @shopify/stylelint-polaris@13.0.0
+
+## 0.18.2
+
+### Patch Changes
+
+- Updated dependencies [[`5a9b011d1`](https://github.com/Shopify/polaris/commit/5a9b011d14a0cc575f4fd34d9e4d8fcfeb0cd597), [`6ae3295e7`](https://github.com/Shopify/polaris/commit/6ae3295e78518112e611185e7a8f9b6287bd985a)]:
+  - @shopify/polaris-tokens@6.14.0
+  - @shopify/stylelint-polaris@12.0.1
+
+## 0.18.1
+
+### Patch Changes
+
+- Updated dependencies [[`a64e38948`](https://github.com/Shopify/polaris/commit/a64e3894834f7507834ed21736c932d44f10ff43)]:
+  - @shopify/stylelint-polaris@12.0.0
+
+## 0.18.0
+
+### Minor Changes
+
+- [#9068](https://github.com/Shopify/polaris/pull/9068) [`c47996bca`](https://github.com/Shopify/polaris/commit/c47996bcaf9ea3ef99f38d4fc63cc2512e794822) Thanks [@lgriffee](https://github.com/lgriffee)! - Created a migration to replace deprecated `motion` custom properties in `@shopify/polaris` v11.0.0
+
+### Patch Changes
+
+- Updated dependencies [[`11cd5f674`](https://github.com/Shopify/polaris/commit/11cd5f67440bec59ffd3983fa02a7b65842063e6), [`acf89f6a9`](https://github.com/Shopify/polaris/commit/acf89f6a9fb58f557a57e92e4e54a3935c85f50c)]:
+  - @shopify/stylelint-polaris@11.0.0
+  - @shopify/polaris-tokens@6.13.0
+
+## 0.17.4
+
+### Patch Changes
+
+- Updated dependencies [[`bcdbaad00`](https://github.com/Shopify/polaris/commit/bcdbaad009bb0606544dff19b5b5fcb37ddc6f94)]:
+  - @shopify/polaris-tokens@6.12.0
+  - @shopify/stylelint-polaris@10.1.1
+
+## 0.17.3
+
+### Patch Changes
+
+- Updated dependencies [[`a47e9084d`](https://github.com/Shopify/polaris/commit/a47e9084dcbb0b9870bc58dd2214e82657efe8ad), [`cbff4a131`](https://github.com/Shopify/polaris/commit/cbff4a13101abed155f0a272b2b26493d7d20017)]:
+  - @shopify/polaris-tokens@6.11.0
+  - @shopify/stylelint-polaris@10.1.0
+
+## 0.17.2
+
+### Patch Changes
+
+- Updated dependencies [[`f1a3ad756`](https://github.com/Shopify/polaris/commit/f1a3ad756d73bf249583bdb47523a4b229a0c7cb), [`80eb3ac55`](https://github.com/Shopify/polaris/commit/80eb3ac55c076eb336620cac8dc08cd212524afc), [`dbe68efb4`](https://github.com/Shopify/polaris/commit/dbe68efb40fcd6261aee98b8784e0fca696c5b1b)]:
+  - @shopify/stylelint-polaris@10.0.0
+
+## 0.17.1
+
+### Patch Changes
+
+- Updated dependencies [[`247f5eea8`](https://github.com/Shopify/polaris/commit/247f5eea859b3ab348dcb18c568f18d8d859140e)]:
+  - @shopify/polaris-tokens@6.10.0
+  - @shopify/stylelint-polaris@9.0.3
+
+## 0.17.0
+
+### Minor Changes
+
+- [#8257](https://github.com/Shopify/polaris/pull/8257) [`f25f3c73c`](https://github.com/Shopify/polaris/commit/f25f3c73c9b902647206de45bc98983477acc312) Thanks [@aaronccasanova](https://github.com/aaronccasanova)! - Added migration to replace color custom properties from Polaris v10 to v11
+
+* [#8827](https://github.com/Shopify/polaris/pull/8827) [`dc09b21da`](https://github.com/Shopify/polaris/commit/dc09b21da9c7a4575973300a6f94b774e6f603d1) Thanks [@samrose3](https://github.com/samrose3)! - Added migration to remove unused imports from SCSS files
+
+### Patch Changes
+
+- Updated dependencies [[`01725d205`](https://github.com/Shopify/polaris/commit/01725d2057af75bb9e2346a936233fb9f40352e5), [`5f21c9069`](https://github.com/Shopify/polaris/commit/5f21c90699f0f8b2893ddfc6ba253a75b8c87d1c), [`0a981349d`](https://github.com/Shopify/polaris/commit/0a981349d70dfb7c60fabf1391aa4a3ec0dc9793)]:
+  - @shopify/polaris-tokens@6.9.0
+  - @shopify/stylelint-polaris@9.0.2
+
 ## 0.16.1
 
 ### Patch Changes
@@ -171,11 +625,11 @@
 
 ### Minor Changes
 
-- [#7726](https://github.com/Shopify/polaris/pull/7726) [`22c4107b3`](https://github.com/Shopify/polaris/commit/22c4107b3c369eb68da31980d208c09b3fc4ba37) Thanks [@qt314](https://github.com/qt314)! - Added migration to insert disable comments for @shopify/stylelint-polaris
+- [#7726](https://github.com/Shopify/polaris/pull/7726) [`22c4107b3`](https://github.com/Shopify/polaris/commit/22c4107b3c369eb68da31980d208c09b3fc4ba37) Thanks [@sophschneider](https://github.com/sophschneider)! - Added migration to insert disable comments for @shopify/stylelint-polaris
 
 ### Patch Changes
 
-- [#7836](https://github.com/Shopify/polaris/pull/7836) [`77736370e`](https://github.com/Shopify/polaris/commit/77736370eeddde18a2c11da102b88646f2263d99) Thanks [@qt314](https://github.com/qt314)! - Decouple polaris migrator test from stylelint config so it's easier to maintain
+- [#7836](https://github.com/Shopify/polaris/pull/7836) [`77736370e`](https://github.com/Shopify/polaris/commit/77736370eeddde18a2c11da102b88646f2263d99) Thanks [@sophschneider](https://github.com/sophschneider)! - Decouple polaris migrator test from stylelint config so it's easier to maintain
 
 - Updated dependencies [[`38b2a00a6`](https://github.com/Shopify/polaris/commit/38b2a00a6aa0c95d5df777c7d51023a8193f8090)]:
   - @shopify/stylelint-polaris@5.0.0

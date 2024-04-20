@@ -1,5 +1,5 @@
 import React from 'react';
-import type {SpacingSpaceScale} from '@shopify/polaris-tokens';
+import type {SpaceScale} from '@shopify/polaris-tokens';
 
 import {
   getResponsiveProps,
@@ -7,9 +7,9 @@ import {
 } from '../../utilities/css';
 import type {ResponsiveProp} from '../../utilities/css';
 
-import styles from './Bleed.scss';
+import styles from './Bleed.module.css';
 
-type Spacing = ResponsiveProp<SpacingSpaceScale>;
+type Spacing = ResponsiveProp<SpaceScale>;
 
 export interface BleedProps extends React.AriaAttributes {
   children?: React.ReactNode;

@@ -3,7 +3,7 @@ import React from 'react';
 import type {ComplexAction} from '../../../../types';
 import {buttonsFrom} from '../../../Button';
 import {Box} from '../../../Box';
-import {Inline} from '../../../Inline';
+import {InlineStack} from '../../../InlineStack';
 
 export interface FooterProps {
   /** Primary action */
@@ -20,30 +20,30 @@ export function Footer({
   children,
 }: FooterProps) {
   const primaryActionButton =
-    (primaryAction && buttonsFrom(primaryAction, {primary: true})) || null;
+    (primaryAction && buttonsFrom(primaryAction, {variant: 'primary'})) || null;
   const secondaryActionButtons =
     (secondaryActions && buttonsFrom(secondaryActions)) || null;
   const actions =
     primaryActionButton || secondaryActionButtons ? (
-      <Inline gap="2">
+      <InlineStack gap="200">
         {secondaryActionButtons}
         {primaryActionButton}
-      </Inline>
+      </InlineStack>
     ) : null;
 
   return (
-    <Inline gap="4" blockAlign="center">
+    <InlineStack gap="400" blockAlign="center">
       <Box
-        borderBlockStart="divider"
-        minHeight="var(--p-space-16)"
-        padding="4"
+        borderColor="border"
+        borderBlockStartWidth="025"
+        padding="400"
         width="100%"
       >
-        <Inline gap="4" blockAlign="center" align="space-between">
+        <InlineStack gap="400" blockAlign="center" align="space-between">
           <Box>{children}</Box>
           {actions}
-        </Inline>
+        </InlineStack>
       </Box>
-    </Inline>
+    </InlineStack>
   );
 }

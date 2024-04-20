@@ -11,7 +11,7 @@ import {
   TextContainer,
   Text,
 } from '@shopify/polaris';
-import {MobileCancelMajor, SearchMinor} from '@shopify/polaris-icons';
+import {XIcon, SearchIcon} from '@shopify/polaris-icons';
 
 import {withPolarisExample} from '../../src/components/PolarisExampleWrapper';
 
@@ -192,11 +192,11 @@ function SheetWithSearchableListboxExample() {
   const textFieldMarkup = (
     <div
       style={{
-        padding: 'var(--p-space-4) var(--p-space-2)',
+        padding: 'var(--p-space-400) var(--p-space-200)',
         position: 'sticky',
         zIndex: 'var(--p-z-index-12)',
         width: '100%',
-        background: 'var(--p-surface)',
+        background: 'var(--p-color-bg-surface)',
       }}
     >
       <StopPropagation>
@@ -208,7 +208,7 @@ function SheetWithSearchableListboxExample() {
           placeholder="Search segments"
           autoComplete="off"
           value={query}
-          prefix={<Icon source={SearchMinor} />}
+          prefix={<Icon source={SearchIcon} />}
           ariaActiveDescendant={activeOptionId}
           ariaControls={listboxId}
           onChange={handleQueryChange}
@@ -239,7 +239,9 @@ function SheetWithSearchableListboxExample() {
 
   const showAllMarkup = showFooterAction ? (
     <Listbox.Action value={actionValue}>
-      <span style={{color: 'var(--p-interactive)'}}>Show all 111 segments</span>
+      <span style={{color: 'var(--p-color-text-emphasis)'}}>
+        Show all 111 segments
+      </span>
     </Listbox.Action>
   ) : null;
 
@@ -305,7 +307,7 @@ function SheetWithSearchableListboxExample() {
               flexDirection: 'column',
               justifyContent: 'space-between',
               width: '100%',
-              padding: 'var(--p-space-4)',
+              padding: 'var(--p-space-400)',
             }}
           >
             <div
@@ -314,24 +316,24 @@ function SheetWithSearchableListboxExample() {
                 display: 'flex',
                 justifyContent: 'space-between',
                 width: '100%',
-                marginBottom: 'var(--p-space-2)',
+                marginBottom: 'var(--p-space-200)',
               }}
             >
-              <Text variant="headingXs" as="h3" color="subdued">
+              <Text variant="headingSm" as="h3" tone="subdued">
                 Action
               </Text>
               <Button
                 accessibilityLabel="Cancel"
-                icon={MobileCancelMajor}
+                icon={XIcon}
                 onClick={handleCloseSheet}
-                plain
+                variant="plain"
               />
             </div>
             <TextContainer>
               <Text variant="headingMd" as="h2">
                 Look up customer segmentation membership
               </Text>
-              <Text color="subdued" as="span">
+              <Text tone="subdued" as="span">
                 Look up whether a customer is included in a segment.
               </Text>
             </TextContainer>
@@ -357,7 +359,7 @@ function SheetWithSearchableListboxExample() {
                 position: 'relative',
                 width: '100%',
                 height: '292px',
-                padding: 'var(--p-space-2) 0',
+                padding: 'var(--p-space-200) 0',
               }}
               onScrolledToBottom={handleLazyLoadSegments}
             >

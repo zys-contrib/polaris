@@ -2,10 +2,11 @@ import React from 'react';
 
 import {useI18n} from '../../utilities/i18n';
 import {Box} from '../Box';
-import {Inline} from '../Inline';
-import {AlphaStack} from '../AlphaStack';
+import {BlockStack} from '../BlockStack';
+import {InlineStack} from '../InlineStack';
+import {Text} from '../Text';
 
-import styles from './SkeletonPage.scss';
+import styles from './SkeletonPage.module.css';
 
 export interface SkeletonPageProps {
   /** Page title, in large type */
@@ -16,8 +17,6 @@ export interface SkeletonPageProps {
   narrowWidth?: boolean;
   /** Shows a skeleton over the primary action */
   primaryAction?: boolean;
-  /** @deprecated Use backAction instead */
-  breadcrumbs?: boolean;
   /** Shows a skeleton over the backAction */
   backAction?: boolean;
   /** The child elements to render in the skeleton page. */
@@ -31,19 +30,20 @@ export function SkeletonPage({
   primaryAction,
   title = '',
   backAction,
-  breadcrumbs,
 }: SkeletonPageProps) {
   const i18n = useI18n();
 
   const titleContent = title ? (
-    <h1 className={styles.Title}>{title}</h1>
+    <Text as="h1" variant="headingLg" fontWeight="bold">
+      {title}
+    </Text>
   ) : (
     <div className={styles.SkeletonTitle}>
       <Box
-        background="surface-neutral"
+        background="bg-fill-tertiary"
         minWidth="120px"
         minHeight="28px"
-        borderRadius="1"
+        borderRadius="100"
       />
     </div>
   );
@@ -51,31 +51,30 @@ export function SkeletonPage({
   const primaryActionMarkup = primaryAction ? (
     <Box
       id="SkeletonPage-PrimaryAction"
-      borderRadius="1"
-      background="surface-neutral"
+      borderRadius="100"
+      background="bg-fill-tertiary"
       minHeight="2.25rem"
       minWidth="6.25rem"
     />
   ) : null;
 
-  const breadcrumbMarkup =
-    breadcrumbs || backAction ? (
-      <Box
-        borderRadius="1"
-        background="surface-neutral"
-        minHeight="2.25rem"
-        minWidth="2.25rem"
-        maxWidth="2.25rem"
-      />
-    ) : null;
+  const backActionMarkup = backAction ? (
+    <Box
+      borderRadius="100"
+      background="bg-fill-tertiary"
+      minHeight="2.25rem"
+      minWidth="2.25rem"
+      maxWidth="2.25rem"
+    />
+  ) : null;
 
   return (
-    <AlphaStack gap="4" inlineAlign="center">
+    <BlockStack gap="400" inlineAlign="center">
       <Box
         width="100%"
         padding="0"
-        paddingInlineStart={{sm: '6'}}
-        paddingInlineEnd={{sm: '6'}}
+        paddingInlineStart={{sm: '600'}}
+        paddingInlineEnd={{sm: '600'}}
         maxWidth="var(--pc-skeleton-page-max-width)"
         aria-label={i18n.translate('Polaris.SkeletonPage.loadingLabel')}
         role="status"
@@ -86,29 +85,29 @@ export function SkeletonPage({
           maxWidth: 'none',
         })}
       >
-        <AlphaStack>
+        <BlockStack>
           <Box
-            paddingBlockStart={{xs: '4', md: '5'}}
-            paddingBlockEnd={{xs: '4', md: '5'}}
-            paddingInlineStart={{xs: '4', sm: '0'}}
-            paddingInlineEnd={{xs: '4', sm: '0'}}
+            paddingBlockStart={{xs: '400', md: '500'}}
+            paddingBlockEnd={{xs: '400', md: '500'}}
+            paddingInlineStart={{xs: '400', sm: '0'}}
+            paddingInlineEnd={{xs: '400', sm: '0'}}
             width="100%"
           >
-            <Inline gap="4" align="space-between" blockAlign="center">
-              <Inline gap="4">
-                {breadcrumbMarkup}
-                <Box paddingBlockStart="1" paddingBlockEnd="1">
+            <InlineStack gap="400" align="space-between" blockAlign="center">
+              <InlineStack gap="400">
+                {backActionMarkup}
+                <Box paddingBlockStart="100" paddingBlockEnd="100">
                   {titleContent}
                 </Box>
-              </Inline>
+              </InlineStack>
               {primaryActionMarkup}
-            </Inline>
+            </InlineStack>
           </Box>
-          <Box paddingBlockEnd="2" width="100%">
+          <Box paddingBlockEnd="200" width="100%">
             {children}
           </Box>
-        </AlphaStack>
+        </BlockStack>
       </Box>
-    </AlphaStack>
+    </BlockStack>
   );
 }

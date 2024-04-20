@@ -1,10 +1,10 @@
-import React, {useMemo} from 'react';
+import React, {useId} from 'react';
 
 import type {ComplexAction} from '../../types';
 import {SettingAction} from '../SettingAction';
 import {buttonFrom} from '../Button';
+// eslint-disable-next-line import/no-deprecated
 import {LegacyCard} from '../LegacyCard';
-import {globalIdGeneratorFactory} from '../../utilities/unique-id';
 
 export interface SettingToggleProps {
   /** Inner content of the card */
@@ -15,16 +15,14 @@ export interface SettingToggleProps {
   enabled?: boolean;
 }
 
-const getUniqueSettingToggleId = globalIdGeneratorFactory('SettingToggle');
-
 /**
- * @deprecated The SettingToggle component will be removed in v12.0.0.
+ * @deprecated The SettingToggle component will be removed in v12
  * See the "With primitive components" example to learn how to compose
  * setting toggles with layout and typography primitives.
  * https://polaris.shopify.com/components/deprecated/setting-toggle
  */
 export function SettingToggle({enabled, action, children}: SettingToggleProps) {
-  const id = useMemo(getUniqueSettingToggleId, []);
+  const id = useId();
 
   if (process.env.NODE_ENV === 'development') {
     // eslint-disable-next-line no-console
@@ -37,7 +35,6 @@ export function SettingToggle({enabled, action, children}: SettingToggleProps) {
   const actionMarkup = action
     ? buttonFrom(action, {
         role: 'switch',
-        id,
         ariaChecked: enabled ? 'true' : 'false',
         size: 'slim',
       })

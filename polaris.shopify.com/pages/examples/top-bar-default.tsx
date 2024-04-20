@@ -1,5 +1,5 @@
 import {TopBar, ActionList, Icon, Frame, Text} from '@shopify/polaris';
-import {ArrowLeftMinor, QuestionMarkMajor} from '@shopify/polaris-icons';
+import {ArrowLeftIcon, QuestionCircleIcon} from '@shopify/polaris-icons';
 import {useState, useCallback} from 'react';
 import {withPolarisExample} from '../../src/components/PolarisExampleWrapper';
 
@@ -32,20 +32,19 @@ function TopBarExample() {
   const handleNavigationToggle = useCallback(() => {
     console.log('toggle navigation visibility');
   }, []);
-
   const logo = {
-    width: 124,
     topBarSource:
-      'https://cdn.shopify.com/s/files/1/0446/6937/files/jaded-pixel-logo-color.svg?6215648040070010999',
+      'https://cdn.shopify.com/s/files/1/2376/3301/files/Shopify_Secondary_Inverted.png',
+    width: 86,
     url: '#',
-    accessibilityLabel: 'Jaded Pixel',
+    accessibilityLabel: 'Shopify',
   };
 
   const userMenuMarkup = (
     <TopBar.UserMenu
       actions={[
         {
-          items: [{content: 'Back to Shopify', icon: ArrowLeftMinor}],
+          items: [{content: 'Back to Shopify', icon: ArrowLeftIcon}],
         },
         {
           items: [{content: 'Community forums'}],
@@ -78,7 +77,7 @@ function TopBarExample() {
     <TopBar.Menu
       activatorContent={
         <span>
-          <Icon source={QuestionMarkMajor} />
+          <Icon source={QuestionCircleIcon} />
           <Text as="span" visuallyHidden>
             Secondary menu
           </Text>

@@ -9,24 +9,17 @@ import {
   ChoiceList,
   RangeSlider,
   Badge,
-  AlphaStack,
-  Inline,
+  BlockStack,
+  InlineStack,
 } from '@shopify/polaris';
-import type {IndexFiltersProps, AlphaTabProps} from '@shopify/polaris';
+import type {IndexFiltersProps, TabProps} from '@shopify/polaris';
 import {useState, useCallback} from 'react';
 import {withPolarisExample} from '../../src/components/PolarisExampleWrapper';
 
 function IndexTableWithViewsSearchFilterSorting() {
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
-  const [itemStrings, setItemStrings] = useState([
-    'All',
-    'Unpaid',
-    'Open',
-    'Closed',
-    'Local delivery',
-    'Local pickup',
-  ]);
+  const [itemStrings, setItemStrings] = useState(['All', 'Unpaid']);
   const deleteView = (index: number) => {
     const newItemStrings = [...itemStrings];
     newItemStrings.splice(index, 1);
@@ -41,7 +34,7 @@ function IndexTableWithViewsSearchFilterSorting() {
     return true;
   };
 
-  const tabs: AlphaTabProps[] = itemStrings.map((item, index) => ({
+  const tabs: TabProps[] = itemStrings.map((item, index) => ({
     content: item,
     index,
     onAction: () => {},
@@ -54,7 +47,7 @@ function IndexTableWithViewsSearchFilterSorting() {
             {
               type: 'rename',
               onAction: () => {},
-              onPrimaryAction: async (value: string) => {
+              onPrimaryAction: async (value: string): Promise<boolean> => {
                 const newItemsStrings = tabs.map((item, idx) => {
                   if (idx === index) {
                     return value;
@@ -68,9 +61,9 @@ function IndexTableWithViewsSearchFilterSorting() {
             },
             {
               type: 'duplicate',
-              onPrimaryAction: async (name) => {
+              onPrimaryAction: async (value: string): Promise<boolean> => {
                 await sleep(1);
-                duplicateView(name);
+                duplicateView(value);
                 return true;
               },
             },
@@ -310,23 +303,23 @@ function IndexTableWithViewsSearchFilterSorting() {
         position={index}
       >
         <div style={{padding: '12px 16px', width: '100%'}}>
-          <AlphaStack gap="1">
-            <Text as="span" variant="bodySm" color="subdued">
+          <BlockStack gap="100">
+            <Text as="span" variant="bodySm" tone="subdued">
               {order} • {date}
             </Text>
-            <Inline align="space-between">
+            <InlineStack align="space-between">
               <Text as="span" variant="bodyMd" fontWeight="semibold">
                 {customer}
               </Text>
               <Text as="span" variant="bodyMd">
                 {total}
               </Text>
-            </Inline>
-            <Inline align="start" gap="1">
+            </InlineStack>
+            <InlineStack align="start" gap="100">
               {paymentStatus}
               {fulfillmentStatus}
-            </Inline>
-          </AlphaStack>
+            </InlineStack>
+          </BlockStack>
         </div>
       </IndexTable.Row>
     ),
@@ -341,7 +334,7 @@ function IndexTableWithViewsSearchFilterSorting() {
           queryValue={queryValue}
           queryPlaceholder="Searching in all"
           onQueryChange={handleFiltersQueryChange}
-          onQueryClear={() => {}}
+          onQueryClear={() => setQueryValue('')}
           onSort={setSortSelected}
           primaryAction={primaryAction}
           cancelAction={{

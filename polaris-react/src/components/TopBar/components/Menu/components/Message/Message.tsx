@@ -6,18 +6,19 @@ import {Button} from '../../../../../Button';
 import {Text} from '../../../../../Text';
 import {Link} from '../../../../../Link';
 import {Popover} from '../../../../../Popover';
+// eslint-disable-next-line import/no-deprecated
 import {LegacyStack} from '../../../../../LegacyStack';
 // eslint-disable-next-line import/no-deprecated
 import {TextContainer} from '../../../../../TextContainer';
 
-import styles from './Message.scss';
+import styles from './Message.module.css';
 
 export interface MessageProps {
   title: string;
   description: string;
   action: {onClick(): void; content: string};
   link: {to: string; content: string};
-  badge?: {content: string; status: BadgeProps['status']};
+  badge?: {content: string; tone: BadgeProps['tone']};
 }
 
 export function Message({
@@ -27,9 +28,7 @@ export function Message({
   link,
   badge,
 }: MessageProps) {
-  const badgeMarkup = badge && (
-    <Badge status={badge.status}>{badge.content}</Badge>
-  );
+  const badgeMarkup = badge && <Badge tone={badge.tone}>{badge.content}</Badge>;
 
   const {to, content: linkContent} = link;
   const {onClick, content: actionContent} = action;
@@ -48,7 +47,7 @@ export function Message({
 
           <Link url={to}>{linkContent}</Link>
 
-          <Button plain onClick={onClick}>
+          <Button variant="plain" onClick={onClick}>
             {actionContent}
           </Button>
         </LegacyStack>

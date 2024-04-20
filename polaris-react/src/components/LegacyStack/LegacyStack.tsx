@@ -5,7 +5,7 @@ import {classNames, variationName} from '../../utilities/css';
 import {elementChildren, wrapWithComponent} from '../../utilities/components';
 
 import {Item} from './components';
-import styles from './LegacyStack.scss';
+import styles from './LegacyStack.module.css';
 
 type Spacing =
   | 'extraTight'
@@ -39,7 +39,7 @@ export interface LegacyStackProps {
   /** Adjust horizontal alignment of elements */
   distribution?: Distribution;
 }
-
+/** @deprecated Use the BlockStack component instead */
 export const LegacyStack = memo(function Stack({
   children,
   vertical,

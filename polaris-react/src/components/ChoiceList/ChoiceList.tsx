@@ -1,15 +1,15 @@
-import React from 'react';
+import React, {useId} from 'react';
 
-import {useUniqueId} from '../../utilities/unique-id';
 import type {Error} from '../../types';
 import {Checkbox} from '../Checkbox';
 import {RadioButton} from '../RadioButton';
 import {InlineError, errorTextID} from '../InlineError';
-import {AlphaStack} from '../AlphaStack';
+import {BlockStack} from '../BlockStack';
 import {Box} from '../Box';
 import {Bleed} from '../Bleed';
+import {Text} from '../Text';
 
-import styles from './ChoiceList.scss';
+import styles from './ChoiceList.module.css';
 
 interface Choice {
   /** Value of the choice */
@@ -22,7 +22,7 @@ interface Choice {
   disabled?: boolean;
   /** Additional text to aide in use */
   helpText?: React.ReactNode;
-  /** Indicates that the choice is aria-describedBy the error message*/
+  /** Indicates that the choice is aria-describedBy the error message */
   describedByError?: boolean;
   /**  Method to render children with a choice */
   renderChildren?(isSelected: boolean): React.ReactNode | false;
@@ -47,6 +47,8 @@ export interface ChoiceListProps {
   disabled?: boolean;
   /** Callback when the selected choices change */
   onChange?(selected: string[], name: string): void;
+  /** Indicates the tone of the choice list */
+  tone?: 'magic';
 }
 
 export function ChoiceList({
@@ -59,21 +61,21 @@ export function ChoiceList({
   error,
   disabled = false,
   name: nameProp,
+  tone,
 }: ChoiceListProps) {
   // Type asserting to any is required for TS3.2 but can be removed when we update to 3.3
   // see https://github.com/Microsoft/TypeScript/issues/28768
   const ControlComponent: any = allowMultiple ? Checkbox : RadioButton;
 
-  const name = useUniqueId('ChoiceList', nameProp);
+  const uniqName = useId();
+  const name = nameProp ?? uniqName;
   const finalName = allowMultiple ? `${name}[]` : name;
 
   const titleMarkup = title ? (
-    <Box
-      as="legend"
-      paddingBlockEnd={{xs: '5', md: '1'}}
-      visuallyHidden={titleHidden}
-    >
-      {title}
+    <Box as="legend" paddingBlockEnd={{xs: '0', md: '100'}}>
+      <Text as="span" variant="bodyMd" visuallyHidden={titleHidden}>
+        {title}
+      </Text>
     </Box>
   ) : null;
 
@@ -100,24 +102,26 @@ export function ChoiceList({
       : null;
     const children = renderedChildren ? (
       <div className={styles.ChoiceChildren}>
-        <Box paddingBlockStart={{xs: '4', md: '0'}}>{renderedChildren}</Box>
+        <Box paddingBlockStart={{xs: '400', md: '0'}}>{renderedChildren}</Box>
       </div>
     ) : null;
     return (
       <li key={value}>
-        <Bleed marginBlockEnd={helpText ? {xs: '1', md: '0'} : {xs: '0'}}>
+        <Bleed marginBlockEnd={helpText ? {xs: '100', md: '0'} : {xs: '0'}}>
           <ControlComponent
             name={finalName}
             value={value}
             id={id}
             label={label}
             disabled={choiceDisabled || disabled}
+            fill={{xs: true, sm: false}}
             checked={choiceIsSelected(choice, selected)}
             helpText={helpText}
             onChange={handleChange}
             ariaDescribedBy={
               error && describedByError ? errorTextID(finalName) : null
             }
+            tone={tone}
           />
           {children}
         </Bleed>
@@ -126,24 +130,24 @@ export function ChoiceList({
   });
 
   const errorMarkup = error && (
-    <Box paddingBlockStart={{xs: '0', md: '1'}} paddingBlockEnd="2">
+    <Box paddingBlockStart={{xs: '0', md: '100'}} paddingBlockEnd="200">
       <InlineError message={error} fieldID={finalName} />
     </Box>
   );
 
   return (
-    <AlphaStack
+    <BlockStack
       as="fieldset"
-      gap={{xs: '4', md: '0'}}
+      gap={{xs: '400', md: '0'}}
       aria-invalid={error != null}
       id={finalName}
     >
       {titleMarkup}
-      <AlphaStack as="ul" gap={{xs: '4', md: '0'}}>
+      <BlockStack as="ul" gap={{xs: '400', md: '0'}}>
         {choicesMarkup}
-      </AlphaStack>
+      </BlockStack>
       {errorMarkup}
-    </AlphaStack>
+    </BlockStack>
   );
 }
 

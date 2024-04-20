@@ -1,19 +1,23 @@
 import React, {useRef} from 'react';
-import {HorizontalDotsMinor} from '@shopify/polaris-icons';
+import {MenuHorizontalIcon} from '@shopify/polaris-icons';
 
-import type {DisableableAction} from '../../../../types';
+import type {DestructableAction, DisableableAction} from '../../../../types';
+import type {ButtonProps} from '../../../Button';
 import {Button} from '../../../Button';
 import {Icon} from '../../../Icon';
 import {Indicator} from '../../../Indicator';
+import {Tooltip} from '../../../Tooltip';
 import {useComponentDidMount} from '../../../../utilities/use-component-did-mount';
-import styles from '../../BulkActions.scss';
+import styles from '../../BulkActions.module.css';
 
 export type BulkActionButtonProps = {
   disclosure?: boolean;
   indicator?: boolean;
   handleMeasurement?(width: number): void;
   showContentInButton?: boolean;
-} & DisableableAction;
+  size?: Extract<ButtonProps['size'], 'micro' | 'medium'>;
+} & DisableableAction &
+  DestructableAction;
 
 export function BulkActionButton({
   handleMeasurement,
@@ -24,8 +28,10 @@ export function BulkActionButton({
   disclosure,
   accessibilityLabel,
   disabled,
+  destructive,
   indicator,
   showContentInButton,
+  size,
 }: BulkActionButtonProps) {
   const bulkActionButton = useRef<HTMLDivElement>(null);
 
@@ -36,29 +42,41 @@ export function BulkActionButton({
     }
   });
 
-  const buttonContent =
-    disclosure && !showContentInButton ? undefined : content;
+  const isActivatorForMoreActionsPopover = disclosure && !showContentInButton;
+
+  const buttonContent = isActivatorForMoreActionsPopover ? undefined : content;
+
+  const buttonMarkup = (
+    <Button
+      external={external}
+      url={url}
+      accessibilityLabel={
+        isActivatorForMoreActionsPopover ? content : accessibilityLabel
+      }
+      tone={destructive ? 'critical' : undefined}
+      disclosure={disclosure && showContentInButton}
+      onClick={onAction}
+      disabled={disabled}
+      size={size}
+      icon={
+        isActivatorForMoreActionsPopover ? (
+          <Icon source={MenuHorizontalIcon} tone="base" />
+        ) : undefined
+      }
+    >
+      {buttonContent}
+    </Button>
+  );
 
   return (
     <div className={styles.BulkActionButton} ref={bulkActionButton}>
-      <Button
-        external={external}
-        url={url}
-        accessibilityLabel={
-          disclosure && !showContentInButton ? content : accessibilityLabel
-        }
-        disclosure={disclosure && showContentInButton}
-        onClick={onAction}
-        disabled={disabled}
-        size="slim"
-        icon={
-          disclosure && !showContentInButton ? (
-            <Icon source={HorizontalDotsMinor} color="base" />
-          ) : undefined
-        }
-      >
-        {buttonContent}
-      </Button>
+      {isActivatorForMoreActionsPopover ? (
+        <Tooltip content={content} preferredPosition="below">
+          {buttonMarkup}
+        </Tooltip>
+      ) : (
+        buttonMarkup
+      )}
       {indicator && <Indicator />}
     </div>
   );

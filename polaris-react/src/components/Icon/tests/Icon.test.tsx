@@ -1,5 +1,5 @@
 import React from 'react';
-import {PlusMinor} from '@shopify/polaris-icons';
+import {PlusIcon} from '@shopify/polaris-icons';
 import {mountWithApp} from 'tests/utilities';
 
 import {Icon} from '../Icon';
@@ -18,6 +18,14 @@ describe('<Icon />', () => {
         visuallyHidden: true,
       });
     });
+
+    it('does not render the label when not provided', () => {
+      const element = mountWithApp(<Icon source="placeholder" />).find('span');
+
+      expect(element).not.toContainReactComponent(Text, {
+        visuallyHidden: true,
+      });
+    });
   });
 
   describe('source', () => {
@@ -27,8 +35,8 @@ describe('<Icon />', () => {
     });
 
     it('renders a React Element when source is given a React Stateless Functional Component', () => {
-      const element = mountWithApp(<Icon source={PlusMinor} />);
-      expect(element).toContainReactComponentTimes(PlusMinor, 1);
+      const element = mountWithApp(<Icon source={PlusIcon} />);
+      expect(element).toContainReactComponentTimes(PlusIcon, 1);
     });
 
     it('renders an img when source is given an untrusted SVG', () => {
@@ -41,10 +49,10 @@ describe('<Icon />', () => {
 
   describe('color', () => {
     it('renders a color class when color prop is provided', () => {
-      const element = mountWithApp(<Icon source="placeholder" color="base" />);
+      const element = mountWithApp(<Icon source="placeholder" tone="base" />);
 
       expect(element).toContainReactComponent('span', {
-        className: 'Icon colorBase applyColor',
+        className: 'Icon toneBase',
       });
     });
   });

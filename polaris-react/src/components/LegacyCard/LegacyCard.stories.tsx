@@ -1,4 +1,5 @@
-import React from 'react';
+import type {PropsWithChildren} from 'react';
+import React, {useState} from 'react';
 import type {ComponentMeta} from '@storybook/react';
 import {
   ActionList,
@@ -13,8 +14,10 @@ import {
   LegacyStack,
   Text,
   TextContainer,
+  BlockStack,
+  Box,
 } from '@shopify/polaris';
-import {ProductsMajor} from '@shopify/polaris-icons';
+import {ProductIcon, XIcon} from '@shopify/polaris-icons';
 
 export default {
   component: LegacyCard,
@@ -23,7 +26,9 @@ export default {
 export function Default() {
   return (
     <LegacyCard title="Online store dashboard" sectioned>
-      <p>View a summary of your online store’s performance.</p>
+      <Text as="p" variant="bodyMd">
+        View a summary of your online store’s performance.
+      </Text>
     </LegacyCard>
   );
 }
@@ -31,10 +36,10 @@ export function Default() {
 export function WithHeaderActions() {
   return (
     <LegacyCard sectioned title="Variants" actions={[{content: 'Add variant'}]}>
-      <p>
+      <Text as="p" variant="bodyMd">
         Add variants if this product comes in multiple versions, like different
         sizes or colors.
-      </p>
+      </Text>
     </LegacyCard>
   );
 }
@@ -81,15 +86,15 @@ export function WithCustomFooterActions() {
     <LegacyCard title="Secure your account with 2-step authentication">
       <LegacyCard.Section>
         <LegacyStack spacing="loose" vertical>
-          <p>
+          <Text as="p" variant="bodyMd">
             Two-step authentication adds an extra layer of security when logging
             in to your account. A special code will be required each time you
             log in, ensuring only you can access your account.
-          </p>
+          </Text>
           <LegacyStack distribution="trailing">
             <ButtonGroup>
               <Button>Enable two-step authentication</Button>
-              <Button plain>Learn more</Button>
+              <Button variant="plain">Learn more</Button>
             </ButtonGroup>
           </LegacyStack>
         </LegacyStack>
@@ -102,7 +107,9 @@ export function WithDestructiveFooterAction() {
   return (
     <LegacyCard
       title="Shipment 1234"
-      secondaryFooterActions={[{content: 'Cancel shipment', destructive: true}]}
+      secondaryFooterActions={[
+        {content: 'Cancel shipment', tone: 'critical', variant: 'primary'},
+      ]}
       primaryFooterAction={{content: 'Add tracking number'}}
     >
       <LegacyCard.Section title="Items">
@@ -119,14 +126,16 @@ export function WithMultipleSections() {
   return (
     <LegacyCard title="Online store dashboard">
       <LegacyCard.Section>
-        <p>View a summary of your online store’s performance.</p>
+        <Text as="p" variant="bodyMd">
+          View a summary of your online store’s performance.
+        </Text>
       </LegacyCard.Section>
 
       <LegacyCard.Section>
-        <p>
+        <Text as="p" variant="bodyMd">
           View a summary of your online store’s performance, including sales,
           visitors, top products, and referrals.
-        </p>
+        </Text>
       </LegacyCard.Section>
     </LegacyCard>
   );
@@ -136,14 +145,16 @@ export function WithMultipleTitledSections() {
   return (
     <LegacyCard title="Online store dashboard">
       <LegacyCard.Section title="Reports">
-        <p>View a summary of your online store’s performance.</p>
+        <Text as="p" variant="bodyMd">
+          View a summary of your online store’s performance.
+        </Text>
       </LegacyCard.Section>
 
       <LegacyCard.Section title="Summary">
-        <p>
+        <Text as="p" variant="bodyMd">
           View a summary of your online store’s performance, including sales,
           visitors, top products, and referrals.
-        </p>
+        </Text>
       </LegacyCard.Section>
     </LegacyCard>
   );
@@ -153,13 +164,17 @@ export function WithSectionsAndActions() {
   return (
     <LegacyCard title="Customer">
       <LegacyCard.Section>
-        <p>John Smith</p>
+        <Text as="p" variant="bodyMd">
+          John Smith
+        </Text>
       </LegacyCard.Section>
       <LegacyCard.Section
         title="Contact Information"
         actions={[{content: 'Edit'}]}
       >
-        <p>john.smith@example.com</p>
+        <Text as="p" variant="bodyMd">
+          john.smith@example.com
+        </Text>
       </LegacyCard.Section>
     </LegacyCard>
   );
@@ -169,7 +184,9 @@ export function WithSubsection() {
   return (
     <LegacyCard title="Customer">
       <LegacyCard.Section>
-        <p>John Smith</p>
+        <Text as="p" variant="bodyMd">
+          John Smith
+        </Text>
       </LegacyCard.Section>
       <LegacyCard.Section title="Addresses">
         <LegacyCard.Subsection>
@@ -200,13 +217,17 @@ export function WithDestructiveAction() {
   return (
     <LegacyCard title="Customer">
       <LegacyCard.Section>
-        <p>John Smith</p>
+        <Text as="p" variant="bodyMd">
+          John Smith
+        </Text>
       </LegacyCard.Section>
       <LegacyCard.Section
         title="Contact Information"
-        actions={[{content: 'Delete', destructive: true}, {content: 'Edit'}]}
+        actions={[{content: 'Delete', tone: 'critical'}, {content: 'Edit'}]}
       >
-        <p>john.smith@example.com</p>
+        <Text as="p" variant="bodyMd">
+          john.smith@example.com
+        </Text>
       </LegacyCard.Section>
     </LegacyCard>
   );
@@ -257,7 +278,7 @@ export function WithSeparateHeader() {
         <Popover
           active
           activator={
-            <Button disclosure plain>
+            <Button disclosure variant="plain">
               Add account
             </Button>
           }
@@ -282,7 +303,7 @@ export function WithCustomReactNodeTitle() {
       <LegacyCard.Section
         title={
           <LegacyStack>
-            <Icon source={ProductsMajor} />
+            <Icon source={ProductIcon} />
             <Text variant="headingSm" as="h3">
               New Products
             </Text>
@@ -315,7 +336,7 @@ export function WithAllElements() {
         <Popover
           active={false}
           activator={
-            <Button disclosure plain>
+            <Button disclosure variant="plain">
               View Sales
             </Button>
           }
@@ -397,5 +418,170 @@ export function WithFlushedSections() {
         </TextContainer>
       </LegacyCard.Section>
     </LegacyCard>
+  );
+}
+
+export function All() {
+  return (
+    <BlockStack gap="200">
+      <LegacyCard title="All headings">
+        <LegacyCard.Section title="Section 1 heading">
+          Section 1 content
+        </LegacyCard.Section>
+        <LegacyCard.Section title="Section 2 heading">
+          Section 2 content
+        </LegacyCard.Section>
+      </LegacyCard>
+      <LegacyCard title="Non-text first item">
+        <LegacyCard.Section>
+          <Box>
+            <LegacyCard.Section subdued>Section 1 content</LegacyCard.Section>
+          </Box>
+        </LegacyCard.Section>
+        <LegacyCard.Section title="Section 2 heading">
+          Section 2 content
+        </LegacyCard.Section>
+      </LegacyCard>
+      <LegacyCard>
+        <LegacyCard.Section>No titles Section 1 content</LegacyCard.Section>
+        <LegacyCard.Section>No titles Section 2 content</LegacyCard.Section>
+      </LegacyCard>
+      <LegacyCard>
+        <div>
+          <LegacyCard.Header title="Content wrapped in div" />
+          <LegacyCard.Section title="Section 1 heading">
+            Section 1 in div
+          </LegacyCard.Section>
+          <LegacyCard.Section title="Section 2 heading">
+            Section 2 in div
+          </LegacyCard.Section>
+        </div>
+      </LegacyCard>
+      <LegacyCard>
+        <div>
+          <LegacyCard.Section title="Section 1 heading">
+            Section 1 in div
+          </LegacyCard.Section>
+          <LegacyCard.Section title="Section 2 heading">
+            Section 2 in div
+          </LegacyCard.Section>
+        </div>
+      </LegacyCard>
+      <LegacyCard>
+        <div>
+          <h2>Custom header in an h2</h2>
+        </div>
+        <LegacyCard.Section>Section 1 content</LegacyCard.Section>
+        <LegacyCard.Section>Section 2 content</LegacyCard.Section>
+        <div>
+          <Text as="p" variant="bodyMd">
+            Custom footer in a p
+          </Text>
+        </div>
+      </LegacyCard>
+      <LegacyCard title="Sections are not siblings">
+        <div>
+          <LegacyCard.Section>
+            Section 1 content wrapped in its own div
+          </LegacyCard.Section>
+        </div>
+        <div>
+          <LegacyCard.Section>
+            Section 2 content wrapped in its own div
+          </LegacyCard.Section>
+        </div>
+      </LegacyCard>
+      <LegacyCard>
+        <div>Card content in div not in section</div>
+      </LegacyCard>
+      <LegacyCard>
+        <LegacyCard.Section subdued>
+          Subdued Section 1 content
+        </LegacyCard.Section>
+        <LegacyCard.Section>Section 2 content</LegacyCard.Section>
+      </LegacyCard>
+      <LegacyCard>
+        <LegacyCard.Section>Section 1 content</LegacyCard.Section>
+        <LegacyCard.Section subdued>
+          Subdued section 2 content
+        </LegacyCard.Section>
+      </LegacyCard>
+      <LegacyCard>
+        <LegacyCard.Section>Section 1 content</LegacyCard.Section>
+        <LegacyCard.Section subdued>
+          Subdued section 2 content
+        </LegacyCard.Section>
+        <LegacyCard.Section>Section 3 content</LegacyCard.Section>
+      </LegacyCard>
+      <LegacyCard title="Flush sections">
+        <LegacyCard.Section title="Section 1 heading">
+          Section 1 content
+        </LegacyCard.Section>
+        <LegacyCard.Section title="Flush section heading" flush>
+          This should be flush
+        </LegacyCard.Section>
+      </LegacyCard>
+      <LegacyCard title="Dynamic children padding adjustment">
+        <DynamicChildren />
+        <DynamicChildren />
+      </LegacyCard>
+      <LegacyCard title="Only one header section" />
+      <LegacyCard>
+        <LegacyCard.Section title="First outside section">
+          <BlockStack gap="200">
+            <Box>
+              <LegacyCard.Section subdued>
+                First nested section
+              </LegacyCard.Section>
+            </Box>
+            <Box>
+              <LegacyCard.Section subdued>
+                Second nested section
+              </LegacyCard.Section>
+            </Box>
+          </BlockStack>
+        </LegacyCard.Section>
+        <LegacyCard.Section title="Second outside section">
+          <BlockStack gap="200">
+            <Box>
+              <LegacyCard.Section subdued>
+                First nested section
+              </LegacyCard.Section>
+            </Box>
+            <Box>
+              <LegacyCard.Section subdued>
+                Second nested section
+              </LegacyCard.Section>
+            </Box>
+          </BlockStack>
+        </LegacyCard.Section>
+      </LegacyCard>
+      <LegacyCard>
+        <LegacyCard.Header title="Header with icon button child">
+          <Button
+            icon={XIcon}
+            variant="tertiary"
+            accessibilityLabel="Cancel button"
+          />
+        </LegacyCard.Header>
+      </LegacyCard>
+      <WithAllElements />
+    </BlockStack>
+  );
+}
+
+function DynamicChildren() {
+  const [showChildren, setShowChildren] = useState(false);
+  return (
+    <div>
+      <LegacyCard.Section>
+        <Button onClick={() => setShowChildren(!showChildren)}>
+          {showChildren ? 'Hide ' : 'Show '}children
+        </Button>
+      </LegacyCard.Section>
+      {showChildren ? (
+        <LegacyCard.Section>Child section content</LegacyCard.Section>
+      ) : null}
+    </div>
   );
 }

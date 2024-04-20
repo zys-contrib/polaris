@@ -1,14 +1,16 @@
 import React, {useEffect, useRef} from 'react';
 import {
-  CirclePlusMinor,
-  CircleTickMajor,
-  CircleInformationMajor,
-  CircleAlertMajor,
-  DiamondAlertMajor,
+  PlusCircleIcon,
+  CheckIcon,
+  AlertTriangleIcon,
+  InfoIcon,
+  AlertDiamondIcon,
 } from '@shopify/polaris-icons';
 import {mountWithApp} from 'tests/utilities';
 
 import {Button} from '../../Button';
+import {Card} from '../../Card';
+import {Modal} from '../../Modal';
 import {Text} from '../../Text';
 import {Icon} from '../../Icon';
 import {Spinner} from '../../Spinner';
@@ -16,72 +18,26 @@ import {UnstyledButton} from '../../UnstyledButton';
 import {UnstyledLink} from '../../UnstyledLink';
 import {BannerContext} from '../../../utilities/banner-context';
 import {WithinContentContext} from '../../../utilities/within-content-context';
-import {Banner} from '../Banner';
-import type {BannerHandles} from '../Banner';
+import {
+  Banner,
+  DefaultBanner,
+  InlineIconBanner,
+  WithinContentContainerBanner,
+} from '../Banner';
+import type {BannerTone} from '../Banner';
+import type {BannerHandles} from '../utilities';
 
 describe('<Banner />', () => {
   it('renders a title', () => {
     const banner = mountWithApp(<Banner title="Banner title" />);
     expect(
-      banner.find(Text, {as: 'h2', variant: 'headingMd'}),
+      banner.find(Text, {as: 'h2', variant: 'headingSm'}),
     ).toContainReactText('Banner title');
   });
 
-  it('passes an h2 element to Heading', () => {
-    const banner = mountWithApp(<Banner title="Banner title" />);
-    expect(banner).toContainReactComponent(Text, {as: 'h2'});
-  });
-
   it('passes the provided icon source to Icon', () => {
-    const banner = mountWithApp(<Banner icon={CirclePlusMinor} />);
-    expect(banner).toContainReactComponent(Icon, {source: CirclePlusMinor});
-  });
-
-  it('uses a success circleCheckMark if status is success and sets a status aria role', () => {
-    const banner = mountWithApp(<Banner status="success" />);
-
-    expect(banner).toContainReactComponent(Icon, {
-      source: CircleTickMajor,
-      color: 'success',
-    });
-    expect(banner).toContainReactComponent('div', {role: 'status'});
-  });
-
-  it('uses a highlight circleInformation if status is info and sets a status aria role', () => {
-    const banner = mountWithApp(<Banner status="info" />);
-
-    expect(banner).toContainReactComponent(Icon, {
-      source: CircleInformationMajor,
-      color: 'highlight',
-    });
-    expect(banner).toContainReactComponent('div', {role: 'status'});
-  });
-
-  it('uses a warning circleAlert if status is warning and sets an alert aria role', () => {
-    const banner = mountWithApp(<Banner status="warning" />);
-    expect(banner).toContainReactComponent(Icon, {
-      source: CircleAlertMajor,
-      color: 'warning',
-    });
-    expect(banner).toContainReactComponent('div', {role: 'alert'});
-  });
-
-  it('uses a critical circleBarred if status is critical and sets an alert aria role', () => {
-    const banner = mountWithApp(<Banner status="critical" />);
-    expect(banner).toContainReactComponent(Icon, {
-      source: DiamondAlertMajor,
-      color: 'critical',
-    });
-    expect(banner).toContainReactComponent('div', {role: 'alert'});
-  });
-
-  it('uses a default icon and aria role', () => {
-    const banner = mountWithApp(<Banner />);
-    expect(banner).toContainReactComponent(Icon, {
-      source: CircleInformationMajor,
-      color: 'base',
-    });
-    expect(banner).toContainReactComponent('div', {role: 'status'});
+    const banner = mountWithApp(<Banner icon={PlusCircleIcon} />);
+    expect(banner).toContainReactComponent(Icon, {source: PlusCircleIcon});
   });
 
   it('disables aria-live when stopAnnouncements is enabled', () => {
@@ -140,7 +96,7 @@ describe('<Banner />', () => {
       );
 
       expect(bannerWithAction).toContainReactComponent('button', {
-        disabled: true,
+        'aria-disabled': true,
         'aria-busy': true,
       });
     });
@@ -226,6 +182,33 @@ describe('<Banner />', () => {
     });
   });
 
+  it('creates a link with custom target in secondaryAction', () => {
+    const bannerWithSecondaryAction = mountWithApp(
+      <Banner
+        title="Test"
+        action={{
+          content: 'Primary action',
+        }}
+        secondaryAction={{
+          content: 'Secondary external link',
+          url: 'https://test.com',
+          target: '_top',
+        }}
+      >
+        Hello World
+      </Banner>,
+    );
+
+    const unstyledLink = bannerWithSecondaryAction
+      .find(UnstyledLink)!
+      .find('a');
+
+    expect(unstyledLink).toHaveReactProps({
+      target: '_top',
+      rel: undefined,
+    });
+  });
+
   it('renders an unstyled button with contentContext', () => {
     const bannerWithContentContext = mountWithApp(
       <WithinContentContext.Provider value>
@@ -251,7 +234,7 @@ describe('<Banner />', () => {
           banner.current && banner.current.focus();
         }, []);
 
-        return <Banner ref={banner} status="critical" />;
+        return <Banner ref={banner} tone="critical" />;
       }
 
       const testComponent = mountWithApp(<Test />);
@@ -296,7 +279,7 @@ describe('<Banner />', () => {
     });
   });
 
-  describe('context', () => {
+  describe('context and variants', () => {
     it('passes the within banner context', () => {
       const Child: React.FunctionComponent = (_props) => {
         return (
@@ -316,35 +299,73 @@ describe('<Banner />', () => {
 
       expect(banner.find(Child)).toContainReactComponent('div');
     });
+
+    it('shows the WithinContentContainerBanner variant inside a Card', () => {
+      const card = mountWithApp(
+        <Card>
+          <Banner title="Banner title" />
+        </Card>,
+        {},
+      );
+      expect(card).toContainReactComponent(WithinContentContainerBanner);
+    });
+
+    it('shows the WithinContentContainerBanner variant inside a Modal', () => {
+      const modal = mountWithApp(
+        <Modal open title="" onClose={() => {}}>
+          <Banner title="Banner title" />
+        </Modal>,
+        {},
+      );
+      expect(modal).toContainReactComponent(WithinContentContainerBanner);
+    });
+
+    it('shows the DefaultBanner variant by default', () => {
+      const banner = mountWithApp(<Banner title="Banner title" />);
+      expect(banner).toContainReactComponent(DefaultBanner);
+    });
+
+    it('shows the InlineIconBanner variant by default when there is no title and it is not in a content container', () => {
+      const banner = mountWithApp(<Banner />);
+      expect(banner).toContainReactComponent(InlineIconBanner);
+    });
+
+    it('shows the WithinContentContainerBanner variant by default when there is no title and it is in a content container', () => {
+      const card = mountWithApp(
+        <Card>
+          <Banner />
+        </Card>,
+        {},
+      );
+      expect(card).toContainReactComponent(WithinContentContainerBanner);
+    });
   });
 
-  describe('Icon', () => {
+  describe('aria role', () => {
     it.each([
-      ['Banner has a default status', null, 'base', CircleInformationMajor],
-      ['Banner has a success status', 'success', 'success', CircleTickMajor],
-      [
-        'Banner has an info status',
-        'info',
-        'highlight',
-        CircleInformationMajor,
-      ],
-      ['Banner has a warning status', 'warning', 'warning', CircleAlertMajor],
-      [
-        'Banner has a critical status',
-        'critical',
-        'critical',
-        DiamondAlertMajor,
-      ],
-    ])(
-      'sets Icon props when: %s',
-      (_: any, status: any, color: any, iconSource: any) => {
-        const banner = mountWithApp(<Banner status={status} />);
+      ['success', 'status'],
+      ['info', 'status'],
+      ['warning', 'alert'],
+      ['critical', 'alert'],
+    ])('aria role when status is %s', (tone: BannerTone, role: 'string') => {
+      const banner = mountWithApp(<Banner tone={tone} />);
 
-        expect(banner).toContainReactComponent(Icon, {
-          color,
-          source: iconSource,
-        });
-      },
-    );
+      expect(banner).toContainReactComponent('div', {role});
+    });
+  });
+
+  describe('icon', () => {
+    it.each([
+      ['success', CheckIcon],
+      ['info', InfoIcon],
+      ['warning', AlertTriangleIcon],
+      ['critical', AlertDiamondIcon],
+    ])('icon when status is %s', (tone: BannerTone, icon: any) => {
+      const banner = mountWithApp(<Banner tone={tone} />);
+
+      expect(banner).toContainReactComponent(Icon, {
+        source: icon,
+      });
+    });
   });
 });

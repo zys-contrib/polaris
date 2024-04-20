@@ -1,35 +1,27 @@
 import React from 'react';
 import {mountWithApp} from 'tests/utilities';
-import {matchMedia} from '@shopify/jest-dom-mocks';
+import type {Root, Node, Element} from '@shopify/react-testing';
 
 import {BulkActions} from '../../BulkActions';
-import type {useIsBulkActionsSticky} from '../../BulkActions';
-import {SelectAllActions} from '../../SelectAllActions';
-import {Button} from '../../Button';
 import {CheckableButton} from '../../CheckableButton';
 import {EmptySearchResult} from '../../EmptySearchResult';
 import {EmptyState} from '../../EmptyState';
-// eslint-disable-next-line import/no-deprecated
-import {EventListener} from '../../EventListener';
 import {Select} from '../../Select';
 import {Spinner} from '../../Spinner';
 import {ResourceItem} from '../../ResourceItem';
+import {Pagination} from '../../Pagination';
 import {SELECT_ALL_ITEMS} from '../../../utilities/resource-list';
 import {ResourceList} from '../ResourceList';
-import styles from '../ResourceList.scss';
+import {UnstyledButton} from '../../UnstyledButton';
+import styles from '../ResourceList.module.css';
 
-jest.mock('../../BulkActions', () => ({
-  ...jest.requireActual('../../BulkActions'),
-  useIsBulkActionsSticky: jest.fn(),
-}));
-
-function mockUseIsBulkActionsSticky(
-  args: ReturnType<typeof useIsBulkActionsSticky>,
+function getResourceItemCheckbox<T extends Root<unknown> | Element<unknown>>(
+  wrapper: T,
 ) {
-  const useIsBulkActionsSticky: jest.Mock =
-    jest.requireMock('../../BulkActions').useIsBulkActionsSticky;
-
-  useIsBulkActionsSticky.mockReturnValue(args);
+  return wrapper.findWhere<'div'>(
+    (node: Node<unknown>) =>
+      node.is('div') && node.prop('className')!.includes('CheckboxWrapper'),
+  );
 }
 
 const itemsNoID = [{url: 'item 1'}, {url: 'item 2'}];
@@ -62,24 +54,6 @@ const alternateTool = <div id="AlternateTool">Alternate Tool</div>;
 const defaultWindowWidth = window.innerWidth;
 
 describe('<ResourceList />', () => {
-  mockUseIsBulkActionsSticky({
-    bulkActionsIntersectionRef: {current: null},
-    tableMeasurerRef: {current: null},
-    isBulkActionsSticky: false,
-    bulkActionsAbsoluteOffset: 0,
-    bulkActionsMaxWidth: 0,
-    bulkActionsOffsetLeft: 0,
-    computeTableDimensions: jest.fn(),
-  });
-
-  beforeEach(() => {
-    matchMedia.mock();
-  });
-
-  afterEach(() => {
-    matchMedia.restore();
-  });
-
   describe('renderItem', () => {
     it('renders list items', () => {
       const resourceList = mountWithApp(
@@ -120,14 +94,14 @@ describe('<ResourceList />', () => {
       expect(resourceList).not.toContainReactComponent(CheckableButton);
     });
 
-    it('does not render a `SelectAllActions` if the `selectable` prop is not provided', () => {
+    it('does not render a `BulkActions` if the `selectable` prop is not provided', () => {
       const resourceList = mountWithApp(
         <ResourceList items={itemsWithID} renderItem={renderItem} />,
       );
-      expect(resourceList).not.toContainReactComponent(SelectAllActions);
+      expect(resourceList).not.toContainReactComponent(BulkActions);
     });
 
-    it('does render SelectAllActions if the promotedBulkActions prop is provided', () => {
+    it('does render BulkActions if the promotedBulkActions prop is provided', () => {
       const resourceList = mountWithApp(
         <ResourceList
           items={itemsWithID}
@@ -135,7 +109,7 @@ describe('<ResourceList />', () => {
           promotedBulkActions={promotedBulkActions}
         />,
       );
-      expect(resourceList).toContainReactComponent(SelectAllActions);
+      expect(resourceList).toContainReactComponent(BulkActions);
     });
 
     it('renders bulk actions if the bulkActions prop is provided', () => {
@@ -146,7 +120,7 @@ describe('<ResourceList />', () => {
           bulkActions={bulkActions}
         />,
       );
-      expect(resourceList).toContainReactComponent(SelectAllActions);
+      expect(resourceList).toContainReactComponent(BulkActions);
     });
 
     it('renders a `CheckableButton` if the `selectable` prop is true', () => {
@@ -156,16 +130,16 @@ describe('<ResourceList />', () => {
       expect(resourceList).toContainReactComponent(CheckableButton);
     });
 
-    it('renders a `SelectAllActions` if the `selectable` prop is true', () => {
+    it('renders a `BulkActions` if the `selectable` prop is true', () => {
       const resourceList = mountWithApp(
         <ResourceList selectable items={itemsWithID} renderItem={renderItem} />,
       );
-      expect(resourceList).toContainReactComponent(SelectAllActions);
+      expect(resourceList).toContainReactComponent(BulkActions);
     });
   });
 
   describe('hasMoreItems', () => {
-    it('does not add a prop of paginatedSelectAllAction to SelectAllActions if omitted', () => {
+    it('does not add a prop of paginatedSelectAllAction to BulkActions if omitted', () => {
       const resourceList = mountWithApp(
         <ResourceList
           items={itemsNoID}
@@ -173,12 +147,12 @@ describe('<ResourceList />', () => {
           bulkActions={bulkActions}
         />,
       );
-      expect(resourceList).toContainReactComponent(SelectAllActions, {
+      expect(resourceList).toContainReactComponent(BulkActions, {
         paginatedSelectAllAction: undefined,
       });
     });
 
-    it('adds a prop of paginatedSelectAllAction to SelectAllActions if included', () => {
+    it('adds a prop of paginatedSelectAllAction to BulkActions if included', () => {
       const resourceList = mountWithApp(
         <ResourceList
           items={itemsNoID}
@@ -188,7 +162,7 @@ describe('<ResourceList />', () => {
         />,
       );
       expect(
-        resourceList.find(SelectAllActions)!.props.paginatedSelectAllAction,
+        resourceList.find(BulkActions)!.props.paginatedSelectAllAction,
       ).toBeDefined();
     });
   });
@@ -338,20 +312,7 @@ describe('<ResourceList />', () => {
   });
 
   describe('selectAllActionsAccessibilityLabel', () => {
-    it('provides the SelectAllActions with the right accessibilityLabel if there’s 1 item and it isn’t selected', () => {
-      const resourceList = mountWithApp(
-        <ResourceList
-          items={singleItemWithID}
-          renderItem={renderItem}
-          bulkActions={bulkActions}
-        />,
-      );
-      expect(resourceList).toContainReactComponent(SelectAllActions, {
-        accessibilityLabel: 'Select item',
-      });
-    });
-
-    it('provides the SelectAllActions with the right accessibilityLabel if there’s 1 item and it is selected', () => {
+    it('provides the BulkActions with the right accessibilityLabel if there’s 1 item and it is selected', () => {
       const resourceList = mountWithApp(
         <ResourceList
           items={singleItemWithID}
@@ -360,12 +321,12 @@ describe('<ResourceList />', () => {
           selectedItems={['1']}
         />,
       );
-      expect(resourceList).toContainReactComponent(SelectAllActions, {
+      expect(resourceList).toContainReactComponent(BulkActions, {
         accessibilityLabel: 'Deselect item',
       });
     });
 
-    it('provides the SelectAllActions with the right accessibilityLabel if there are multiple items and they are selected', () => {
+    it('provides the BulkActions with the right accessibilityLabel if there are multiple items and they are selected', () => {
       const resourceList = mountWithApp(
         <ResourceList
           items={itemsWithID}
@@ -374,20 +335,21 @@ describe('<ResourceList />', () => {
           selectedItems={['5', '6', '7']}
         />,
       );
-      expect(resourceList).toContainReactComponent(SelectAllActions, {
+      expect(resourceList).toContainReactComponent(BulkActions, {
         accessibilityLabel: 'Deselect all 3 items',
       });
     });
 
-    it('provides the SelectAllActions with the right accessibilityLabel if there’s multiple items and some or none are selected', () => {
+    it('provides the BulkActions with the right accessibilityLabel if there’s multiple items and some are selected', () => {
       const resourceList = mountWithApp(
         <ResourceList
           items={itemsWithID}
           renderItem={renderItem}
           bulkActions={bulkActions}
+          selectedItems={['5', '6']}
         />,
       );
-      expect(resourceList).toContainReactComponent(SelectAllActions, {
+      expect(resourceList).toContainReactComponent(BulkActions, {
         accessibilityLabel: 'Select all 3 items',
       });
     });
@@ -407,10 +369,11 @@ describe('<ResourceList />', () => {
       );
       const resourceItem = resourceList.find(ResourceItem);
 
-      resourceItem!.findAll('div')[6]!.trigger('onClick', {
+      getResourceItemCheckbox(resourceItem!)!.trigger('onChange', {
         stopPropagation: () => {},
         nativeEvent: {},
       });
+
       expect(onSelectionChange).toHaveBeenCalled();
     });
   });
@@ -974,11 +937,11 @@ describe('<ResourceList />', () => {
         />,
       );
 
-      expect(resourceList).toContainReactComponent(SelectAllActions, {
+      expect(resourceList).toContainReactComponent(BulkActions, {
         selectMode: false,
       });
       resourceList.setProps({selectedItems: ['1']});
-      expect(resourceList).toContainReactComponent(SelectAllActions, {
+      expect(resourceList).toContainReactComponent(BulkActions, {
         selectMode: true,
       });
     });
@@ -993,11 +956,11 @@ describe('<ResourceList />', () => {
         />,
       );
 
-      expect(resourceList).toContainReactComponent(SelectAllActions, {
+      expect(resourceList).toContainReactComponent(BulkActions, {
         selectMode: true,
       });
       resourceList.setProps({selectedItems: []});
-      expect(resourceList).toContainReactComponent(SelectAllActions, {
+      expect(resourceList).toContainReactComponent(BulkActions, {
         selectMode: false,
       });
     });
@@ -1028,7 +991,7 @@ describe('<ResourceList />', () => {
           resourceList.find(CheckableButton)!.trigger('onToggleAll');
 
           const deselectAllCheckbox = resourceList
-            .find(SelectAllActions)!
+            .find(BulkActions)!
             .find(CheckableButton)!
             .find('input', {type: 'checkbox'})!;
 
@@ -1046,12 +1009,13 @@ describe('<ResourceList />', () => {
           );
 
           resourceList
-            .find(SelectAllActions)!
+            .find(BulkActions)!
             .find(CheckableButton)!
             .trigger('onToggleAll');
 
           const selectAllCheckableCheckbox = resourceList
-            .findAll(CheckableButton)[1]!
+            .find(BulkActions)!
+            .find(CheckableButton)!
             .find('input', {type: 'checkbox'})!;
 
           expect(document.activeElement).toBe(
@@ -1077,7 +1041,6 @@ describe('<ResourceList />', () => {
             />,
           );
 
-          expect(resourceList).not.toContainReactComponent(SelectAllActions);
           expect(resourceList).not.toContainReactComponent(BulkActions);
         });
       });
@@ -1101,13 +1064,13 @@ describe('<ResourceList />', () => {
         />,
       );
       const firstItem = resourceList.find(ResourceItem);
-      firstItem!.findAll('div')[6]!.trigger('onClick', {
+      getResourceItemCheckbox(firstItem!)!.trigger('onChange', {
         stopPropagation: () => {},
         nativeEvent: {},
       });
       const allItems = resourceList.findAll(ResourceItem);
       const lastItem = allItems[allItems.length - 1];
-      lastItem!.findAll('div')[6]!.trigger('onClick', {
+      getResourceItemCheckbox(lastItem!)!.trigger('onChange', {
         stopPropagation: () => {},
         nativeEvent: {shiftKey: true},
       });
@@ -1126,13 +1089,13 @@ describe('<ResourceList />', () => {
         />,
       );
       const firstItem = resourceList.find(ResourceItem);
-      firstItem!.findAll('div')[6]!.trigger('onClick', {
+      getResourceItemCheckbox(firstItem!)!.trigger('onChange', {
         stopPropagation: () => {},
         nativeEvent: {},
       });
       const allItems = resourceList.findAll(ResourceItem);
       const lastItem = allItems[allItems.length - 1];
-      lastItem!.findAll('div')[6]!.trigger('onClick', {
+      getResourceItemCheckbox(lastItem!)!.trigger('onChange', {
         stopPropagation: () => {},
         nativeEvent: {shiftKey: true},
       });
@@ -1170,13 +1133,13 @@ describe('<ResourceList />', () => {
         />,
       );
       const firstItem = resourceList.find(ResourceItem);
-      firstItem!.findAll('div')[6]!.trigger('onClick', {
+      getResourceItemCheckbox(firstItem!)!.trigger('onChange', {
         stopPropagation: () => {},
         nativeEvent: {},
       });
       const allItems = resourceList.findAll(ResourceItem);
       const lastItem = allItems[allItems.length - 1];
-      lastItem!.findAll('div')[6]!.trigger('onClick', {
+      getResourceItemCheckbox(lastItem!)!.trigger('onChange', {
         stopPropagation: () => {},
         nativeEvent: {shiftKey: true},
       });
@@ -1202,13 +1165,13 @@ describe('<ResourceList />', () => {
       );
       // Sets {lastSelected: 0}
       const firstItem = resourceList.find(ResourceItem);
-      firstItem!.findAll('div')[6]!.trigger('onClick', {
+      getResourceItemCheckbox(firstItem!)!.trigger('onChange', {
         stopPropagation: () => {},
         nativeEvent: {},
       });
       const allItems = resourceList.findAll(ResourceItem);
       const lastItem = allItems[allItems.length - 1];
-      lastItem!.findAll('div')[6]!.trigger('onClick', {
+      getResourceItemCheckbox(lastItem!)!.trigger('onChange', {
         stopPropagation: () => {},
         nativeEvent: {shiftKey: true},
       });
@@ -1231,10 +1194,11 @@ describe('<ResourceList />', () => {
           renderItem={renderItem}
         />,
       );
+      resourceList.act(() => {
+        setSmallScreen();
+        global.dispatchEvent(new Event('resize'));
+      });
 
-      setSmallScreen();
-      // eslint-disable-next-line import/no-deprecated
-      resourceList.find(EventListener)!.trigger('handler');
       expect(resourceList).toContainReactComponent(Select, {
         labelInline: false,
       });
@@ -1255,7 +1219,7 @@ describe('<ResourceList />', () => {
         />,
       );
 
-      expect(resourceList).toContainReactComponent(SelectAllActions, {
+      expect(resourceList).toContainReactComponent(BulkActions, {
         paginatedSelectAllAction: {
           content: 'Select all 2+ customers in this filter',
           onAction: expect.any(Function),
@@ -1277,9 +1241,9 @@ describe('<ResourceList />', () => {
         />,
       );
 
-      resourceList.find(BulkActions)!.find(Button)!.trigger('onClick');
+      resourceList.find(BulkActions)!.find(UnstyledButton)!.trigger('onClick');
 
-      expect(resourceList).toContainReactComponent(SelectAllActions, {
+      expect(resourceList).toContainReactComponent(BulkActions, {
         paginatedSelectAllText: 'All 2+ customers in this filter are selected',
       });
     });
@@ -1296,7 +1260,7 @@ describe('<ResourceList />', () => {
         />,
       );
 
-      expect(resourceList).toContainReactComponent(SelectAllActions, {
+      expect(resourceList).toContainReactComponent(BulkActions, {
         paginatedSelectAllAction: {
           content: 'Select all 2+ customers in your store',
           onAction: expect.any(Function),
@@ -1317,36 +1281,40 @@ describe('<ResourceList />', () => {
         />,
       );
 
-      resourceList.find(BulkActions)!.find(Button)!.trigger('onClick');
+      resourceList.find(BulkActions)!.find(UnstyledButton)!.trigger('onClick');
 
-      expect(resourceList).toContainReactComponent(SelectAllActions, {
+      expect(resourceList).toContainReactComponent(BulkActions, {
         paginatedSelectAllText: 'All 2+ customers in your store are selected',
       });
     });
   });
 
-  describe('computeTableDimensions', () => {
-    it('invokes the computeTableDimensions callback when the number of items changes', () => {
-      const computeTableDimensions = jest.fn();
-      mockUseIsBulkActionsSticky({
-        bulkActionsIntersectionRef: {current: null},
-        tableMeasurerRef: {current: null},
-        isBulkActionsSticky: false,
-        bulkActionsAbsoluteOffset: 0,
-        bulkActionsMaxWidth: 0,
-        bulkActionsOffsetLeft: 0,
-        computeTableDimensions,
-      });
-      const newItems = [...itemsWithID, {id: 12, url: '//shopify.com'}];
+  describe('pagination', () => {
+    it('does not render Pagination when pagination props are not provided', () => {
       const resourceList = mountWithApp(
         <ResourceList items={itemsWithID} renderItem={renderItem} />,
       );
 
-      expect(computeTableDimensions).toHaveBeenCalledTimes(1);
+      expect(resourceList).not.toContainReactComponent(Pagination);
+    });
 
-      resourceList.setProps({items: newItems});
+    it('renders Pagination with table type when pagination props are provided', () => {
+      const paginationProps = {
+        hasNext: true,
+      };
 
-      expect(computeTableDimensions).toHaveBeenCalledTimes(2);
+      const resourceList = mountWithApp(
+        <ResourceList
+          items={itemsWithID}
+          renderItem={renderItem}
+          pagination={paginationProps}
+        />,
+      );
+
+      expect(resourceList).toContainReactComponent(Pagination, {
+        type: 'table',
+        ...paginationProps,
+      });
     });
   });
 });

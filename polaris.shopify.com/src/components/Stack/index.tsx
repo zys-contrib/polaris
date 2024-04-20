@@ -1,20 +1,23 @@
 import {forwardRef} from 'react';
-import {type SpacingSpaceScale} from '@shopify/polaris-tokens';
+import {type SpaceScale} from '@shopify/polaris-tokens';
 import {Box, type WithAsProp} from '../Box';
 import styles from './Stack.module.scss';
 
 export interface StackProps {
-  gap?: SpacingSpaceScale;
+  gap?: SpaceScale;
 }
 
 export const Stack = forwardRef(
-  ({gap = '0', style, className, ...props}, ref) => (
+  ({gap = '0', style, className, as, ...props}, ref) => (
     <Box
+      as={as}
       ref={ref}
-      className={[styles.Stack, className]}
+      className={[
+        styles.Stack,
+        className,
+        as === 'ul' ? styles.List : undefined,
+      ]}
       style={{
-        // @ts-expect-error The types for `style` don't support css vars for
-        // some reason
         '--stack-gap-prop': `var(--p-space-${gap})`,
         ...style,
       }}

@@ -3,10 +3,11 @@ import React from 'react';
 import {classNames} from '../../../../utilities/css';
 import type {ComplexAction} from '../../../../types';
 import {buttonsFrom} from '../../../Button';
+// eslint-disable-next-line import/no-deprecated
 import {LegacyStack} from '../../../LegacyStack';
 import {ButtonGroup} from '../../../ButtonGroup';
 import {Text} from '../../../Text';
-import styles from '../../LegacyCard.scss';
+import styles from '../../LegacyCard.module.css';
 
 export interface LegacyCardSectionProps {
   title?: React.ReactNode;
@@ -37,12 +38,12 @@ export function Section({
   );
 
   const actionMarkup = actions ? (
-    <ButtonGroup>{buttonsFrom(actions, {plain: true})}</ButtonGroup>
+    <ButtonGroup>{buttonsFrom(actions, {variant: 'plain'})}</ButtonGroup>
   ) : null;
 
   const titleMarkup =
     typeof title === 'string' ? (
-      <Text variant="headingSm" as="h3">
+      <Text variant="headingSm" as="h3" fontWeight="medium">
         {title}
       </Text>
     ) : (

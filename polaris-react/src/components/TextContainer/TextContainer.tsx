@@ -2,7 +2,7 @@ import React from 'react';
 
 import {classNames, variationName} from '../../utilities/css';
 
-import styles from './TextContainer.scss';
+import styles from './TextContainer.module.css';
 
 type Spacing = 'tight' | 'loose';
 
@@ -13,7 +13,7 @@ export interface TextContainerProps {
   children?: React.ReactNode;
 }
 
-/** @deprecated Use AlphaStack instead */
+/** @deprecated Use BlockStack instead */
 export function TextContainer({spacing, children}: TextContainerProps) {
   const className = classNames(
     styles.TextContainer,

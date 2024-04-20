@@ -1,7 +1,6 @@
 const path = require('path');
 
 const {createFilter} = require('@rollup/pluginutils');
-const nodeSass = require('node-sass');
 const postcss = require('postcss');
 const cssModules = require('postcss-modules');
 
@@ -31,8 +30,7 @@ module.exports.styles = function styles({
   ]);
 
   let inputRoot;
-
-  const processedExt = '.css';
+  const processedExt = '.out.css';
 
   const cssByFile = {};
 
@@ -52,14 +50,13 @@ module.exports.styles = function styles({
   function transformEsNext(rollup, id, postCssOutput) {
     const relativePath = `./${path.relative(
       path.dirname(id),
-      id.replace(/\.scss$/, processedExt),
+      id.replace(/(\.module)?\.css$/, processedExt),
     )}`;
-
     rollup.emitFile({
       type: 'asset',
       fileName: id
         .replace(`${inputRoot}/`, '')
-        .replace(/\.scss$/, processedExt),
+        .replace(/(\.module)?\.css$/, processedExt),
       source: postCssOutput.css,
     });
 
@@ -67,7 +64,7 @@ module.exports.styles = function styles({
     // No need to specify no-treeshake here as .css files get treated as
     // external and thus their imports will not be tree shaken away anyway
     return {
-      code: `import './${relativePath}';\nexport default ${properties};`,
+      code: `import '${relativePath}';\nexport default ${properties};`,
     };
   }
 
@@ -93,7 +90,7 @@ module.exports.styles = function styles({
     const entrypointBundles = Object.values(bundle).filter(
       (bundleInfo) => bundleInfo.isEntry,
     );
-    const bundleModuleIds = flatMap(entrypointBundles, (bundleInfo) =>
+    const bundleModuleIds = entrypointBundles.flatMap((bundleInfo) =>
       getRecursiveImportOrder(bundleInfo.facadeModuleId, rollup.getModuleInfo),
     );
 
@@ -130,15 +127,15 @@ module.exports.styles = function styles({
       inputRoot = path.resolve(process.cwd(), path.dirname(input[0]));
     },
 
-    // Treat CSS files as external - don't try and resolve them within Rollup
-    // This only gets triggered in esnext mode when we emit imports of css files
+    // // Treat CSS files as external - don't try and resolve them within Rollup
+    // // This only gets triggered in esnext mode when we emit imports of css files
     resolveId(source, importer) {
-      if (source.endsWith(processedExt)) {
-        return {
-          id: path.resolve(path.dirname(importer), source),
-          external: true,
-        };
-      }
+      if (!source.endsWith([processedExt])) return;
+      const id = path.resolve(path.dirname(importer), source);
+      return {
+        id,
+        external: true,
+      };
     },
 
     async transform(source, id) {
@@ -146,22 +143,8 @@ module.exports.styles = function styles({
         return null;
       }
 
-      let sassOutput;
-      try {
-        sassOutput = nodeSass
-          .renderSync({
-            data: source,
-            file: id,
-            outputStyle: 'compact',
-            includePaths: [path.dirname(id)],
-          })
-          .css.toString();
-      } catch (err) {
-        throw new Error(err.formatted);
-      }
-
       const postCssOutput = await styleProcessor
-        .process(sassOutput, {from: id})
+        .process(source, {from: id})
         .then((result) => ({
           css: result.css,
           tokens: result.messages.find(({plugin, type}) => {
@@ -184,11 +167,6 @@ module.exports.styles = function styles({
     },
   };
 };
-
-// We're still using node 10. Array.flat(fn)/Array.flatMap(fn) are added in v11
-function flatMap(array, fn) {
-  return array.reduce((memo, item) => memo.concat(fn(item)), []);
-}
 
 // An @charset declaration must be at the top of a css file rather than part
 // way through. Because we're combining multiple files we need to make sure

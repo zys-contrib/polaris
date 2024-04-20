@@ -1,23 +1,23 @@
-import React, {useEffect, useState, useRef, useCallback} from 'react';
+import React, {useEffect, useState, useRef, useCallback, useId} from 'react';
 import type {
-  ShapeBorderRadiusScale,
-  SpacingSpaceScale,
+  BorderRadiusAliasOrScale,
+  SpaceScale,
 } from '@shopify/polaris-tokens';
 
 import {Portal} from '../Portal';
+import {Text} from '../Text';
 import {useEphemeralPresenceManager} from '../../utilities/ephemeral-presence-manager';
 import {findFirstFocusableNode} from '../../utilities/focus';
-import {useUniqueId} from '../../utilities/unique-id';
 import {useToggle} from '../../utilities/use-toggle';
 import {classNames} from '../../utilities/css';
 
 import {TooltipOverlay} from './components';
 import type {TooltipOverlayProps} from './components';
-import styles from './Tooltip.scss';
+import styles from './Tooltip.module.css';
 
 export type Width = 'default' | 'wide';
-export type Padding = 'default' | Extract<SpacingSpaceScale, '4'>;
-export type BorderRadius = Extract<ShapeBorderRadiusScale, '1' | '2'>;
+export type Padding = 'default' | Extract<SpaceScale, '400'>;
+export type BorderRadius = Extract<BorderRadiusAliasOrScale, '100' | '200'>;
 
 export interface TooltipProps {
   /** The element that will activate to tooltip */
@@ -32,7 +32,7 @@ export interface TooltipProps {
   dismissOnMouseOut?: TooltipOverlayProps['preventInteraction'];
   /**
    * The direction the tooltip tries to display
-   * @default 'below'
+   * @default 'above'
    */
   preferredPosition?: TooltipOverlayProps['preferredPosition'];
   /**
@@ -54,7 +54,7 @@ export interface TooltipProps {
   padding?: Padding;
   /**
    * Border radius of the tooltip
-   * @default '1'
+   * @default '200'
    */
   borderRadius?: BorderRadius;
   /** Override on the default z-index of 400 */
@@ -77,22 +77,24 @@ export function Tooltip({
   dismissOnMouseOut,
   active: originalActive,
   hoverDelay,
-  preferredPosition = 'below',
+  preferredPosition = 'above',
   activatorWrapper = 'span',
   accessibilityLabel,
   width = 'default',
   padding = 'default',
-  borderRadius = '1',
+  borderRadius: borderRadiusProp,
   zIndexOverride,
   hasUnderline,
   persistOnClick,
   onOpen,
   onClose,
 }: TooltipProps) {
+  const borderRadius = borderRadiusProp || '200';
+
   const WrapperComponent: any = activatorWrapper;
   const {
     value: active,
-    setTrue: handleFocus,
+    setTrue: setActiveTrue,
     setFalse: handleBlur,
   } = useToggle(Boolean(originalActive));
 
@@ -104,12 +106,18 @@ export function Tooltip({
   const {presenceList, addPresence, removePresence} =
     useEphemeralPresenceManager();
 
-  const id = useUniqueId('TooltipContent');
+  const id = useId();
   const activatorContainer = useRef<HTMLElement>(null);
   const mouseEntered = useRef(false);
   const [shouldAnimate, setShouldAnimate] = useState(Boolean(!originalActive));
   const hoverDelayTimeout = useRef<NodeJS.Timeout | null>(null);
   const hoverOutTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const handleFocus = useCallback(() => {
+    if (originalActive !== false) {
+      setActiveTrue();
+    }
+  }, [originalActive, setActiveTrue]);
 
   useEffect(() => {
     const firstFocusable = activatorContainer.current
@@ -159,6 +167,13 @@ export function Tooltip({
     [handleBlur, handleClose, persistOnClick, togglePersisting],
   );
 
+  useEffect(() => {
+    if (originalActive === false && active) {
+      handleClose();
+      handleBlur();
+    }
+  }, [originalActive, active, handleClose, handleBlur]);
+
   const portal = activatorNode ? (
     <Portal idPrefix="tooltip">
       <TooltipOverlay
@@ -175,7 +190,9 @@ export function Tooltip({
         zIndexOverride={zIndexOverride}
         instant={!shouldAnimate}
       >
-        {content}
+        <Text as="span" variant="bodyMd">
+          {content}
+        </Text>
       </TooltipOverlay>
     </Portal>
   ) : null;

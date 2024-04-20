@@ -1,4 +1,3 @@
-// eslint-disable-next-line node/no-unsupported-features/node-builtins
 const assert = require('assert').strict;
 const fs = require('fs');
 
@@ -42,50 +41,56 @@ function validateStandardBuild() {
 
   // Standard build css contains namespaced classes
   const cssContent = fs.readFileSync('./build/esm/styles.css', 'utf-8');
-  assert.ok(cssContent.includes('.Polaris-Avatar {'));
-  assert.ok(cssContent.includes('.Polaris-BulkActions__BulkActionButton {'));
-  assert.ok(cssContent.includes('@keyframes p-keyframes-bounce {'));
-  assert.ok(cssContent.includes('--p-keyframes-bounce:p-keyframes-bounce;'));
+  assert.ok(cssContent.includes('.Polaris-Avatar{'));
+  assert.ok(cssContent.includes('.Polaris-BulkActions__BulkActionButton{'));
+  assert.ok(cssContent.includes('@keyframes p-motion-keyframes-bounce{'));
+  assert.ok(
+    cssContent.includes(
+      '--p-motion-keyframes-bounce:p-motion-keyframes-bounce;',
+    ),
+  );
 }
 
 function validateEsNextBuild() {
   // ESnext build
   assert.ok(fs.existsSync('./build/esnext/index.esnext'));
   assert.ok(fs.existsSync('./build/esnext/components/Avatar/Avatar.esnext'));
-  assert.ok(fs.existsSync('./build/esnext/components/Avatar/Avatar.css'));
+  assert.ok(fs.existsSync('./build/esnext/components/Avatar/Avatar.out.css'));
   assert.ok(
-    fs.existsSync('./build/esnext/components/AppProvider/AppProvider.css'),
+    fs.existsSync('./build/esnext/components/AppProvider/global.out.css'),
   );
 
   // ESnext build css contains namespaced classes, and
   const cssContent = fs.readFileSync(
-    './build/esnext/components/Avatar/Avatar.css',
+    './build/esnext/components/Avatar/Avatar.out.css',
     'utf-8',
   );
   const cssKeyframesContent = fs.readFileSync(
-    './build/esnext/components/AppProvider/global.css',
+    './build/esnext/components/AppProvider/global.out.css',
     'utf-8',
   );
-  assert.ok(cssContent.includes('.Polaris-Avatar_z763p {'));
-  assert.ok(cssKeyframesContent.includes('@keyframes p-keyframes-spin {'));
+  assert.ok(cssContent.includes('.Polaris-Avatar_z763p{'));
   assert.ok(
-    cssKeyframesContent.includes('--p-keyframes-spin:p-keyframes-spin;'),
+    cssKeyframesContent.includes('@keyframes p-motion-keyframes-spin{'),
+  );
+  assert.ok(
+    cssKeyframesContent.includes(
+      '--p-motion-keyframes-spin:p-motion-keyframes-spin;',
+    ),
   );
 
   const jsContent = fs.readFileSync(
-    './build/esnext/components/Avatar/Avatar.scss.esnext',
+    './build/esnext/components/Avatar/Avatar.css.esnext',
     'utf-8',
   );
 
-  assert.ok(jsContent.includes("import './Avatar.css';"));
+  assert.ok(jsContent.includes("import './Avatar.out.css';"));
   assert.ok(jsContent.includes('"Avatar": "Polaris-Avatar_z763p"'));
   assert.ok(jsContent.includes('"hidden": "Polaris-Avatar--hidden_riqie"'));
 }
 
 function validateAncillaryOutput() {
-  assert.ok(fs.existsSync('./build/ts/latest/src/index.d.ts'));
-  // Downleveled for consumers on older TypeScript versions
-  assert.ok(fs.existsSync('./build/ts/3.4/src/index.d.ts'));
+  assert.ok(fs.existsSync('./build/ts/src/index.d.ts'));
 }
 
 function validateVersionReplacement() {
@@ -113,10 +118,7 @@ function validateVersionReplacement() {
   assert.strictEqual(fileBuckets.includesTemplateString.length, 0);
 
   assert.deepStrictEqual(fileBuckets.includesVersion, [
-    './build/cjs/configure.js',
-    './build/esm/configure.js',
     './build/esm/styles.css',
-    './build/esnext/configure.esnext',
-    './build/esnext/components/AppProvider/AppProvider.css',
+    './build/esnext/components/AppProvider/global.out.css',
   ]);
 }

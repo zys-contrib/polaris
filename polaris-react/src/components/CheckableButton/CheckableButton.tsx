@@ -1,10 +1,10 @@
 import React, {useRef, useImperativeHandle, forwardRef} from 'react';
 
 import type {CheckboxHandles} from '../../types';
-import {classNames} from '../../utilities/css';
 import {Checkbox} from '../Checkbox';
+import {Text} from '../Text';
 
-import styles from './CheckableButton.scss';
+import styles from './CheckableButton.module.css';
 
 export interface CheckableButtonProps {
   accessibilityLabel?: string;
@@ -38,10 +38,8 @@ export const CheckableButton = forwardRef(function CheckableButton(
     };
   });
 
-  const className = classNames(styles.CheckableButton);
-
   return (
-    <div className={className} onClick={onToggleAll}>
+    <div className={styles.CheckableButton} onClick={onToggleAll}>
       <div className={styles.Checkbox}>
         <Checkbox
           label={accessibilityLabel}
@@ -52,9 +50,13 @@ export const CheckableButton = forwardRef(function CheckableButton(
           ref={checkBoxRef}
         />
       </div>
-      <span className={styles.Label} aria-live={ariaLive}>
-        {label}
-      </span>
+      {label ? (
+        <span className={styles.Label} aria-live={ariaLive}>
+          <Text as="span" variant="bodySm" fontWeight="medium">
+            {label}
+          </Text>
+        </span>
+      ) : null}
     </div>
   );
 });

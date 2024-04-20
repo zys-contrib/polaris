@@ -1,3 +1,4 @@
+import type {ReactNode} from 'react';
 import React, {useRef} from 'react';
 import {animationFrame} from '@shopify/jest-dom-mocks';
 import {mountWithApp} from 'tests/utilities';
@@ -27,17 +28,31 @@ jest.mock('react-transition-group', () => {
   };
 });
 
+jest.mock('../../TrapFocus', () => ({
+  ...jest.requireActual('../../TrapFocus'),
+  TrapFocus({children}: {children: ReactNode}) {
+    return <div>{children}</div>;
+  },
+}));
+
 describe('<Modal>', () => {
   let scrollSpy: jest.SpyInstance;
+  let requestAnimationFrameSpy: jest.SpyInstance;
 
   beforeEach(() => {
     scrollSpy = jest.spyOn(window, 'scroll');
     animationFrame.mock();
+    requestAnimationFrameSpy = jest.spyOn(window, 'requestAnimationFrame');
+    requestAnimationFrameSpy.mockImplementation((cb: () => number) => {
+      cb();
+      return 1;
+    });
   });
 
   afterEach(() => {
     animationFrame.restore();
     scrollSpy.mockRestore();
+    requestAnimationFrameSpy.mockRestore();
   });
 
   it('has a child with contentContext', () => {
@@ -159,12 +174,12 @@ describe('<Modal>', () => {
   describe('large', () => {
     it('passes large to Dialog if true', () => {
       const modal = mountWithApp(
-        <Modal title="foo" large onClose={jest.fn()} open>
+        <Modal title="foo" size="large" onClose={jest.fn()} open>
           <Badge />
         </Modal>,
       );
 
-      expect(modal).toContainReactComponent(Dialog, {large: true});
+      expect(modal).toContainReactComponent(Dialog, {size: 'large'});
     });
 
     it('does not pass large to Dialog be default', () => {
@@ -174,19 +189,19 @@ describe('<Modal>', () => {
         </Modal>,
       );
 
-      expect(modal).toContainReactComponent(Dialog, {large: undefined});
+      expect(modal).toContainReactComponent(Dialog, {size: undefined});
     });
   });
 
   describe('small', () => {
     it('passes small to Dialog if true', () => {
       const modal = mountWithApp(
-        <Modal title="foo" small onClose={jest.fn()} open>
+        <Modal title="foo" size="small" onClose={jest.fn()} open>
           <Badge />
         </Modal>,
       );
 
-      expect(modal).toContainReactComponent(Dialog, {small: true});
+      expect(modal).toContainReactComponent(Dialog, {size: 'small'});
     });
 
     it('does not pass small to Dialog by default', () => {
@@ -196,7 +211,7 @@ describe('<Modal>', () => {
         </Modal>,
       );
 
-      expect(modal).toContainReactComponent(Dialog, {small: undefined});
+      expect(modal).toContainReactComponent(Dialog, {size: undefined});
     });
   });
 
@@ -225,12 +240,12 @@ describe('<Modal>', () => {
   describe('fullScreen', () => {
     it('passes fullScreen to Dialog if true', () => {
       const modal = mountWithApp(
-        <Modal title="foo" fullScreen onClose={jest.fn()} open>
+        <Modal title="foo" size="fullScreen" onClose={jest.fn()} open>
           <Badge />
         </Modal>,
       );
 
-      expect(modal).toContainReactComponent(Dialog, {fullScreen: true});
+      expect(modal).toContainReactComponent(Dialog, {size: 'fullScreen'});
     });
 
     it('does not pass fullScreen to Dialog be default', () => {
@@ -240,7 +255,7 @@ describe('<Modal>', () => {
         </Modal>,
       );
 
-      expect(modal).toContainReactComponent(Dialog, {fullScreen: undefined});
+      expect(modal).toContainReactComponent(Dialog, {size: undefined});
     });
   });
 
@@ -314,9 +329,7 @@ describe('<Modal>', () => {
 
       expect(modal.find(Header)).toContainReactComponent('div', {
         style: expect.objectContaining({
-          '--pc-box-inset-inline-end': 'var(--p-space-0)',
           position: 'absolute',
-          zIndex: '1',
         }) as React.CSSProperties,
       });
       expect(modal.find(Header)).not.toContainReactComponent(Text, {
@@ -356,6 +369,26 @@ describe('<Modal>', () => {
       expect(modal).toContainReactComponent(Footer);
     });
 
+    it('renders a destructive primaryAction', () => {
+      const modal = mountWithApp(
+        <Modal
+          title="foo"
+          onClose={jest.fn()}
+          open
+          primaryAction={{
+            content: 'Save',
+            onAction: jest.fn(),
+            destructive: true,
+          }}
+        />,
+      );
+
+      expect(modal).toContainReactComponent(Button, {
+        variant: 'primary',
+        tone: 'critical',
+      });
+    });
+
     it('renders if secondaryActions are passed in', () => {
       const modal = mountWithApp(
         <Modal
@@ -367,6 +400,24 @@ describe('<Modal>', () => {
       );
 
       expect(modal).toContainReactComponent(Footer);
+    });
+  });
+
+  it('renders destructive secondaryActions', () => {
+    const modal = mountWithApp(
+      <Modal
+        title="foo"
+        onClose={jest.fn()}
+        open
+        secondaryActions={[
+          {content: 'Discard', onAction: jest.fn(), destructive: true},
+        ]}
+      />,
+    );
+
+    expect(modal).toContainReactComponent(Button, {
+      variant: 'primary',
+      tone: 'critical',
     });
   });
 
@@ -477,10 +528,41 @@ describe('<Modal>', () => {
       }).not.toThrow();
     });
 
-    // Causes a circular dependency that causes the whole test file to be unrunnable
-    // eslint-disable-next-line jest/no-disabled-tests
-    it.skip('focuses the activator when the activator is an element on close', () => {
+    it('wraps the activator in a div by default', () => {
+      const activator = <Button />;
+
+      const modal = mountWithApp(
+        <Modal title="foo" onClose={noop} open={false} activator={activator} />,
+      );
+
+      expect(modal).toContainReactComponent(Box, {
+        as: 'div',
+        children: activator,
+      });
+    });
+
+    it('wraps the activator in a span if activatorWrapper is provided', () => {
+      const activator = <Button />;
+
+      const modal = mountWithApp(
+        <Modal
+          title="foo"
+          onClose={noop}
+          open={false}
+          activator={activator}
+          activatorWrapper="span"
+        />,
+      );
+
+      expect(modal).toContainReactComponent(Box, {
+        as: 'span',
+        children: activator,
+      });
+    });
+
+    it('focuses the activator on close when the activator is an element', () => {
       const id = 'activator-id';
+
       const modal = mountWithApp(
         <Modal
           title="foo"
@@ -491,21 +573,22 @@ describe('<Modal>', () => {
       );
 
       modal.find(Dialog)!.trigger('onExited');
-      const activator = modal.find('button', {id})!.domNode;
+
+      const activator = modal.find('button', {
+        id,
+      })!.domNode;
 
       expect(document.activeElement).toBe(activator);
     });
 
-    // Causes a circular dependency that causes the whole test file to be unrunnable
-    // eslint-disable-next-line jest/no-disabled-tests
-    it.skip('focuses the activator when the activator a ref on close', () => {
-      const buttonId = 'buttonId';
+    it('focuses the activator on close when the activator is a ref', () => {
+      const id = 'buttonId';
       const TestHarness = () => {
         const buttonRef = useRef<HTMLDivElement>(null);
 
         const button = (
           <div ref={buttonRef}>
-            <Button id={buttonId} />
+            <Button id={id} />
           </div>
         );
 
@@ -521,11 +604,11 @@ describe('<Modal>', () => {
 
       testHarness.find(Modal)!.find(Dialog)!.trigger('onExited');
 
-      expect(document.activeElement).toBe(
-        testHarness.findWhere(
-          (wrap) => wrap.is('button') && wrap.prop('id') === buttonId,
-        )!.domNode,
-      );
+      const activator = testHarness.find('button', {
+        id,
+      })!.domNode;
+
+      expect(document.activeElement).toBe(activator);
     });
   });
 });

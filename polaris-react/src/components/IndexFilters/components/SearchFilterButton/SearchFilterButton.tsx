@@ -1,42 +1,50 @@
 import React from 'react';
 import type {CSSProperties} from 'react';
-import {SearchMinor, FilterMinor} from '@shopify/polaris-icons';
+import {SearchIcon, FilterIcon} from '@shopify/polaris-icons';
 
 import {Icon} from '../../../Icon';
 import {Tooltip} from '../../../Tooltip';
 import {Text} from '../../../Text';
-import {Inline} from '../../../Inline';
-import {FilterButton} from '../FilterButton';
+import {InlineStack} from '../../../InlineStack';
+import {Button} from '../../../Button';
 
 export interface SearchFilterButtonProps {
   onClick: () => void;
-  'aria-label': string;
+  label: string;
   disabled?: boolean;
   tooltipContent: string;
+  disclosureZIndexOverride?: number;
   hideFilters?: boolean;
+  hideQueryField?: boolean;
   style: CSSProperties;
 }
 
 export function SearchFilterButton({
   onClick,
-  'aria-label': ariaLabel,
+  label,
   disabled,
   tooltipContent,
+  disclosureZIndexOverride,
   style,
   hideFilters,
+  hideQueryField,
 }: SearchFilterButtonProps) {
+  const iconMarkup = (
+    <InlineStack gap="0">
+      {hideQueryField ? null : <Icon source={SearchIcon} tone="base" />}
+      {hideFilters ? null : <Icon source={FilterIcon} tone="base" />}
+    </InlineStack>
+  );
+
   const activator = (
     <div style={style}>
-      <FilterButton
+      <Button
+        size="slim"
         onClick={onClick}
-        aria-label={ariaLabel}
         disabled={disabled}
-      >
-        <Inline gap="0">
-          <Icon source={SearchMinor} color="base" />
-          {hideFilters ? null : <Icon source={FilterMinor} color="base" />}
-        </Inline>
-      </FilterButton>
+        icon={iconMarkup}
+        accessibilityLabel={label}
+      />
     </div>
   );
 
@@ -47,7 +55,12 @@ export function SearchFilterButton({
   );
 
   return (
-    <Tooltip content={content} preferredPosition="above" hoverDelay={400}>
+    <Tooltip
+      content={content}
+      preferredPosition="above"
+      hoverDelay={400}
+      zIndexOverride={disclosureZIndexOverride}
+    >
       {activator}
     </Tooltip>
   );

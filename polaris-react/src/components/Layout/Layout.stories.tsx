@@ -2,6 +2,7 @@ import React from 'react';
 import type {ComponentMeta} from '@storybook/react';
 import {
   Banner,
+  Box,
   LegacyCard,
   FormLayout,
   Text,
@@ -17,13 +18,57 @@ export default {
   component: Layout,
 } as ComponentMeta<typeof Layout>;
 
+export function All() {
+  return (
+    <>
+      <Text as="h2" variant="headingXl">
+        One column
+      </Text>
+      <OneColumn />
+      <Box paddingBlockEnd="800" />
+
+      <Text as="h2" variant="headingXl">
+        Two columns with primary and secondary widths
+      </Text>
+      <TwoColumnsWithPrimaryAndSecondaryWidths />
+      <Box paddingBlockEnd="800" />
+
+      <Text as="h2" variant="headingXl">
+        Two columns with equal width
+      </Text>
+      <TwoColumnsWithEqualWidth />
+      <Box paddingBlockEnd="800" />
+
+      <Text as="h2" variant="headingXl">
+        Three columns with equal width
+      </Text>
+      <ThreeColumnsWithEqualWidth />
+      <Box paddingBlockEnd="800" />
+
+      <Text as="h2" variant="headingXl">
+        Annotated
+      </Text>
+      <Annotated />
+      <Box paddingBlockEnd="800" />
+
+      <Text as="h2" variant="headingXl">
+        Annotated with banner at the top
+      </Text>
+      <AnnotatedWithBannerAtTheTop />
+      <Box paddingBlockEnd="800" />
+    </>
+  );
+}
+
 export function OneColumn() {
   return (
     <Page fullWidth>
       <Layout>
         <Layout.Section>
           <LegacyCard title="Online store dashboard" sectioned>
-            <p>View a summary of your online store’s performance.</p>
+            <Text as="p" variant="bodyMd">
+              View a summary of your online store’s performance.
+            </Text>
           </LegacyCard>
         </Layout.Section>
       </Layout>
@@ -37,17 +82,19 @@ export function TwoColumnsWithPrimaryAndSecondaryWidths() {
       <Layout>
         <Layout.Section>
           <LegacyCard title="Order details" sectioned>
-            <p>
+            <Text as="p" variant="bodyMd">
               Use to follow a normal section with a secondary section to create
               a 2/3 + 1/3 layout on detail pages (such as individual product or
               order pages). Can also be used on any page that needs to structure
               a lot of content. This layout stacks the columns on small screens.
-            </p>
+            </Text>
           </LegacyCard>
         </Layout.Section>
-        <Layout.Section secondary>
+        <Layout.Section variant="oneThird">
           <LegacyCard title="Tags" sectioned>
-            <p>Add tags to your order.</p>
+            <Text as="p" variant="bodyMd">
+              Add tags to your order.
+            </Text>
           </LegacyCard>
         </Layout.Section>
       </Layout>
@@ -59,10 +106,10 @@ export function TwoColumnsWithEqualWidth() {
   return (
     <Page fullWidth>
       <Layout>
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <LegacyCard title="Florida" actions={[{content: 'Manage'}]}>
             <LegacyCard.Section>
-              <Text color="subdued" as="span">
+              <Text tone="subdued" as="span">
                 455 units available
               </Text>
             </LegacyCard.Section>
@@ -121,10 +168,10 @@ export function TwoColumnsWithEqualWidth() {
             </LegacyCard.Section>
           </LegacyCard>
         </Layout.Section>
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <LegacyCard title="Nevada" actions={[{content: 'Manage'}]}>
             <LegacyCard.Section>
-              <Text color="subdued" as="span">
+              <Text tone="subdued" as="span">
                 301 units available
               </Text>
             </LegacyCard.Section>
@@ -192,10 +239,10 @@ export function ThreeColumnsWithEqualWidth() {
   return (
     <Page fullWidth>
       <Layout>
-        <Layout.Section oneThird>
+        <Layout.Section variant="oneThird">
           <LegacyCard title="Florida" actions={[{content: 'Manage'}]}>
             <LegacyCard.Section>
-              <Text color="subdued" as="span">
+              <Text tone="subdued" as="span">
                 455 units available
               </Text>
             </LegacyCard.Section>
@@ -254,10 +301,10 @@ export function ThreeColumnsWithEqualWidth() {
             </LegacyCard.Section>
           </LegacyCard>
         </Layout.Section>
-        <Layout.Section oneThird>
+        <Layout.Section variant="oneThird">
           <LegacyCard title="Nevada" actions={[{content: 'Manage'}]}>
             <LegacyCard.Section>
-              <Text color="subdued" as="span">
+              <Text tone="subdued" as="span">
                 301 units available
               </Text>
             </LegacyCard.Section>
@@ -316,10 +363,10 @@ export function ThreeColumnsWithEqualWidth() {
             </LegacyCard.Section>
           </LegacyCard>
         </Layout.Section>
-        <Layout.Section oneThird>
+        <Layout.Section variant="oneThird">
           <LegacyCard title="Minneapolis" actions={[{content: 'Manage'}]}>
             <LegacyCard.Section>
-              <Text color="subdued" as="span">
+              <Text tone="subdued" as="span">
                 1931 units available
               </Text>
             </LegacyCard.Section>
@@ -388,7 +435,7 @@ export function Annotated() {
     <Page fullWidth>
       <Layout>
         <Layout.AnnotatedSection
-          id="storeDetails"
+          id="storeDetails-annotated"
           title="Store details"
           description="Shopify and your customers will use this information to contact you."
         >
@@ -419,11 +466,13 @@ export function AnnotatedWithBannerAtTheTop() {
       <Layout>
         <Layout.Section>
           <Banner title="Order archived" onDismiss={() => {}}>
-            <p>This order was archived on March 7, 2017 at 3:12pm EDT.</p>
+            <Text as="p" variant="bodyMd">
+              This order was archived on March 7, 2017 at 3:12pm EDT.
+            </Text>
           </Banner>
         </Layout.Section>
         <Layout.AnnotatedSection
-          id="storeDetails"
+          id="storeDetails-annotatedWithBanner"
           title="Store details"
           description="Shopify and your customers will use this information to contact you."
         >

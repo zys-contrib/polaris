@@ -1,5 +1,5 @@
-import type core from 'jscodeshift';
 import type {Collection} from 'jscodeshift';
+import type core from 'jscodeshift';
 
 export function hasImportDeclaration(
   j: core.JSCodeshift,
@@ -17,7 +17,7 @@ export function getImportDeclaration(
   j: core.JSCodeshift,
   source: Collection<any>,
   sourcePath: string,
-) {
+): Collection<core.ImportDeclaration> {
   return source
     .find(j.ImportDeclaration)
     .filter((path) => path.node.importKind !== 'type')
@@ -28,7 +28,7 @@ export function getRelativeImportDeclaration(
   j: core.JSCodeshift,
   source: Collection<any>,
   fileName = '',
-) {
+): Collection<core.ImportDeclaration> {
   const relativeRegex = new RegExp(String.raw`^[\.\/]*${fileName}$`);
   return source
     .find(j.ImportDeclaration)
@@ -95,7 +95,7 @@ export function getDefaultImportSpecifier(
   j: core.JSCodeshift,
   source: Collection<any>,
   sourcePath: string,
-) {
+): Collection<core.ImportDefaultSpecifier> {
   return source
     .find(j.ImportDeclaration)
     .filter((path) => path.node.source.value === sourcePath)
@@ -106,7 +106,7 @@ export function removeDefaultImportSpecifier(
   j: core.JSCodeshift,
   source: Collection<any>,
   sourcePath: string,
-) {
+): Collection<core.ImportDefaultSpecifier> {
   return getDefaultImportSpecifier(j, source, sourcePath).remove();
 }
 
@@ -134,7 +134,7 @@ export function getImportAllSpecifiers(
   j: core.JSCodeshift,
   source: Collection<any>,
   sourcePath: string,
-) {
+): Collection<core.ImportSpecifier> {
   return source
     .find(j.ImportDeclaration)
     .filter((path) => path.node.source.value === sourcePath)
@@ -146,7 +146,7 @@ export function getImportSpecifier(
   source: Collection<any>,
   specifier: string,
   sourcePath: string,
-) {
+): Collection<core.ImportSpecifier> {
   return getImportAllSpecifiers(j, source, sourcePath).filter(
     (path) => path.value.imported.name === specifier,
   );
@@ -221,10 +221,16 @@ export function removeImportSpecifier(
   getImportSpecifier(j, source, specifier, sourcePath).remove();
 }
 
+interface NormalizeImportSourcePathsOptions {
+  relative?: boolean;
+  from: string;
+  to: string;
+}
+
 export function normalizeImportSourcePaths(
   j: core.JSCodeshift,
   source: Collection<any>,
-  options = {
+  options: NormalizeImportSourcePathsOptions = {
     relative: false,
     from: '',
     to: '',
@@ -247,39 +253,4 @@ export function normalizeImportSourcePaths(
   }
 
   return sourcePaths;
-}
-
-export function updateImports(
-  j: core.JSCodeshift,
-  source: Collection<any>,
-  options: {
-    fromSpecifier: string;
-    toSpecifier: string;
-    fromSourcePath: string;
-    toSourcePath: string;
-  },
-) {
-  const {fromSpecifier, toSpecifier, fromSourcePath, toSourcePath} = options;
-
-  // Insert new import
-  if (!hasImportDeclaration(j, source, toSourcePath)) {
-    insertImportDeclaration(
-      j,
-      source,
-      toSpecifier,
-      toSourcePath,
-      fromSourcePath,
-    );
-  }
-  if (!hasImportSpecifier(j, source, toSpecifier, toSourcePath)) {
-    insertImportSpecifier(j, source, toSpecifier, toSourcePath);
-  }
-
-  // Remove old import
-  if (hasImportSpecifier(j, source, fromSpecifier, fromSourcePath)) {
-    removeImportSpecifier(j, source, fromSpecifier, fromSourcePath);
-  }
-  if (!hasImportSpecifiers(j, source, fromSourcePath)) {
-    removeImportDeclaration(j, source, fromSourcePath);
-  }
 }

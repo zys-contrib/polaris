@@ -1,10 +1,11 @@
 import React from 'react';
-import {AlertMinor} from '@shopify/polaris-icons';
+import {AlertCircleIcon} from '@shopify/polaris-icons';
 
 import {Icon} from '../Icon';
+import {Text} from '../Text';
 import type {Error} from '../../types';
 
-import styles from './InlineError.scss';
+import styles from './InlineError.module.css';
 
 export interface InlineErrorProps {
   /** Content briefly explaining how to resolve the invalid form field input. */
@@ -21,9 +22,11 @@ export function InlineError({message, fieldID}: InlineErrorProps) {
   return (
     <div id={errorTextID(fieldID)} className={styles.InlineError}>
       <div className={styles.Icon}>
-        <Icon source={AlertMinor} />
+        <Icon source={AlertCircleIcon} />
       </div>
-      {message}
+      <Text as="span" variant="bodyMd">
+        {message}
+      </Text>
     </div>
   );
 }

@@ -1,12 +1,17 @@
 <div align="center">
-  <a href="https://polaris.shopify.com"><img src="https://github.com/Shopify/polaris/blob/main/documentation/readme.png?raw=true" alt="" /></a>
+  <a href="https://polaris.shopify.com">
+    <img
+      src="https://github.com/Shopify/polaris/blob/main/documentation/readme.png?raw=true"
+      alt=""
+    />
+  </a>
 </div>
 
 # Polaris
 
 > Build. Contribute. Evolve. Shape the merchant experience for Shopify’s core product, the admin.
 
-[![storybook](https://shields.io/badge/storybook-white?logo=storybook&style=flat)](https://storybook.polaris.shopify.com) [![npm version](https://img.shields.io/npm/v/@shopify/polaris.svg?label=@shopify/polaris)](https://www.npmjs.com/package/@shopify/polaris) [![CI](https://github.com/shopify/polaris/workflows/CI/badge.svg)](https://github.com/Shopify/polaris/actions?query=branch%3Amain) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Shopify/polaris/blob/main/.github/CONTRIBUTING.md#your-first-pull-request)
+[![storybook](https://shields.io/badge/storybook-grey?logo=storybook&style=flat)](https://storybook.polaris.shopify.com) [![npm version](https://img.shields.io/npm/v/@shopify/polaris.svg?label=@shopify/polaris)](https://www.npmjs.com/package/@shopify/polaris) [![CI](https://github.com/shopify/polaris/workflows/CI/badge.svg)](https://github.com/Shopify/polaris/actions?query=branch%3Amain) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Shopify/polaris/blob/main/.github/CONTRIBUTING.md#your-first-pull-request)
 
 | Status | Owner            | Help                                                       |
 | ------ | ---------------- | ---------------------------------------------------------- |
@@ -32,7 +37,7 @@ polaris/
 ### Install dependencies and build workspaces
 
 ```sh
-yarn && yarn build
+pnpm install && pnpm build
 ```
 
 ### Run a command
@@ -43,8 +48,8 @@ Run commands from a selected workspace using [`turbo run <command> --filter=<wor
 
 | Command                                           | Runs                                 |
 | ------------------------------------------------- | ------------------------------------ |
-| `yarn turbo run dev --filter=@shopify/polaris`    | Open the react component storybook   |
-| `yarn turbo run dev --filter=polaris.shopify.com` | Open polaris.shopify.com NextJS site |
+| `pnpm turbo run dev --filter=@shopify/polaris`    | Open the react component storybook   |
+| `pnpm turbo run dev --filter=polaris.shopify.com` | Open polaris.shopify.com NextJS site |
 
 **All workspaces**
 
@@ -52,12 +57,12 @@ Run commands across all workspaces. This uses [`turbo run <command>`](https://tu
 
 | Command           | Runs                                                                                                                  |
 | ----------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `yarn changeset`  | Adds a new [changelog entry](https://github.com/Shopify/polaris/blob/main/.github/CONTRIBUTING.md#adding-a-changeset) |
-| `yarn lint`       | Lints all workspaces                                                                                                  |
-| `yarn test`       | Tests all workspaces                                                                                                  |
-| `yarn type-check` | Build types and check for type errors                                                                                 |
-| `yarn clean`      | Remove generated files                                                                                                |
-| `yarn format`     | Format files with prettier                                                                                            |
+| `pnpm changeset`  | Adds a new [changelog entry](https://github.com/Shopify/polaris/blob/main/.github/CONTRIBUTING.md#adding-a-changeset) |
+| `pnpm lint`       | Lints all workspaces                                                                                                  |
+| `pnpm test`       | Tests all workspaces                                                                                                  |
+| `pnpm type-check` | Build types and check for type errors                                                                                 |
+| `pnpm clean`      | Remove generated files                                                                                                |
+| `pnpm format`     | Format files with prettier                                                                                            |
 
 ## Contribute to this repo
 

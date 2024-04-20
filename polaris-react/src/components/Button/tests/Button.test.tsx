@@ -1,29 +1,35 @@
 import React from 'react';
 import {
-  CaretDownMinor,
-  CaretUpMinor,
-  PlusMinor,
-  SelectMinor,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  PlusIcon,
+  SelectIcon,
 } from '@shopify/polaris-icons';
 import {mountWithApp} from 'tests/utilities';
 
-import {ActionList} from '../../ActionList';
 import {Icon} from '../../Icon';
-import {Popover} from '../../Popover';
 import {Spinner} from '../../Spinner';
+import {Text} from '../../Text';
 import {UnstyledButton} from '../../UnstyledButton';
 import {Button} from '../Button';
-import en from '../../../../locales/en.json';
-import styles from '../Button.scss';
+
+jest.mock('../../../utilities/breakpoints', () => ({
+  ...(jest.requireActual('../../../utilities/breakpoints') as any),
+  useBreakpoints: jest.fn(),
+}));
 
 describe('<Button />', () => {
   let warnSpy: jest.SpyInstance | null = null;
 
   beforeEach(() => {
     warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    mockUseBreakpoints(false);
   });
 
-  afterEach(() => warnSpy?.mockRestore());
+  afterEach(() => {
+    warnSpy?.mockRestore();
+    jest.clearAllMocks();
+  });
 
   describe('children', () => {
     it('passes prop', () => {
@@ -72,6 +78,13 @@ describe('<Button />', () => {
       expect(button).toContainReactComponent(UnstyledButton, {
         download: mockDownload,
       });
+    });
+  });
+
+  describe('target', () => {
+    it('passes prop', () => {
+      const button = mountWithApp(<Button target="_top" />);
+      expect(button).toContainReactComponent(UnstyledButton, {target: '_top'});
     });
   });
 
@@ -137,8 +150,8 @@ describe('<Button />', () => {
 
   describe('icon', () => {
     it('renders an icon if it’s a component', () => {
-      const button = mountWithApp(<Button icon={PlusMinor} />);
-      expect(button).toContainReactComponent(Icon, {source: PlusMinor});
+      const button = mountWithApp(<Button icon={PlusIcon} />);
+      expect(button).toContainReactComponent(Icon, {source: PlusIcon});
     });
 
     it('renders a react node if it is one', () => {
@@ -203,138 +216,6 @@ describe('<Button />', () => {
     });
   });
 
-  describe('connectedDisclosure', () => {
-    it('connects a disclosure icon button to the button', () => {
-      const disclosure = {
-        actions: [
-          {
-            content: 'Save and mark as ordered',
-          },
-        ],
-      };
-
-      const button = mountWithApp(<Button connectedDisclosure={disclosure} />);
-      expect(button).toContainReactComponentTimes('button', 2);
-
-      const disclosureButton = button.findAll('button')[1];
-      expect(disclosureButton).toContainReactComponent(Icon, {
-        source: CaretDownMinor,
-      });
-    });
-
-    it('sets a custom aria-label on the disclosure button when accessibilityLabel is provided', () => {
-      const connectedDisclosureLabel = 'More save actions';
-      const disclosure = {
-        accessibilityLabel: connectedDisclosureLabel,
-        actions: [
-          {
-            content: 'Save and mark as ordered',
-          },
-        ],
-      };
-
-      const button = mountWithApp(<Button connectedDisclosure={disclosure} />);
-
-      const disclosureButton = button.findAll('button')[1];
-      expect(disclosureButton).toHaveReactProps({
-        'aria-label': connectedDisclosureLabel,
-      });
-    });
-
-    it('sets a default aria-label on the disclosure button when accessibilityLabel is not provided', () => {
-      const connectedDisclosureLabel =
-        en.Polaris.Button.connectedDisclosureAccessibilityLabel;
-
-      const disclosure = {
-        actions: [
-          {
-            content: 'Save and mark as ordered',
-          },
-        ],
-      };
-
-      const button = mountWithApp(<Button connectedDisclosure={disclosure} />);
-      const disclosureButton = button.findAll('button')[1];
-
-      expect(disclosureButton).toHaveReactProps({
-        'aria-label': connectedDisclosureLabel,
-      });
-    });
-
-    it('disables the disclosure button when disabled is true', () => {
-      const disclosure = {
-        disabled: true,
-        actions: [
-          {
-            content: 'Save and mark as ordered',
-          },
-        ],
-      };
-
-      const button = mountWithApp(<Button connectedDisclosure={disclosure} />);
-      const disclosureButton = button.findAll('button')[1];
-
-      expect(disclosureButton).toHaveReactProps({
-        'aria-disabled': true,
-      });
-    });
-
-    it('renders an ActionList with the actions set', () => {
-      const actions = [
-        {
-          content: 'Save and mark as ordered',
-        },
-      ];
-
-      const disclosure = {actions};
-      const button = mountWithApp(<Button connectedDisclosure={disclosure} />);
-      const disclosureButton = button.findAll('button')[1]!;
-
-      disclosureButton.trigger('onClick');
-
-      const actionList = button.find(Popover)!.find(ActionList);
-      expect(actionList).toHaveReactProps({
-        items: expect.arrayContaining(actions),
-      });
-    });
-
-    it('sets tabIndex to -1 on the disclosure button when disabled is true', () => {
-      const disclosure = {
-        disabled: true,
-        actions: [
-          {
-            content: 'Save and mark as ordered',
-          },
-        ],
-      };
-
-      const button = mountWithApp(<Button connectedDisclosure={disclosure} />);
-      const disclosureButton = button.findAll('button')[1];
-
-      expect(disclosureButton).toHaveReactProps({
-        tabIndex: -1,
-      });
-    });
-
-    it('sets tabIndex to undefined on the disclosure button when disabled is false', () => {
-      const disclosure = {
-        disabled: false,
-        actions: [
-          {
-            content: 'Save and mark as ordered',
-          },
-        ],
-      };
-
-      const button = mountWithApp(<Button connectedDisclosure={disclosure} />);
-      const disclosureButton = button.findAll('button')[1];
-
-      expect(disclosureButton).toHaveReactProps({
-        tabIndex: undefined,
-      });
-    });
-  });
-
   describe('onClick()', () => {
     it('is called when the button is clicked', () => {
       const onClickSpy = jest.fn();
@@ -372,7 +253,7 @@ describe('<Button />', () => {
   });
 
   describe('onFocus()', () => {
-    it('is called when the button is focussed', () => {
+    it('is called when the button is focused', () => {
       const onFocusSpy = jest.fn();
       const button = mountWithApp(<Button onFocus={onFocusSpy} />);
       button.find(UnstyledButton)!.trigger('onFocus');
@@ -423,7 +304,8 @@ describe('<Button />', () => {
   });
 
   describe('pressed', () => {
-    const buttonPressedClasses = 'Button pressed';
+    const buttonPressedClasses =
+      'Button pressable variantSecondary sizeMedium textAlignCenter pressed';
 
     it('outputs a pressed button', () => {
       const button = mountWithApp(<Button pressed />);
@@ -450,34 +332,26 @@ describe('<Button />', () => {
   describe('disclosure', () => {
     it('assumes "down" if set to true', () => {
       const button = mountWithApp(<Button disclosure />);
-      const disclosureIcon = button
-        .find('div', {className: styles.DisclosureIcon})!
-        .find(Icon);
-      expect(disclosureIcon).toHaveReactProps({source: CaretDownMinor});
+      const disclosureIcon = button.find(Icon);
+      expect(disclosureIcon).toHaveReactProps({source: ChevronDownIcon});
     });
 
     it('is facing down if set to "down"', () => {
       const button = mountWithApp(<Button disclosure="down" />);
-      const disclosureIcon = button
-        .find('div', {className: styles.DisclosureIcon})!
-        .find(Icon);
-      expect(disclosureIcon).toHaveReactProps({source: CaretDownMinor});
+      const disclosureIcon = button.find(Icon);
+      expect(disclosureIcon).toHaveReactProps({source: ChevronDownIcon});
     });
 
     it('is facing up if set to "up"', () => {
       const button = mountWithApp(<Button disclosure="up" />);
-      const disclosureIcon = button
-        .find('div', {className: styles.DisclosureIcon})!
-        .find(Icon);
-      expect(disclosureIcon).toHaveReactProps({source: CaretUpMinor});
+      const disclosureIcon = button.find(Icon);
+      expect(disclosureIcon).toHaveReactProps({source: ChevronUpIcon});
     });
 
     it('is double-arrow if set to "select"', () => {
       const button = mountWithApp(<Button disclosure="select" />);
-      const disclosureIcon = button
-        .find('div', {className: styles.DisclosureIcon})!
-        .find(Icon);
-      expect(disclosureIcon).toHaveReactProps({source: SelectMinor});
+      const disclosureIcon = button.find(Icon);
+      expect(disclosureIcon).toHaveReactProps({source: SelectIcon});
     });
   });
 
@@ -489,15 +363,6 @@ describe('<Button />', () => {
         'removeUnderline',
       );
       expect(button).toContainReactComponent(UnstyledButton, {
-        className: expect.stringContaining('removeUnderline'),
-      });
-    });
-
-    it('passes prop to <span/> className', () => {
-      const children = 'Sample children';
-      const button = mountWithApp(<Button removeUnderline>{children}</Button>);
-      const childrenSpan = button.find('span', {children})!;
-      expect(childrenSpan).toHaveReactProps({
         className: expect.stringContaining('removeUnderline'),
       });
     });
@@ -526,4 +391,24 @@ describe('<Button />', () => {
       expect(link).toContainReactComponent('button', selector);
     });
   });
+
+  it('renders with medium fontWeight when on a small screen', () => {
+    mockUseBreakpoints(true);
+    const wrapper = mountWithApp(<Button variant="primary">Test</Button>);
+    expect(wrapper).toContainReactComponent(Text, {
+      variant: 'bodySm',
+      fontWeight: 'medium',
+      children: 'Test',
+    });
+  });
 });
+
+function mockUseBreakpoints(mdUp: boolean) {
+  const useBreakpoints: jest.Mock = jest.requireMock(
+    '../../../utilities/breakpoints',
+  ).useBreakpoints;
+
+  useBreakpoints.mockReturnValue({
+    mdUp,
+  });
+}

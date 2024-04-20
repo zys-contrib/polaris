@@ -2,7 +2,7 @@ import React from 'react';
 
 import {useToggle} from '../../../../utilities/use-toggle';
 import {classNames} from '../../../../utilities/css';
-import styles from '../../ButtonGroup.scss';
+import styles from '../../ButtonGroup.module.css';
 
 export interface ItemProps {
   button: React.ReactElement;
@@ -18,7 +18,7 @@ export function Item({button}: ItemProps) {
   const className = classNames(
     styles.Item,
     focused && styles['Item-focused'],
-    button.props.plain && styles['Item-plain'],
+    button.props.variant === 'plain' && styles['Item-plain'],
   );
 
   return (

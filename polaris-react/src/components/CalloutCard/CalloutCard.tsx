@@ -1,17 +1,18 @@
 import React from 'react';
-import {CancelSmallMinor} from '@shopify/polaris-icons';
+import {XSmallIcon} from '@shopify/polaris-icons';
 
 import {classNames} from '../../utilities/css';
-import type {Action} from '../../types';
-import {LegacyCard} from '../LegacyCard';
+import type {IconableAction} from '../../types';
 // eslint-disable-next-line import/no-deprecated
-import {TextContainer} from '../TextContainer';
+import {LegacyCard} from '../LegacyCard';
+import {BlockStack} from '../BlockStack';
 import {ButtonGroup} from '../ButtonGroup';
 import {Button, buttonFrom} from '../Button';
+import type {ButtonProps} from '../Button';
 import {Text} from '../Text';
 import {Image} from '../Image';
 
-import styles from './CalloutCard.scss';
+import styles from './CalloutCard.module.css';
 
 export interface CalloutCardProps {
   /** The content to display inside the callout card. */
@@ -21,9 +22,9 @@ export interface CalloutCardProps {
   /** URL to the card illustration */
   illustration: string;
   /** Primary action for the card */
-  primaryAction: Action;
+  primaryAction: IconableAction;
   /** Secondary action for the card */
-  secondaryAction?: Action;
+  secondaryAction?: IconableAction & Pick<ButtonProps, 'variant'>;
   /** Callback when banner is dismissed */
   onDismiss?(): void;
 }
@@ -38,7 +39,9 @@ export function CalloutCard({
 }: CalloutCardProps) {
   const primaryActionMarkup = buttonFrom(primaryAction);
   const secondaryActionMarkup = secondaryAction
-    ? buttonFrom(secondaryAction, {plain: true})
+    ? buttonFrom(secondaryAction, {
+        variant: secondaryAction.variant ?? 'tertiary',
+      })
     : null;
 
   const buttonMarkup = secondaryActionMarkup ? (
@@ -53,8 +56,8 @@ export function CalloutCard({
   const dismissButton = onDismiss ? (
     <div className={styles.Dismiss}>
       <Button
-        plain
-        icon={CancelSmallMinor}
+        variant="plain"
+        icon={XSmallIcon}
         onClick={onDismiss}
         accessibilityLabel="Dismiss card"
       />
@@ -79,11 +82,13 @@ export function CalloutCard({
           <div className={styles.CalloutCard}>
             <div className={styles.Content}>
               <div className={styles.Title}>
-                <Text variant="headingMd" as="h2">
+                <Text variant="headingSm" as="h2">
                   {title}
                 </Text>
               </div>
-              <TextContainer>{children}</TextContainer>
+              <Text as="span" variant="bodyMd">
+                <BlockStack>{children}</BlockStack>
+              </Text>
               <div className={styles.Buttons}>{buttonMarkup}</div>
             </div>
 

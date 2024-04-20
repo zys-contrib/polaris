@@ -7,19 +7,38 @@ import {
   Icon,
   Popover,
   Thumbnail,
+  BlockStack,
 } from '@shopify/polaris';
 import {
-  TickSmallMinor,
-  ChevronRightMinor,
-  DeleteMinor,
-  ExportMinor,
-  ImportMinor,
-  EditMinor,
+  CheckSmallIcon,
+  ChevronRightIcon,
+  DeleteIcon,
+  ExportIcon,
+  ImportIcon,
+  EditIcon,
+  PersonIcon,
+  DuplicateIcon,
+  ArchiveIcon,
 } from '@shopify/polaris-icons';
 
 export default {
   component: ActionList,
 } as ComponentMeta<typeof ActionList>;
+
+export function All() {
+  return (
+    <BlockStack gap="1600">
+      <InAPopover />
+      <WithIconsOrImage />
+      <WithAnIconAndASuffix />
+      <WithSections />
+      <WithSectionsNoTitles />
+      <WithDestructiveItem />
+      <WithHelpText />
+      <WithAPrefixAndASuffix />
+    </BlockStack>
+  );
+}
 
 export function InAPopover() {
   const [active, setActive] = useState(true);
@@ -90,8 +109,8 @@ export function WithIconsOrImage() {
         <ActionList
           actionRole="menuitem"
           items={[
-            {content: 'Import file', icon: ImportMinor},
-            {content: 'Export file', icon: ExportMinor},
+            {content: 'Duplicate', icon: DuplicateIcon},
+            {content: 'Archive', icon: ArchiveIcon},
           ]}
         />
       </Popover>
@@ -118,18 +137,37 @@ export function WithAnIconAndASuffix() {
         autofocusTarget="first-node"
         onClose={toggleActive}
       >
-        <ActionList
-          actionRole="menuitem"
-          items={[
-            {
-              active: true,
-              content: 'Import file',
-              icon: ImportMinor,
-              suffix: <Icon source={TickSmallMinor} />,
-            },
-            {content: 'Export file', icon: ExportMinor},
-          ]}
-        />
+        <div style={{width: '200px'}}>
+          <ActionList
+            actionRole="menuitem"
+            items={[
+              {
+                active: true,
+                content: 'Import file',
+                icon: ImportIcon,
+                suffix: <Icon source={CheckSmallIcon} />,
+              },
+              {content: 'Export file', icon: ExportIcon},
+              {
+                content: 'Manage your blog articles',
+                icon: ImportIcon,
+                suffix: <Icon source={CheckSmallIcon} />,
+              },
+              {
+                content: `Manage uploaded images`,
+                icon: ImportIcon,
+                suffix: <Icon source={CheckSmallIcon} />,
+                truncate: true,
+              },
+              {
+                disabled: true,
+                content: 'Disable file',
+                icon: ImportIcon,
+                suffix: <Icon source={CheckSmallIcon} />,
+              },
+            ]}
+          />
+        </div>
       </Popover>
     </div>
   );
@@ -160,15 +198,26 @@ export function WithSections() {
             {
               title: 'File options',
               items: [
-                {content: 'Import file', icon: ImportMinor},
-                {content: 'Export file', icon: ExportMinor},
+                {content: 'Import file', icon: ImportIcon},
+                {content: 'Export file', icon: ExportIcon},
               ],
             },
             {
               title: 'Bulk actions',
               items: [
-                {content: 'Edit', icon: EditMinor},
-                {content: 'Delete', icon: DeleteMinor},
+                {content: 'Edit', icon: EditIcon},
+                {content: 'Delete', icon: DeleteIcon, destructive: true},
+              ],
+            },
+            {
+              title: 'More options',
+              items: [
+                {
+                  content:
+                    'Manage several customers at once with a CSV file import',
+                  icon: PersonIcon,
+                  truncate: true,
+                },
               ],
             },
           ]}
@@ -202,14 +251,14 @@ export function WithSectionsNoTitles() {
           sections={[
             {
               items: [
-                {content: 'Import file', icon: ImportMinor},
-                {content: 'Export file', icon: ExportMinor},
+                {content: 'Import file', icon: ImportIcon},
+                {content: 'Export file', icon: ExportIcon},
               ],
             },
             {
               items: [
-                {content: 'Edit', icon: EditMinor},
-                {content: 'Delete', icon: DeleteMinor},
+                {content: 'Edit', icon: EditIcon},
+                {content: 'Delete', icon: DeleteIcon, destructive: true},
               ],
             },
           ]}
@@ -247,13 +296,13 @@ export function WithDestructiveItem() {
                 {
                   active: true,
                   content: 'Import file',
-                  icon: ImportMinor,
+                  icon: ImportIcon,
                 },
-                {content: 'Export file', icon: ExportMinor},
+                {content: 'Export file', icon: ExportIcon},
                 {
                   destructive: true,
                   content: 'Delete file',
-                  icon: DeleteMinor,
+                  icon: DeleteIcon,
                 },
               ],
             },
@@ -296,6 +345,20 @@ export function WithHelpText() {
                   content: 'Blogs',
                   helpText: 'Manage blogs published to your Online Store',
                 },
+                {
+                  active: true,
+                  content: 'Active blogs',
+                  helpText: 'This is helpful text',
+                  icon: ImportIcon,
+                  suffix: <Icon source={CheckSmallIcon} />,
+                },
+                {
+                  disabled: true,
+                  content: 'Disabled blogs',
+                  helpText: 'This is also helpful text',
+                  icon: ImportIcon,
+                  suffix: <Icon source={CheckSmallIcon} />,
+                },
               ],
             },
           ]}
@@ -320,14 +383,28 @@ export function WithAPrefixAndASuffix() {
                 alt="Black leather pet collar"
               />
             ),
-            suffix: <Icon source={ChevronRightMinor} />,
+            suffix: <Icon source={ChevronRightIcon} />,
           },
           {
             content: 'Or there',
-            prefix: <Avatar customer name="Farrah" size="small" />,
-            suffix: <Icon source={ChevronRightMinor} />,
+            prefix: <Avatar customer name="Farrah" size="sm" />,
+            suffix: <Icon source={ChevronRightIcon} />,
           },
         ]}
+      />
+    </div>
+  );
+}
+
+export function WithFiltering() {
+  return (
+    <div style={{height: '250px', maxWidth: '350px'}}>
+      <ActionList
+        actionRole="menuitem"
+        allowFiltering
+        items={Array.from({length: 8}).map((_, index) => ({
+          content: `Item #${index + 1}`,
+        }))}
       />
     </div>
   );

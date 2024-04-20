@@ -3,9 +3,9 @@ import React, {isValidElement} from 'react';
 import type {DisableableAction} from '../../../../types';
 import {buttonsFrom} from '../../../Button';
 import {ButtonGroup} from '../../../ButtonGroup';
-import {LegacyStack} from '../../../LegacyStack';
 import {Text} from '../../../Text';
-import styles from '../../LegacyCard.scss';
+import styles from '../../LegacyCard.module.css';
+import {InlineStack} from '../../../InlineStack';
 
 export interface LegacyCardHeaderProps {
   title?: React.ReactNode;
@@ -15,24 +15,31 @@ export interface LegacyCardHeaderProps {
 
 export function Header({children, title, actions}: LegacyCardHeaderProps) {
   const actionMarkup = actions ? (
-    <ButtonGroup>{buttonsFrom(actions, {plain: true})}</ButtonGroup>
+    <ButtonGroup>{buttonsFrom(actions, {variant: 'plain'})}</ButtonGroup>
   ) : null;
 
   const titleMarkup = isValidElement(title) ? (
     title
   ) : (
-    <Text variant="headingMd" as="h2">
+    <Text variant="headingSm" as="h2">
       {title}
     </Text>
   );
 
   const headingMarkup =
     actionMarkup || children ? (
-      <LegacyStack alignment="baseline">
-        <LegacyStack.Item fill>{titleMarkup}</LegacyStack.Item>
-        {actionMarkup}
-        {children}
-      </LegacyStack>
+      <InlineStack
+        wrap={false}
+        gap="200"
+        align="space-between"
+        blockAlign="center"
+      >
+        {titleMarkup}
+        <InlineStack wrap={false} gap="400" blockAlign="center">
+          {actionMarkup}
+          {children}
+        </InlineStack>
+      </InlineStack>
     ) : (
       titleMarkup
     );

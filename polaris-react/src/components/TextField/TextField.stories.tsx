@@ -4,14 +4,24 @@ import {
   Button,
   LegacyCard,
   ChoiceList,
+  Form,
   FormLayout,
   InlineError,
   Select,
   LegacyStack,
   Tag,
+  Text,
   TextField,
+  Icon,
+  Tooltip,
+  BlockStack,
+  Link,
 } from '@shopify/polaris';
-import {DeleteMinor} from '@shopify/polaris-icons';
+import {
+  DeleteIcon,
+  QuestionCircleIcon,
+  SearchIcon,
+} from '@shopify/polaris-icons';
 
 export default {
   component: TextField,
@@ -32,9 +42,52 @@ export function Default() {
   );
 }
 
+export function Magic() {
+  const [value, setValue] = useState('Jaded Pixel');
+  const [value1, setValue1] = useState('Jaded Pixel');
+  const [value2, setValue2] = useState('Jaded Pixel');
+
+  const handleChange = useCallback((newValue) => setValue(newValue), []);
+  const handleChange1 = useCallback((newValue) => setValue1(newValue), []);
+  const handleChange2 = useCallback((newValue) => setValue2(newValue), []);
+
+  return (
+    <LegacyStack vertical>
+      <TextField
+        label="Store name"
+        value={value}
+        onChange={handleChange}
+        autoComplete="off"
+        tone="magic"
+      />
+      <TextField
+        label="Prefix icon"
+        type="search"
+        value={value1}
+        onChange={handleChange1}
+        prefix={<Icon source={SearchIcon} />}
+        autoComplete="off"
+        tone="magic"
+      />
+      <TextField
+        label="Suffix icon"
+        value={value2}
+        onChange={handleChange2}
+        suffix={
+          <Tooltip content="Hello world">
+            <Icon source={QuestionCircleIcon} />
+          </Tooltip>
+        }
+        tone="magic"
+        autoComplete="off"
+      />
+    </LegacyStack>
+  );
+}
+
 export function Number() {
-  const [value, setValue] = useState('1');
-  const [value1, setValue1] = useState('1');
+  const [value, setValue] = useState('1.0');
+  const [value1, setValue1] = useState('1.0');
 
   const handleChange = useCallback((newValue) => setValue(newValue), []);
   const handleChange1 = useCallback((newValue) => setValue1(newValue), []);
@@ -56,6 +109,22 @@ export function Number() {
         autoComplete="off"
       />
     </LegacyStack>
+  );
+}
+
+export function Integer() {
+  const [value, setValue] = useState('1');
+
+  const handleChange = useCallback((newValue) => setValue(newValue), []);
+
+  return (
+    <TextField
+      label="Integer"
+      type="integer"
+      value={value}
+      onChange={handleChange}
+      autoComplete="off"
+    />
   );
 }
 
@@ -225,14 +294,25 @@ export function WithPrefixOrSuffix() {
   );
 
   return (
-    <TextField
-      label="Price"
-      type="number"
-      value={textFieldValue}
-      onChange={handleTextFieldChange}
-      prefix="$"
-      autoComplete="off"
-    />
+    <LegacyStack vertical>
+      <TextField
+        label="Price"
+        type="number"
+        value={textFieldValue}
+        onChange={handleTextFieldChange}
+        prefix="$"
+        autoComplete="off"
+      />
+      <TextField
+        label="Price"
+        type="number"
+        value={textFieldValue}
+        onChange={handleTextFieldChange}
+        prefix="$"
+        autoComplete="off"
+        tone="magic"
+      />
+    </LegacyStack>
   );
 }
 
@@ -378,7 +458,7 @@ export function WithSeparateValidationError() {
           <InlineError message={errorMessage} fieldID={textFieldID} />
         </div>
       </LegacyStack.Item>
-      <Button icon={DeleteMinor} accessibilityLabel="Remove item" />
+      <Button icon={DeleteIcon} accessibilityLabel="Remove item" />
     </LegacyStack>
   );
 
@@ -508,7 +588,7 @@ export function WithInlineSuggestion() {
       'Massachusetts',
       'Michigan',
       'Minnesota',
-      'Minor Outlying Islands',
+      'Icon Outlying Islands',
       'Mississippi',
       'Missouri',
       'Montana',
@@ -544,35 +624,33 @@ export function WithInlineSuggestion() {
   );
 
   const [value, setValue] = useState('');
-  const [suggestion, setSuggestion] = useState('');
+  const [suggestion, setSuggestion] = useState<string | undefined>();
 
-  const handleSuggestion = useCallback(
-    (nextValue) => {
-      const nextSuggestion = suggestions.find((suggestion) =>
-        suggestion.toLowerCase().startsWith(nextValue.toLowerCase()),
-      );
+  const handleChange = useCallback(
+    (value: string) => {
+      const suggestion =
+        value &&
+        suggestions.find((suggestion) =>
+          suggestion.toLowerCase().startsWith(value.toLowerCase()),
+        );
 
-      if (nextSuggestion) setSuggestion(nextSuggestion);
+      setValue(value);
+      setSuggestion(suggestion);
     },
     [suggestions],
   );
 
-  useEffect(() => {
-    if (value !== suggestion) handleSuggestion(value);
-  }, [handleSuggestion, suggestion, value]);
-
-  const handleChange = useCallback((value) => {
-    setValue(value);
-    setSuggestion('');
-  }, []);
-
   const handleKeyDown = useCallback(
-    (event) => {
-      if (event.key === 'Enter') {
-        handleChange(suggestion);
+    (event: React.KeyboardEvent) => {
+      if (event.key === 'Enter' || event.key === 'Tab') {
+        setValue(suggestion || value);
+        setSuggestion('');
+      } else if (event.key === 'Backspace') {
+        setValue(value);
+        setSuggestion('');
       }
     },
-    [suggestion, handleChange],
+    [value, suggestion],
   );
 
   return (
@@ -583,7 +661,408 @@ export function WithInlineSuggestion() {
         value={value}
         onChange={handleChange}
         suggestion={suggestion}
+        autoComplete="off"
       />
     </div>
+  );
+}
+
+export function All() {
+  return (
+    <FormLayout>
+      <FormLayout.Group>
+        <TextField
+          label="Default"
+          value="Value"
+          onChange={() => {}}
+          autoComplete="off"
+        />
+        <TextField
+          label="Disabled"
+          value="Value"
+          onChange={() => {}}
+          autoComplete="off"
+          helpText="Help text"
+          disabled
+        />
+        <TextField
+          label="Read only"
+          value="Value"
+          onChange={() => {}}
+          autoComplete="off"
+          readOnly
+        />
+        <TextField
+          label="Error"
+          value="Value"
+          onChange={() => {}}
+          error="Error message."
+          autoComplete="off"
+        />
+      </FormLayout.Group>
+      <FormLayout.Group>
+        <TextField
+          label="Number"
+          type="number"
+          value="5"
+          onChange={() => {}}
+          autoComplete="off"
+        />
+        <TextField
+          label="With label action"
+          value="Value"
+          onChange={() => {}}
+          labelAction={{content: 'Action'}}
+          autoComplete="off"
+        />
+        <TextField
+          label="Placeholder"
+          value=""
+          onChange={() => {}}
+          placeholder="Example"
+          autoComplete="off"
+        />
+        <TextField
+          label="Help text"
+          type="email"
+          value="Value"
+          onChange={() => {}}
+          helpText="Help text."
+          autoComplete="email"
+        />
+      </FormLayout.Group>
+      <FormLayout.Group>
+        <TextField
+          label="Prefix"
+          type="number"
+          value="4"
+          onChange={() => {}}
+          prefix="$"
+          autoComplete="off"
+        />
+        <TextField
+          label="Prefix with magic"
+          type="number"
+          value="4"
+          onChange={() => {}}
+          prefix="$"
+          autoComplete="off"
+          tone="magic"
+        />
+        <TextField
+          label="Prefix icon"
+          type="search"
+          value="Value"
+          onChange={() => {}}
+          prefix={<Icon source={SearchIcon} />}
+          autoComplete="off"
+        />
+        <TextField
+          label="Prefix icon with magic"
+          type="search"
+          value="Value"
+          onChange={() => {}}
+          prefix={<Icon source={SearchIcon} />}
+          autoComplete="off"
+          tone="magic"
+        />
+        <TextField
+          label="Suffix tooltip"
+          value="Value"
+          onChange={() => {}}
+          suffix={
+            <Tooltip content="Hello world">
+              <Icon source={QuestionCircleIcon} />
+            </Tooltip>
+          }
+          autoComplete="off"
+        />
+        <TextField
+          label="Suffix tooltip with magic"
+          value="Value"
+          onChange={() => {}}
+          suffix={
+            <Tooltip content="Hello world">
+              <Icon source={QuestionCircleIcon} />
+            </Tooltip>
+          }
+          tone="magic"
+          autoComplete="off"
+        />
+        <TextField
+          label="Character count"
+          value="Value"
+          onChange={() => {}}
+          maxLength={20}
+          autoComplete="off"
+          showCharacterCount
+        />
+      </FormLayout.Group>
+      <FormLayout.Group>
+        <TextField
+          label="Clear button"
+          value="Value"
+          onChange={() => {}}
+          clearButton
+          onClearButtonClick={() => {}}
+          autoComplete="off"
+        />
+        <TextField
+          label="Required"
+          value="Value"
+          onChange={() => {}}
+          requiredIndicator
+          autoComplete="off"
+        />
+        <TextField
+          label="Monospaced"
+          value="Value"
+          onChange={() => {}}
+          monospaced
+          autoComplete="off"
+        />
+        <TextField
+          label="Borderless"
+          value="Value"
+          onChange={() => {}}
+          variant="borderless"
+          autoComplete="off"
+        />
+      </FormLayout.Group>
+      <FormLayout.Group>
+        <TextField
+          label="Shipping address"
+          value="Value"
+          onChange={() => {}}
+          multiline={4}
+          autoComplete="off"
+        />
+        <TextField
+          label="Multiline error"
+          value="Value"
+          onChange={() => {}}
+          error="Error message."
+          multiline={4}
+          autoComplete="off"
+        />
+      </FormLayout.Group>
+      <FormLayout.Group>
+        <TextField
+          label="Label hidden"
+          value=""
+          labelHidden
+          onChange={() => {}}
+          placeholder="Label hidden"
+          autoComplete="off"
+        />
+      </FormLayout.Group>
+      <FormLayout.Group>
+        <TextField
+          label="Connected"
+          type="number"
+          value="Value"
+          onChange={() => {}}
+          autoComplete="off"
+          connectedLeft={<Button>Left</Button>}
+          connectedRight={<Button>Right</Button>}
+        />
+      </FormLayout.Group>
+      <FormLayout.Group>
+        <TextField
+          label="Search native"
+          type="search"
+          value="Value"
+          onChange={() => {}}
+          autoComplete="off"
+        />
+        <TextField
+          label="Date native"
+          type="date"
+          value="Value"
+          onChange={() => {}}
+          autoComplete="off"
+        />
+        <TextField
+          label="Date time native"
+          type="datetime-local"
+          value="Value"
+          onChange={() => {}}
+          autoComplete="off"
+        />
+      </FormLayout.Group>
+      <FormLayout.Group>
+        <TextField
+          label="Month native"
+          type="month"
+          value="Value"
+          onChange={() => {}}
+          autoComplete="off"
+        />
+        <TextField
+          label="Time native"
+          type="time"
+          value="Value"
+          onChange={() => {}}
+          autoComplete="off"
+        />
+        <TextField
+          label="Week native"
+          type="week"
+          value="Value"
+          onChange={() => {}}
+          autoComplete="off"
+        />
+      </FormLayout.Group>
+      <FormLayout.Group>
+        <TextField
+          label="Slim variant"
+          value="Value"
+          onChange={() => {}}
+          autoComplete="off"
+          size="slim"
+        />
+        <TextField
+          label="Borderless slim variant"
+          value="Value"
+          onChange={() => {}}
+          autoComplete="off"
+          variant="borderless"
+          size="slim"
+        />
+      </FormLayout.Group>
+    </FormLayout>
+  );
+}
+
+export function WithFormSubmit() {
+  const [adjustment, setAdjustment] = useState('0');
+  const [onHandTotal, setOnHandTotal] = useState(0);
+
+  return (
+    <BlockStack gap="200">
+      <Form
+        onSubmit={(event) => {
+          event.preventDefault();
+          setAdjustment('0');
+          setOnHandTotal(onHandTotal + parseInt(adjustment, 10));
+        }}
+      >
+        <FormLayout>
+          <Text as="h2" variant="headingSm">
+            On hand quantity ({onHandTotal.toString()})
+          </Text>
+          <TextField
+            label="Adjustment"
+            value={adjustment}
+            onChange={(value) => setAdjustment(value)}
+            autoComplete="off"
+            type="number"
+            selectTextOnFocus
+          />
+          <Button
+            variant="primary"
+            submit
+            disabled={isNaN(parseInt(adjustment, 10))}
+          >
+            Save
+          </Button>
+        </FormLayout>
+      </Form>
+    </BlockStack>
+  );
+}
+
+export function With1PasswordDisabled() {
+  const [value, setValue] = useState('Jaded Pixel');
+
+  const handleChange = useCallback((newValue) => setValue(newValue), []);
+
+  return (
+    <TextField
+      label="Store name"
+      value={value}
+      onChange={handleChange}
+      autoComplete="off"
+    />
+  );
+}
+
+export function WithAutoSize() {
+  const [value, setValue] = useState('Jaded Pixel');
+
+  const handleChange = useCallback((newValue) => setValue(newValue), []);
+
+  return (
+    <TextField
+      label="Store name"
+      value={value}
+      onChange={handleChange}
+      autoComplete="off"
+      autoSize
+      suffix="in: Your stores"
+    />
+  );
+}
+
+export function WithAutoSizeAndDynamicSuffix() {
+  const [value, setValue] = useState('');
+
+  const handleChange = useCallback((newValue) => setValue(newValue), []);
+
+  const suffix = value ? 'in: Unfulfilled orders' : null;
+
+  return (
+    <TextField
+      label="Search view"
+      value={value}
+      onChange={handleChange}
+      autoComplete="off"
+      autoSize
+      placeholder="Searching in Unfulfilled orders"
+      suffix={suffix}
+    />
+  );
+}
+
+export function WithAutoSizeAndOtherElements() {
+  const [value, setValue] = useState('Jaded Pixel');
+
+  const handleChange = useCallback((newValue) => setValue(newValue), []);
+
+  const handleClearButtonClick = useCallback(() => setValue(''), []);
+
+  return (
+    <TextField
+      label="Search view"
+      value={value}
+      onChange={handleChange}
+      autoComplete="off"
+      clearButton
+      onClearButtonClick={handleClearButtonClick}
+      autoSize
+      suffix="in: Unfulfilled orders"
+      showCharacterCount
+      maxLength={128}
+    />
+  );
+}
+
+export function WithLoading() {
+  const [value, setValue] = useState('Jaded Pixel');
+
+  const handleChange = useCallback((newValue) => setValue(newValue), []);
+
+  const handleClearButtonClick = useCallback(() => setValue(''), []);
+
+  return (
+    <TextField
+      label="Store name"
+      value={value}
+      onChange={handleChange}
+      autoComplete="off"
+      clearButton
+      onClearButtonClick={handleClearButtonClick}
+      loading
+    />
   );
 }

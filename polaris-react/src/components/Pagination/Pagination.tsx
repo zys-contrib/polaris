@@ -1,4 +1,4 @@
-import {ChevronLeftMinor, ChevronRightMinor} from '@shopify/polaris-icons';
+import {ChevronLeftIcon, ChevronRightIcon} from '@shopify/polaris-icons';
 import React, {createRef} from 'react';
 
 import type {Key} from '../../types';
@@ -9,6 +9,11 @@ import {ButtonGroup} from '../ButtonGroup';
 import {KeypressListener} from '../KeypressListener';
 import {Text} from '../Text';
 import {Tooltip} from '../Tooltip';
+import {Box} from '../Box';
+import {InlineStack} from '../InlineStack';
+import {classNames} from '../../utilities/css';
+
+import styles from './Pagination.module.css';
 
 interface AccessibilityLabels {
   previous: string;
@@ -42,6 +47,8 @@ export interface PaginationProps {
   onPrevious?(): void;
   /** Text to provide more context in between the arrow buttons */
   label?: React.ReactNode;
+  /** Layout structure of the component */
+  type?: 'page' | 'table';
 }
 
 export function Pagination({
@@ -58,6 +65,7 @@ export function Pagination({
   accessibilityLabel,
   accessibilityLabels,
   label,
+  type = 'page',
 }: PaginationProps) {
   const i18n = useI18n();
 
@@ -75,8 +83,7 @@ export function Pagination({
 
   const prev = (
     <Button
-      outline
-      icon={ChevronLeftMinor}
+      icon={ChevronLeftIcon}
       accessibilityLabel={previousLabel}
       url={previousURL}
       onClick={onPrevious}
@@ -86,7 +93,11 @@ export function Pagination({
   );
   const constructedPrevious =
     previousTooltip && hasPrevious ? (
-      <Tooltip activatorWrapper="span" content={previousTooltip}>
+      <Tooltip
+        activatorWrapper="span"
+        content={previousTooltip}
+        preferredPosition="below"
+      >
         {prev}
       </Tooltip>
     ) : (
@@ -95,8 +106,7 @@ export function Pagination({
 
   const next = (
     <Button
-      outline
-      icon={ChevronRightMinor}
+      icon={ChevronRightIcon}
       accessibilityLabel={nextLabel}
       url={nextURL}
       onClick={onNext}
@@ -106,7 +116,11 @@ export function Pagination({
   );
   const constructedNext =
     nextTooltip && hasNext ? (
-      <Tooltip activatorWrapper="span" content={nextTooltip}>
+      <Tooltip
+        activatorWrapper="span"
+        content={nextTooltip}
+        preferredPosition="below"
+      >
         {next}
       </Tooltip>
     ) : (
@@ -147,24 +161,65 @@ export function Pagination({
       />
     ));
 
+  if (type === 'table') {
+    const labelMarkup = label ? (
+      <Box padding="300" paddingBlockStart="0" paddingBlockEnd="0">
+        <Text as="span" variant="bodySm" fontWeight="medium">
+          {label}
+        </Text>
+      </Box>
+    ) : null;
+
+    return (
+      <nav
+        aria-label={navLabel}
+        ref={node}
+        className={classNames(styles.Pagination, styles.table)}
+      >
+        {previousButtonEvents}
+        {nextButtonEvents}
+        <Box
+          background="bg-surface-secondary"
+          paddingBlockStart="150"
+          paddingBlockEnd="150"
+          paddingInlineStart="300"
+          paddingInlineEnd="200"
+        >
+          <InlineStack align="center" blockAlign="center">
+            <div
+              className={styles.TablePaginationActions}
+              data-buttongroup-variant="segmented"
+            >
+              <div>{constructedPrevious}</div>
+              {labelMarkup}
+              <div>{constructedNext}</div>
+            </div>
+          </InlineStack>
+        </Box>
+      </nav>
+    );
+  }
+
   const labelTextMarkup =
     hasNext && hasPrevious ? (
       <span>{label}</span>
     ) : (
-      <Text color="subdued" as="span">
+      <Text tone="subdued" as="span">
         {label}
       </Text>
     );
 
   const labelMarkup = label ? (
-    <div aria-live="polite">{labelTextMarkup}</div>
+    <Box padding="300" paddingBlockStart="0" paddingBlockEnd="0">
+      <div aria-live="polite">{labelTextMarkup}</div>
+    </Box>
   ) : null;
 
   return (
-    <nav aria-label={navLabel} ref={node}>
+    <nav aria-label={navLabel} ref={node} className={styles.Pagination}>
       {previousButtonEvents}
       {nextButtonEvents}
-      <ButtonGroup segmented={!label}>
+      <ButtonGroup variant="segmented">
         {constructedPrevious}
         {labelMarkup}
         {constructedNext}

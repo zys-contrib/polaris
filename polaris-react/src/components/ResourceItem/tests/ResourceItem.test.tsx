@@ -1,19 +1,18 @@
 import React from 'react';
 import type {AllHTMLAttributes} from 'react';
 import {mountWithApp} from 'tests/utilities';
-import {matchMedia} from '@shopify/jest-dom-mocks';
 import {setMediaWidth} from 'tests/utilities/breakpoints';
 
 import {Avatar} from '../../Avatar';
 import {Button} from '../../Button';
 import {ButtonGroup} from '../../ButtonGroup';
 import {Checkbox} from '../../Checkbox';
-import {Inline} from '../../Inline';
+import {InlineStack} from '../../InlineStack';
 import {Thumbnail} from '../../Thumbnail';
 import {UnstyledLink} from '../../UnstyledLink';
 import {ResourceItem} from '../ResourceItem';
 import {ResourceListContext} from '../../../utilities/resource-list';
-import styles from '../ResourceItem.scss';
+import styles from '../ResourceItem.module.css';
 
 describe('<ResourceItem />', () => {
   let spy: jest.SpyInstance;
@@ -21,12 +20,10 @@ describe('<ResourceItem />', () => {
   beforeEach(() => {
     spy = jest.spyOn(window, 'open');
     spy.mockImplementation(() => {});
-    matchMedia.mock();
   });
 
   afterEach(() => {
     spy.mockRestore();
-    matchMedia.restore();
   });
 
   const mockDefaultContext = {
@@ -149,7 +146,7 @@ describe('<ResourceItem />', () => {
       const expectedLabel = `Actions for ${name}`;
 
       expect(item).toContainReactComponentTimes(Button, 1, {
-        plain: true,
+        variant: 'tertiary',
         accessibilityLabel: expectedLabel,
       });
     });
@@ -226,6 +223,22 @@ describe('<ResourceItem />', () => {
       );
 
       expect(element).toContainReactComponent('div', {'data-href': url} as any);
+    });
+
+    it('does not render an <UnstyledLink /> when disabled prop is true', () => {
+      const element = mountWithApp(
+        <ResourceListContext.Provider value={mockDefaultContext}>
+          <ResourceItem
+            id="itemId"
+            url={url}
+            onClick={noop}
+            accessibilityLabel={ariaLabel}
+            disabled
+          />
+        </ResourceListContext.Provider>,
+      );
+
+      expect(element).not.toContainReactComponent(UnstyledLink);
     });
   });
 
@@ -388,6 +401,38 @@ describe('<ResourceItem />', () => {
       expect(onClick).not.toHaveBeenCalled();
     });
 
+    it('does not call onClick when hitting keyUp on the item when onClick exists, url exists and is disabled', () => {
+      const onClick = jest.fn();
+      const wrapper = mountWithApp(
+        <ResourceListContext.Provider value={mockSelectModeContext}>
+          <ResourceItem id={itemId} url="#" onClick={onClick} disabled />
+        </ResourceListContext.Provider>,
+      );
+
+      findResourceItem(wrapper)!.trigger('onKeyUp', {key: 'Enter'});
+      expect(onClick).not.toHaveBeenCalled();
+    });
+
+    it('does not call onClick when clicking on the item when onClick exists and is disabled', () => {
+      const onClick = jest.fn();
+      const wrapper = mountWithApp(
+        <ResourceListContext.Provider value={mockDefaultContext}>
+          <ResourceItem
+            id={itemId}
+            onClick={onClick}
+            accessibilityLabel={ariaLabel}
+            disabled
+          />
+        </ResourceListContext.Provider>,
+      );
+
+      findResourceItem(wrapper)!.trigger('onClick', {
+        stopPropagation: () => {},
+        nativeEvent: {},
+      });
+      expect(onClick).not.toHaveBeenCalledWith(itemId);
+    });
+
     it('calls window.open on ctrlKey + click', () => {
       const wrapper = mountWithApp(
         <ResourceListContext.Provider value={mockDefaultContext}>
@@ -412,7 +457,12 @@ describe('<ResourceItem />', () => {
         </ResourceListContext.Provider>,
       );
 
-      wrapper.findAll('div')[6]!.trigger('onClick', {
+      const checkboxWrapperEl = wrapper.findWhere<'div'>(
+        (node) =>
+          node.is('div') && node.prop('className')!.includes('CheckboxWrapper'),
+      );
+
+      checkboxWrapperEl!.trigger('onChange', {
         stopPropagation: () => {},
         nativeEvent: {},
       });
@@ -427,7 +477,12 @@ describe('<ResourceItem />', () => {
         </ResourceListContext.Provider>,
       );
 
-      wrapper.findAll('div')[6]!.trigger('onClick', {
+      const checkboxWrapperEl = wrapper.findWhere<'div'>(
+        (node) =>
+          node.is('div') && node.prop('className')!.includes('CheckboxWrapper'),
+      );
+
+      checkboxWrapperEl!.trigger('onChange', {
         stopPropagation: () => {},
         nativeEvent: {shiftKey: false},
       });
@@ -437,6 +492,15 @@ describe('<ResourceItem />', () => {
         sortOrder,
         false,
       );
+    });
+
+    it('renders a disabled Checkbox if the item is disabled', () => {
+      const wrapper = mountWithApp(
+        <ResourceListContext.Provider value={mockSelectableContext}>
+          <ResourceItem id={selectedItemId} url={url} disabled />
+        </ResourceListContext.Provider>,
+      );
+      expect(wrapper).toContainReactComponent(Checkbox, {disabled: true});
     });
   });
 
@@ -657,6 +721,44 @@ describe('<ResourceItem />', () => {
     });
   });
 
+  describe('mouse events', () => {
+    it('triggers onMouseOver callback when mouse over event is triggered on container', () => {
+      const onMouseOverSpy = jest.fn();
+      const resourceItem = mountWithApp(
+        <ResourceListContext.Provider value={mockSelectModeContext}>
+          <ResourceItem id={itemId} url={url} onMouseOver={onMouseOverSpy} />
+        </ResourceListContext.Provider>,
+      );
+
+      expect(onMouseOverSpy).not.toHaveBeenCalled();
+
+      const wrapperDiv = resourceItem.find('div', {'data-href': url} as any);
+
+      wrapperDiv!.trigger('onMouseOver');
+
+      expect(onMouseOverSpy).toHaveBeenCalled();
+      onMouseOverSpy.mockRestore();
+    });
+
+    it('triggers onMouseOut callback when mouse out event is triggered on container', () => {
+      const onMouseOutSpy = jest.fn();
+      const resourceItem = mountWithApp(
+        <ResourceListContext.Provider value={mockSelectModeContext}>
+          <ResourceItem id={itemId} url={url} onMouseOut={onMouseOutSpy} />
+        </ResourceListContext.Provider>,
+      );
+
+      expect(onMouseOutSpy).not.toHaveBeenCalled();
+
+      const wrapperDiv = resourceItem.find('div', {'data-href': url} as any);
+
+      wrapperDiv!.trigger('onMouseOut');
+
+      expect(onMouseOutSpy).toHaveBeenCalled();
+      onMouseOutSpy.mockRestore();
+    });
+  });
+
   describe('focused', () => {
     it('removes the focus state when mousing out a focused item', () => {
       const resourceItem = mountWithApp(
@@ -686,7 +788,7 @@ describe('<ResourceItem />', () => {
     it('renders with default flex-start alignment if not provided', () => {
       const resourceItem = mountWithApp(<ResourceItem id={itemId} url={url} />);
 
-      expect(resourceItem).toContainReactComponent(Inline);
+      expect(resourceItem).toContainReactComponent(InlineStack);
     });
 
     it('renders with leading vertical alignment', () => {
@@ -694,7 +796,7 @@ describe('<ResourceItem />', () => {
         <ResourceItem id={itemId} url={url} verticalAlignment="leading" />,
       );
 
-      expect(resourceItem).toContainReactComponent(Inline, {
+      expect(resourceItem).toContainReactComponent(InlineStack, {
         blockAlign: 'start',
       });
     });
@@ -704,7 +806,7 @@ describe('<ResourceItem />', () => {
         <ResourceItem id={itemId} url={url} verticalAlignment="center" />,
       );
 
-      expect(resourceItem).toContainReactComponent(Inline, {
+      expect(resourceItem).toContainReactComponent(InlineStack, {
         blockAlign: 'center',
       });
     });
@@ -714,7 +816,7 @@ describe('<ResourceItem />', () => {
         <ResourceItem id={itemId} url={url} verticalAlignment="trailing" />,
       );
 
-      expect(resourceItem).toContainReactComponent(Inline, {
+      expect(resourceItem).toContainReactComponent(InlineStack, {
         blockAlign: 'end',
       });
     });
@@ -724,7 +826,7 @@ describe('<ResourceItem />', () => {
         <ResourceItem id={itemId} url={url} verticalAlignment="fill" />,
       );
 
-      expect(resourceItem).toContainReactComponent(Inline, {
+      expect(resourceItem).toContainReactComponent(InlineStack, {
         blockAlign: 'stretch',
       });
     });
@@ -734,7 +836,7 @@ describe('<ResourceItem />', () => {
         <ResourceItem id={itemId} url={url} verticalAlignment="baseline" />,
       );
 
-      expect(resourceItem).toContainReactComponent(Inline, {
+      expect(resourceItem).toContainReactComponent(InlineStack, {
         blockAlign: 'baseline',
       });
     });

@@ -1,8 +1,10 @@
-import {ClipboardMinor} from '@shopify/polaris-icons';
+import {ClipboardIcon} from '@shopify/polaris-icons';
 import {Tab} from '@headlessui/react';
 import {useState} from 'react';
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
+import {forwardRef} from 'react';
 
+import {Box, type WithAsProp} from '../Box';
 import {useCopyToClipboard} from '../../utils/hooks';
 import Icon from '../Icon';
 import styles from './Code.module.scss';
@@ -101,11 +103,26 @@ export function CopyButton({code}: {code: string}) {
           onClick={copy}
           aria-label="Copy to clipboard"
         >
-          <Icon source={ClipboardMinor} width={16} height={16} />
+          <Icon source={ClipboardIcon} width={16} height={16} />
         </button>
       </Tooltip>
     </div>
   );
 }
+
+export interface InlineCodeProps {}
+
+export const InlineCode = forwardRef(
+  ({as = 'span', className, ...props}, forwardedRef) => (
+    <Box
+      {...props}
+      as={as}
+      className={[styles.InlineCode, className]}
+      ref={forwardedRef}
+    />
+  ),
+) as WithAsProp<InlineCodeProps, typeof Box, 'span'>;
+
+InlineCode.displayName = 'InlineCode';
 
 export default Code;

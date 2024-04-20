@@ -7,7 +7,7 @@ import {Button} from '../../Button';
 import {ActionList} from '../../ActionList';
 import {Badge} from '../../Badge';
 import {MediaCard} from '../MediaCard';
-import styles from '../MediaCard.scss';
+import styles from '../MediaCard.module.css';
 
 const mockProps = {
   children: <img alt="" />,
@@ -132,6 +132,16 @@ describe('<MediaCard>', () => {
     );
 
     expect(videoCard).not.toContainReactComponent(Popover);
+  });
+
+  it('renders a dismiss button when onDismiss is passed', () => {
+    const videoCard = mountWithApp(
+      <MediaCard {...mockProps} onDismiss={() => {}} />,
+    );
+
+    expect(videoCard).toContainReactComponent(Button, {
+      accessibilityLabel: 'Dismiss',
+    });
   });
 
   it('renders in landscape mode by default', () => {

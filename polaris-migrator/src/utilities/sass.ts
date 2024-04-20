@@ -1,5 +1,4 @@
 import type {FileInfo, API, Options} from 'jscodeshift';
-import postcss from 'postcss';
 import type {
   Root,
   Result,
@@ -11,21 +10,22 @@ import type {
   Comment as PostCSSComment,
   AtRule,
 } from 'postcss';
-import valueParser from 'postcss-value-parser';
+import postcss from 'postcss';
 import type {
   Node,
   ParsedValue,
   FunctionNode,
   Dimension,
 } from 'postcss-value-parser';
-import {toPx, getCustomPropertyNames, tokens} from '@shopify/polaris-tokens';
+import valueParser from 'postcss-value-parser';
+import {toPx, getThemeVarNames, themeDefault} from '@shopify/polaris-tokens';
 
-import {POLARIS_MIGRATOR_COMMENT} from '../constants';
+import {POLARIS_MIGRATOR_COMMENT} from './constants';
 
 const defaultNamespace = '';
 
-const polarisCustomPropertyRegEx = new RegExp(
-  getCustomPropertyNames(tokens).join('|'),
+const themeVarNamesRegExp = new RegExp(
+  getThemeVarNames(themeDefault).join('|'),
 );
 
 function getNamespace(options?: NamespaceOptions) {
@@ -325,7 +325,7 @@ export function isTransformableDuration(
 export function isPolarisVar(node: Node): boolean {
   return (
     isSassFunction('var', node) &&
-    polarisCustomPropertyRegEx.test(node.nodes?.[0]?.value ?? '')
+    themeVarNamesRegExp.test(node.nodes?.[0]?.value ?? '')
   );
 }
 
@@ -489,7 +489,8 @@ export function createSassMigrator(name: string, ruleFn: PolarisMigrator) {
       const {walker, serialiseSuggestion} = args;
 
       return (node: T) => {
-        let oldNode: T;
+        let oldNode: ReturnType<typeof node.clone>;
+
         if (context.fix) {
           oldNode = node.clone();
         }

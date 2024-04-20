@@ -1,18 +1,24 @@
 import React from 'react';
 
 import {classNames} from '../../../../../../utilities/css';
+import {Bleed} from '../../../../../Bleed';
+import {Text} from '../../../../../Text';
 
-import styles from './Title.scss';
+import styles from './Title.module.css';
 
 export interface TitleProps {
   /** Page title, in large type */
   title?: string;
-  /** Page subtitle, in regular type*/
+  /** Page subtitle, in regular type */
   subtitle?: string;
-  /** Important and non-interactive status information shown immediately after the title. */
+  /** Important status information shown immediately after the title. */
   titleMetadata?: React.ReactNode;
   /** Removes spacing between title and subtitle */
   compactTitle?: boolean;
+  /** Whether or not to add a max-width to the subtitle. Gets calculated by
+   * the presence of either the secondaryActions or actionGroups props on the
+   * Header that consumes this component */
+  hasSubtitleMaxWidth?: boolean;
 }
 
 export function Title({
@@ -20,25 +26,30 @@ export function Title({
   subtitle,
   titleMetadata,
   compactTitle,
+  hasSubtitleMaxWidth,
 }: TitleProps) {
   const className = classNames(
     styles.Title,
     subtitle && styles.TitleWithSubtitle,
   );
 
-  const titleMarkup = title ? <h1 className={className}>{title}</h1> : null;
-
-  const titleMetadataMarkup = titleMetadata ? (
-    <div className={styles.TitleMetadata}>{titleMetadata}</div>
+  const titleMarkup = title ? (
+    <h1 className={className}>
+      <Text as="span" variant="headingLg" fontWeight="bold">
+        {title}
+      </Text>
+    </h1>
   ) : null;
 
-  const wrappedTitleMarkup = titleMetadata ? (
-    <div className={styles.TitleWithMetadataWrapper}>
+  const titleMetadataMarkup = titleMetadata ? (
+    <Bleed marginBlock="100">{titleMetadata}</Bleed>
+  ) : null;
+
+  const wrappedTitleMarkup = (
+    <div className={styles.TitleWrapper}>
       {titleMarkup}
       {titleMetadataMarkup}
     </div>
-  ) : (
-    titleMarkup
   );
 
   const subtitleMarkup = subtitle ? (
@@ -46,9 +57,12 @@ export function Title({
       className={classNames(
         styles.SubTitle,
         compactTitle && styles.SubtitleCompact,
+        hasSubtitleMaxWidth && styles.SubtitleMaxWidth,
       )}
     >
-      <p>{subtitle}</p>
+      <Text as="p" variant="bodySm" tone="subdued">
+        {subtitle}
+      </Text>
     </div>
   ) : null;
 

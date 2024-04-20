@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useId} from 'react';
 
 import type {
   Descriptor,
@@ -7,12 +7,11 @@ import type {
 } from '../../types';
 import {isSection} from '../../utilities/options';
 import {arraysAreEqual} from '../../utilities/arrays';
-import {useUniqueId} from '../../utilities/unique-id';
 import {useDeepEffect} from '../../utilities/use-deep-effect';
 import {Box} from '../Box';
 import type {BoxProps} from '../Box';
 import {Text} from '../Text';
-import {Bleed} from '../Bleed';
+import {BlockStack} from '../BlockStack';
 
 import {Option} from './components';
 
@@ -27,8 +26,6 @@ export interface OptionListProps {
   options?: OptionDescriptor[];
   /** Defines a specific role attribute for the list itself */
   role?: 'listbox' | 'combobox' | string;
-  /** Defines a specific role attribute for each option in the list */
-  optionRole?: string;
   /** Sections containing a header and related options */
   sections?: SectionDescriptor[];
   /** The selected options */
@@ -39,6 +36,10 @@ export interface OptionListProps {
   verticalAlign?: Alignment;
   /** Callback when selection is changed */
   onChange(selected: string[]): void;
+  /** Callback when pointer enters an option */
+  onPointerEnterOption?(selected: string): void;
+  /** Callback when focusing an option */
+  onFocusOption?(selected: string): void;
 }
 
 export function OptionList({
@@ -48,15 +49,17 @@ export function OptionList({
   selected,
   allowMultiple,
   role,
-  optionRole,
   verticalAlign,
   onChange,
   id: idProp,
+  onPointerEnterOption,
+  onFocusOption,
 }: OptionListProps) {
   const [normalizedOptions, setNormalizedOptions] = useState(
     createNormalizedOptions(options, sections, title),
   );
-  const id = useUniqueId('OptionList', idProp);
+  const uniqId = useId();
+  const id = idProp ?? uniqId;
 
   useDeepEffect(
     () => {
@@ -89,20 +92,45 @@ export function OptionList({
     [normalizedOptions, selected, allowMultiple, onChange],
   );
 
+  const handlePointerEnter = useCallback(
+    (sectionIndex: number, optionIndex: number) => {
+      if (!onPointerEnterOption) return;
+
+      const selectedValue =
+        normalizedOptions[sectionIndex].options[optionIndex].value;
+
+      onPointerEnterOption(selectedValue);
+    },
+    [normalizedOptions, onPointerEnterOption],
+  );
+
+  const handleFocus = useCallback(
+    (sectionIndex: number, optionIndex: number) => {
+      if (!onFocusOption) return;
+
+      const selectedValue =
+        normalizedOptions[sectionIndex].options[optionIndex].value;
+
+      onFocusOption(selectedValue);
+    },
+    [normalizedOptions, onFocusOption],
+  );
+
   const optionsExist = normalizedOptions.length > 0;
 
   const optionsMarkup = optionsExist
     ? normalizedOptions.map(({title, options}, sectionIndex) => {
         const isFirstOption = sectionIndex === 0;
+        const titleLevel = isFirstOption ? 'h2' : 'h3';
         const titleMarkup = title ? (
           <Box
-            paddingBlockStart={isFirstOption ? '2' : '4'}
-            paddingInlineStart="2"
-            paddingBlockEnd="2"
-            paddingInlineEnd="2"
-            borderBlockStart={!isFirstOption ? 'divider' : undefined}
+            paddingBlockStart={isFirstOption ? '050' : '300'}
+            paddingInlineStart="150"
+            paddingBlockEnd="100"
+            paddingInlineEnd="150"
+            borderColor="border-secondary"
           >
-            <Text as="p" variant="headingXs">
+            <Text as={titleLevel} variant="headingSm">
               {title}
             </Text>
           </Box>
@@ -125,34 +153,48 @@ export function OptionList({
                 select={isSelected}
                 allowMultiple={allowMultiple}
                 verticalAlign={verticalAlign}
-                role={optionRole}
+                onPointerEnter={handlePointerEnter}
+                onFocus={handleFocus}
               />
             );
           });
+
+        const option = (
+          <Box
+            as="ul"
+            id={`${id}-${sectionIndex}`}
+            role={role as BoxProps['role']}
+          >
+            {optionsMarkup}
+          </Box>
+        );
+
+        // eslint-disable-next-line no-nested-ternary
+        const blockStartPadding = isFirstOption
+          ? title
+            ? '100'
+            : '0'
+          : title
+          ? '050'
+          : '0';
 
         return (
           <Box
             key={title || `noTitle-${sectionIndex}`}
             as="li"
-            paddingBlockStart={isFirstOption ? undefined : '2'}
+            paddingBlockStart={blockStartPadding}
           >
-            {titleMarkup}
-            <Bleed marginBlockStart={title ? undefined : '05'}>
-              <Box
-                as="ul"
-                id={`${id}-${sectionIndex}`}
-                role={role as BoxProps['role']}
-              >
-                {optionsMarkup}
-              </Box>
-            </Bleed>
+            <BlockStack gap={isFirstOption && sections ? undefined : '0'}>
+              {titleMarkup}
+              {option}
+            </BlockStack>
           </Box>
         );
       })
     : null;
 
   return (
-    <Box as="ul" role={role as BoxProps['role']} padding="2">
+    <Box as="ul" role={role as BoxProps['role']} padding="150">
       {optionsMarkup}
     </Box>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 import type {ComponentMeta} from '@storybook/react';
-import {AlphaStack, Divider, Text} from '@shopify/polaris';
+import {BlockStack, Divider, Text} from '@shopify/polaris';
 
 export default {
   component: Divider,
@@ -12,27 +12,23 @@ export function Default() {
 
 export function WithBorderStyles() {
   return (
-    <AlphaStack gap="5">
-      <Text as="h1" variant="headingXs">
-        Base
+    <BlockStack gap="500">
+      <Text as="h1" variant="headingSm">
+        Default
       </Text>
-      <Divider borderStyle="base" />
-      <Text as="h1" variant="headingXs">
-        Dark
+      <Divider />
+      <Text as="h1" variant="headingSm">
+        Border
       </Text>
-      <Divider borderStyle="dark" />
-      <Text as="h1" variant="headingXs">
-        Divider
+      <Divider borderColor="border" />
+      <Text as="h1" variant="headingSm">
+        Border inverse
       </Text>
-      <Divider borderStyle="divider" />
-      <Text as="h1" variant="headingXs">
-        Divider on dark
-      </Text>
-      <Divider borderStyle="divider-on-dark" />
-      <Text as="h1" variant="headingXs">
+      <Divider borderColor="border-inverse" />
+      <Text as="h1" variant="headingSm">
         Transparent
       </Text>
-      <Divider borderStyle="transparent" />
-    </AlphaStack>
+      <Divider borderColor="transparent" />
+    </BlockStack>
   );
 }

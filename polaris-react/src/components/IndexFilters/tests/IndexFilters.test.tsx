@@ -1,13 +1,17 @@
 import React from 'react';
 import type {ComponentProps} from 'react';
 import {mountWithApp} from 'tests/utilities';
-import {matchMedia} from '@shopify/jest-dom-mocks';
 
-import {AlphaTabs} from '../../AlphaTabs';
-import {AlphaFilters} from '../../AlphaFilters';
+import {Tabs} from '../../Tabs';
+import {Filters} from '../../Filters';
 import {IndexFilters, IndexFiltersMode} from '..';
 import type {IndexFiltersProps} from '../IndexFilters';
-import {SearchFilterButton, SortButton, UpdateButtons} from '../components';
+import {
+  SearchFilterButton,
+  SortButton,
+  UpdateButtons,
+  EditColumnsButton,
+} from '../components';
 
 describe('IndexFilters', () => {
   const defaultProps: IndexFiltersProps = {
@@ -85,15 +89,11 @@ describe('IndexFilters', () => {
     setMode: jest.fn(),
     canCreateNewView: true,
     onCreateNewView: jest.fn(),
+    showEditColumnsButton: false,
   };
-
-  beforeEach(() => {
-    matchMedia.mock();
-  });
 
   afterEach(() => {
     jest.resetAllMocks();
-    matchMedia.restore();
   });
 
   it('reacts correctly to pressing the search button and invokes setMode with the filtering argument', () => {
@@ -108,10 +108,27 @@ describe('IndexFilters', () => {
     expect(setMode).toHaveBeenCalledWith(IndexFiltersMode.Filtering);
   });
 
+  it('calls onEditStart with IndexFiltersMode.Filtering when clicked', () => {
+    const setMode = jest.fn();
+    const onEditStart = jest.fn();
+    const wrapper = mountWithApp(
+      <IndexFilters
+        {...defaultProps}
+        setMode={setMode}
+        onEditStart={onEditStart}
+      />,
+    );
+    wrapper.act(() => {
+      wrapper.find(SearchFilterButton)!.trigger('onClick');
+    });
+
+    expect(onEditStart).toHaveBeenCalledWith(IndexFiltersMode.Filtering);
+  });
+
   it('renders non-disabled tabs if the current mode is Default', () => {
     const wrapper = mountWithApp(<IndexFilters {...defaultProps} />);
 
-    expect(wrapper).toContainReactComponent(AlphaTabs, {
+    expect(wrapper).toContainReactComponent(Tabs, {
       disabled: false,
     });
   });
@@ -119,8 +136,44 @@ describe('IndexFilters', () => {
   it('overrides and disables tabs even if the current mode is Default', () => {
     const wrapper = mountWithApp(<IndexFilters {...defaultProps} disabled />);
 
-    expect(wrapper).toContainReactComponent(AlphaTabs, {
+    expect(wrapper).toContainReactComponent(Tabs, {
       disabled: true,
+    });
+  });
+
+  it('passes the disclosureZIndexOverride to the Tabs when provided', () => {
+    const disclosureZIndexOverride = 517;
+    const wrapper = mountWithApp(
+      <IndexFilters
+        {...defaultProps}
+        disclosureZIndexOverride={disclosureZIndexOverride}
+      />,
+    );
+
+    expect(wrapper).toContainReactComponent(Tabs, {
+      disclosureZIndexOverride,
+    });
+  });
+
+  it('renders the SearchFilterButton tooltipContent with keyboard shortcut by default', () => {
+    const wrapper = mountWithApp(<IndexFilters {...defaultProps} />);
+
+    expect(wrapper).toContainReactComponent(SearchFilterButton, {
+      tooltipContent: 'Search and filter (F)',
+    });
+  });
+
+  it('passes the disclosureZIndexOverride to the SearchFilterButton when provided', () => {
+    const disclosureZIndexOverride = 517;
+    const wrapper = mountWithApp(
+      <IndexFilters
+        {...defaultProps}
+        disclosureZIndexOverride={disclosureZIndexOverride}
+      />,
+    );
+
+    expect(wrapper).toContainReactComponent(SearchFilterButton, {
+      disclosureZIndexOverride,
     });
   });
 
@@ -130,19 +183,48 @@ describe('IndexFilters', () => {
     );
 
     wrapper.act(() => {
-      wrapper.find(AlphaFilters)!.trigger('onQueryChange', 'bar');
+      wrapper.find(Filters)!.trigger('onQueryChange', 'bar');
     });
 
     expect(defaultProps.onQueryChange).toHaveBeenCalledWith('bar');
   });
 
-  it('onSort gets called correctly', () => {
-    const wrapper = mountWithApp(<IndexFilters {...defaultProps} />);
-    wrapper.act(() => {
-      wrapper.find(SortButton)!.trigger('onChange', ['customer-name asc']);
+  describe('sortOptions', () => {
+    it('does not render the SortButton component when sortOptions is not provided', () => {
+      const wrapper = mountWithApp(
+        <IndexFilters {...defaultProps} sortOptions={undefined} />,
+      );
+
+      expect(wrapper).not.toContainReactComponent(SortButton);
     });
 
-    expect(defaultProps.onSort).toHaveBeenCalledWith(['customer-name asc']);
+    it('renders the SortButton component when sortOptions is provided', () => {
+      const wrapper = mountWithApp(<IndexFilters {...defaultProps} />);
+      expect(wrapper).toContainReactComponent(SortButton);
+    });
+
+    it('passes zIndexOverride to the SortButton component when provided', () => {
+      const disclosureZIndexOverride = 517;
+      const wrapper = mountWithApp(
+        <IndexFilters
+          {...defaultProps}
+          disclosureZIndexOverride={disclosureZIndexOverride}
+        />,
+      );
+
+      expect(wrapper).toContainReactComponent(SortButton, {
+        disclosureZIndexOverride,
+      });
+    });
+
+    it('onSort gets called correctly', () => {
+      const wrapper = mountWithApp(<IndexFilters {...defaultProps} />);
+      wrapper.act(() => {
+        wrapper.find(SortButton)!.trigger('onChange', ['customer-name asc']);
+      });
+
+      expect(defaultProps.onSort).toHaveBeenCalledWith(['customer-name asc']);
+    });
   });
 
   describe('filters', () => {
@@ -165,7 +247,7 @@ describe('IndexFilters', () => {
         />,
       );
 
-      expect(wrapper).toContainReactComponent(AlphaFilters, {
+      expect(wrapper).toContainReactComponent(Filters, {
         filters,
       });
     });
@@ -191,7 +273,7 @@ describe('IndexFilters', () => {
         />,
       );
 
-      expect(wrapper).not.toContainReactComponent(AlphaFilters);
+      expect(wrapper).not.toContainReactComponent(Filters);
     });
 
     it('does not render the SortButton or SearchFilterButton component', () => {
@@ -204,6 +286,61 @@ describe('IndexFilters', () => {
 
       expect(wrapper).not.toContainReactComponent(SortButton);
       expect(wrapper).not.toContainReactComponent(SearchFilterButton);
+    });
+
+    it('does not render the EditColumnsButton', () => {
+      const wrapper = mountWithApp(
+        <IndexFilters
+          {...defaultProps}
+          mode={IndexFiltersMode.EditingColumns}
+        />,
+      );
+
+      expect(wrapper).not.toContainReactComponent(EditColumnsButton);
+    });
+  });
+
+  describe('pressing f', () => {
+    it('moves from Default mode to Filtering mode', () => {
+      const onEditStart = jest.fn();
+
+      mountWithApp(
+        <IndexFilters
+          {...defaultProps}
+          mode={IndexFiltersMode.Default}
+          onEditStart={onEditStart}
+        />,
+      );
+
+      window.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'f',
+        }),
+      );
+
+      expect(onEditStart).toHaveBeenCalledWith(IndexFiltersMode.Filtering);
+    });
+
+    it('does nothing if hideQueryField and hideFilters are true', () => {
+      const onEditStart = jest.fn();
+
+      mountWithApp(
+        <IndexFilters
+          {...defaultProps}
+          mode={IndexFiltersMode.Default}
+          onEditStart={onEditStart}
+          hideQueryField
+          hideFilters
+        />,
+      );
+
+      window.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'f',
+        }),
+      );
+
+      expect(onEditStart).not.toHaveBeenCalledWith(IndexFiltersMode.Filtering);
     });
   });
 
@@ -219,7 +356,7 @@ describe('IndexFilters', () => {
         }),
       );
 
-      expect(defaultProps.cancelAction.onAction).not.toHaveBeenCalled();
+      expect(defaultProps.cancelAction!.onAction).not.toHaveBeenCalled();
     });
 
     it('does call the cancelAction.onAction method when in Filtering mode', () => {
@@ -233,7 +370,7 @@ describe('IndexFilters', () => {
         }),
       );
 
-      expect(defaultProps.cancelAction.onAction).toHaveBeenCalled();
+      expect(defaultProps.cancelAction!.onAction).toHaveBeenCalled();
     });
 
     it('does call the cancelAction.onAction method when in EditingColumns mode', () => {
@@ -250,7 +387,95 @@ describe('IndexFilters', () => {
         }),
       );
 
-      expect(defaultProps.cancelAction.onAction).toHaveBeenCalled();
+      expect(defaultProps.cancelAction!.onAction).toHaveBeenCalled();
+    });
+
+    it('does nothing if hideQueryField and hideFilters are true', () => {
+      mountWithApp(
+        <IndexFilters
+          {...defaultProps}
+          mode={IndexFiltersMode.Filtering}
+          hideQueryField
+          hideFilters
+        />,
+      );
+
+      window.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'Escape',
+        }),
+      );
+
+      expect(defaultProps.cancelAction!.onAction).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('disableKeyboardShortcuts', () => {
+    it('renders the SearchFilterButton tooltipContent without the keyboard shortcut', () => {
+      const wrapper = mountWithApp(
+        <IndexFilters {...defaultProps} disableKeyboardShortcuts />,
+      );
+
+      expect(wrapper).toContainReactComponent(SearchFilterButton, {
+        tooltipContent: 'Search and filter',
+      });
+    });
+
+    it('does not moves from Default mode to Filtering mode when pressing f', () => {
+      const onEditStart = jest.fn();
+
+      mountWithApp(
+        <IndexFilters
+          {...defaultProps}
+          mode={IndexFiltersMode.Default}
+          onEditStart={onEditStart}
+          disableKeyboardShortcuts
+        />,
+      );
+
+      window.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'f',
+        }),
+      );
+
+      expect(onEditStart).not.toHaveBeenCalledWith(IndexFiltersMode.Filtering);
+    });
+
+    it('does not call the cancelAction.onAction method when pressing escape in Filtering mode', () => {
+      mountWithApp(
+        <IndexFilters
+          {...defaultProps}
+          mode={IndexFiltersMode.Filtering}
+          disableKeyboardShortcuts
+        />,
+      );
+
+      window.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'Escape',
+        }),
+      );
+
+      expect(defaultProps.cancelAction!.onAction).not.toHaveBeenCalled();
+    });
+
+    it('does not call the cancelAction.onAction method when pressing escape in EditingColumns mode', () => {
+      mountWithApp(
+        <IndexFilters
+          {...defaultProps}
+          mode={IndexFiltersMode.EditingColumns}
+          disableKeyboardShortcuts
+        />,
+      );
+
+      window.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'Escape',
+        }),
+      );
+
+      expect(defaultProps.cancelAction!.onAction).not.toHaveBeenCalled();
     });
   });
 
@@ -275,7 +500,7 @@ describe('IndexFilters', () => {
         />,
       );
 
-      expect(wrapper).toContainReactComponent(AlphaFilters, {
+      expect(wrapper).toContainReactComponent(Filters, {
         filters,
         disableFilters: true,
         disableQueryField: true,
@@ -294,6 +519,77 @@ describe('IndexFilters', () => {
       expect(wrapper).toContainReactComponent(UpdateButtons, {
         disabled: true,
       });
+    });
+
+    it('renders EditColumnsButton with the disabled prop', () => {
+      const wrapper = mountWithApp(
+        <IndexFilters {...defaultProps} disabled showEditColumnsButton />,
+      );
+
+      expect(wrapper).toContainReactComponent(EditColumnsButton, {
+        disabled: true,
+      });
+    });
+  });
+
+  describe('EditColumnsButton', () => {
+    it('renders when showEditColumnsButton is true', () => {
+      const wrapper = mountWithApp(
+        <IndexFilters {...defaultProps} showEditColumnsButton />,
+      );
+
+      expect(wrapper).toContainReactComponent(EditColumnsButton);
+    });
+
+    it('does not renders when showEditColumnsButton is false', () => {
+      const wrapper = mountWithApp(
+        <IndexFilters {...defaultProps} showEditColumnsButton={false} />,
+      );
+
+      expect(wrapper).not.toContainReactComponent(EditColumnsButton);
+    });
+
+    it.each([IndexFiltersMode.EditingColumns, IndexFiltersMode.Filtering])(
+      'does not renders when IndexFiltersMode is %s',
+      (mode: IndexFiltersMode) => {
+        const wrapper = mountWithApp(
+          <IndexFilters {...defaultProps} mode={mode} showEditColumnsButton />,
+        );
+
+        expect(wrapper).not.toContainReactComponent(EditColumnsButton);
+      },
+    );
+
+    it('sets mode to EditingColumns when clicked', () => {
+      const setMode = jest.fn();
+      const wrapper = mountWithApp(
+        <IndexFilters
+          {...defaultProps}
+          setMode={setMode}
+          showEditColumnsButton
+        />,
+      );
+      wrapper.act(() => {
+        wrapper.find(EditColumnsButton)!.trigger('onClick');
+      });
+
+      expect(setMode).toHaveBeenCalledWith(IndexFiltersMode.EditingColumns);
+    });
+
+    it('calls onEditStart with IndexFiltersMode.EditingColumns when clicked', () => {
+      const onEditStart = jest.fn();
+      const wrapper = mountWithApp(
+        <IndexFilters
+          {...defaultProps}
+          onEditStart={onEditStart}
+          showEditColumnsButton
+        />,
+      );
+      wrapper.act(() => {
+        wrapper.find(EditColumnsButton)!.trigger('onClick');
+      });
+
+      expect(onEditStart).toHaveBeenCalledWith(IndexFiltersMode.EditingColumns);
     });
   });
 });

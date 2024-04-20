@@ -9,17 +9,30 @@ describe('<Divider />', () => {
 
     expect(divider).toContainReactComponent('hr', {
       style: {
-        '--pc-divider-border-style': 'var(--p-border-divider)',
+        borderBlockStart:
+          'var(--p-border-width-025) solid var(--p-color-border-secondary)',
       } as React.CSSProperties,
     });
   });
 
-  it('renders custom style when passed in', () => {
-    const divider = mountWithApp(<Divider borderStyle="dark" />);
+  it('renders custom border color when passed in', () => {
+    const divider = mountWithApp(<Divider borderColor="border" />);
 
     expect(divider).toContainReactComponent('hr', {
       style: expect.objectContaining({
-        '--pc-divider-border-style': 'var(--p-border-dark)',
+        borderBlockStart:
+          'var(--p-border-width-025) solid var(--p-color-border)',
+      }) as React.CSSProperties,
+    });
+  });
+
+  it('renders custom border width when passed in', () => {
+    const divider = mountWithApp(<Divider borderWidth="050" />);
+
+    expect(divider).toContainReactComponent('hr', {
+      style: expect.objectContaining({
+        borderBlockStart:
+          'var(--p-border-width-050) solid var(--p-color-border-secondary)',
       }) as React.CSSProperties,
     });
   });

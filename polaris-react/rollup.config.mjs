@@ -1,3 +1,5 @@
+// Vite is used by Storybook.
+// Rollup is used directly to build for prod.
 import {readFileSync} from 'fs';
 import * as path from 'path';
 
@@ -10,7 +12,7 @@ import image from '@rollup/plugin-image';
 import json from '@rollup/plugin-json';
 
 import {styles} from './config/rollup/plugin-styles.js';
-import {generateScopedName} from './config/rollup/namespaced-classname.js';
+import {generateScopedName} from './config/rollup/namespaced-classname.mjs';
 import postcssPlugins from './config/postcss-plugins.js';
 
 const pkg = JSON.parse(
@@ -33,7 +35,6 @@ function generateConfig({output, targets, stylesConfig}) {
         // Options that may be present on the `babelConfig` object but
         // we want to override
         envName: 'production',
-        // @ts-expect-error targets is a valid babel option but @types/babel__core doesn't know that yet
         targets,
       }),
       replace({
@@ -51,16 +52,30 @@ function generateConfig({output, targets, stylesConfig}) {
   };
 }
 
+function entryFileNames(ext) {
+  return (chunkInfo) => {
+    // To preserve backwards compatibility with previous Polaris versions,
+    // CSS Modules should be `<Name>.css.esnext`, never
+    // `<Name>.module.css.esnext`
+    if (chunkInfo.name.endsWith('.module.css')) {
+      return `${chunkInfo.name.replace(/\.module\.css$/, '.css')}.${ext}`;
+    }
+
+    // Use regular pattern matching for everything else
+    return `[name].${ext}`;
+  };
+}
+
 /** @type {import('rollup').RollupOptions} */
 export default [
   generateConfig({
-    targets: 'extends @shopify/browserslist-config, node 12.20',
+    targets: pkg.browserslist,
     stylesConfig: {
       mode: 'standalone',
       output: 'styles.css',
       modules: {
         generateScopedName: generateScopedName({includeHash: false}),
-        globalModulePaths: [/global\.scss$/],
+        globalModulePaths: [/global\.css$/],
       },
       plugins: postcssPlugins,
     },
@@ -69,14 +84,14 @@ export default [
         format: 'cjs',
         dir: path.dirname(pkg.main),
         preserveModules: true,
-        entryFileNames: '[name][assetExtname].js',
+        entryFileNames: entryFileNames('js'),
         exports: 'named',
       },
       {
         format: 'esm',
         dir: path.dirname(pkg.module),
         preserveModules: true,
-        entryFileNames: '[name][assetExtname].js',
+        entryFileNames: entryFileNames('js'),
       },
     ],
   }),
@@ -86,7 +101,7 @@ export default [
       mode: 'esnext',
       modules: {
         generateScopedName: generateScopedName({includeHash: true}),
-        globalModulePaths: [/global\.scss$/],
+        globalModulePaths: [/global\.css$/],
       },
       plugins: postcssPlugins,
     },
@@ -95,7 +110,7 @@ export default [
         format: 'esm',
         dir: path.dirname(pkg.esnext),
         preserveModules: true,
-        entryFileNames: '[name][assetExtname].esnext',
+        entryFileNames: entryFileNames('esnext'),
       },
     ],
   }),

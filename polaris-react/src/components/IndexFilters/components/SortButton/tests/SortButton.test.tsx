@@ -3,12 +3,13 @@ import {mountWithApp} from 'tests/utilities';
 
 import {ChoiceList} from '../../../../ChoiceList';
 import {Popover} from '../../../../Popover';
+import {Tooltip} from '../../../../Tooltip';
 import {UnstyledButton} from '../../../../UnstyledButton';
 import type {SortButtonChoice} from '../../../types';
 import {SortButton} from '..';
 import type {SortButtonProps} from '../SortButton';
 import {DirectionButton} from '../components';
-import {FilterButton} from '../..';
+import {Button} from '../../../../Button';
 
 describe('SortButton', () => {
   const choices: SortButtonChoice[] = [
@@ -63,7 +64,7 @@ describe('SortButton', () => {
     const wrapper = mountWithApp(<SortButton {...props} />);
 
     wrapper.act(() => {
-      wrapper.find(FilterButton)!.trigger('onClick');
+      wrapper.find(Button)!.trigger('onClick');
     });
 
     expect(wrapper).toContainReactComponent(Popover, {
@@ -71,11 +72,41 @@ describe('SortButton', () => {
     });
 
     wrapper.act(() => {
-      wrapper.find(FilterButton)!.trigger('onClick');
+      wrapper.find(Button)!.trigger('onClick');
     });
 
     expect(wrapper).toContainReactComponent(Popover, {
       active: false,
+    });
+  });
+
+  it('passes the disclosureZIndexOverride to the popover when provided', () => {
+    const disclosureZIndexOverride = 517;
+    const props: SortButtonProps = {
+      onChange: jest.fn(),
+      choices,
+      selected: ['order-number asc'],
+      disclosureZIndexOverride,
+    };
+    const wrapper = mountWithApp(<SortButton {...props} />);
+
+    expect(wrapper).toContainReactComponent(Popover, {
+      zIndexOverride: disclosureZIndexOverride,
+    });
+  });
+
+  it('passes the disclosureZIndexOverride to the tooltip when provided', () => {
+    const disclosureZIndexOverride = 517;
+    const props: SortButtonProps = {
+      onChange: jest.fn(),
+      choices,
+      selected: ['order-number asc'],
+      disclosureZIndexOverride,
+    };
+    const wrapper = mountWithApp(<SortButton {...props} />);
+
+    expect(wrapper).toContainReactComponent(Tooltip, {
+      zIndexOverride: disclosureZIndexOverride,
     });
   });
 
@@ -88,7 +119,7 @@ describe('SortButton', () => {
     const wrapper = mountWithApp(<SortButton {...props} />);
 
     wrapper.act(() => {
-      wrapper.find(FilterButton)!.trigger('onClick');
+      wrapper.find(Button)!.trigger('onClick');
     });
 
     wrapper.act(() => {
@@ -107,7 +138,7 @@ describe('SortButton', () => {
     const wrapper = mountWithApp(<SortButton {...props} />);
 
     wrapper.act(() => {
-      wrapper.find(FilterButton)!.trigger('onClick');
+      wrapper.find(Button)!.trigger('onClick');
     });
 
     expect(wrapper).toContainReactComponent(DirectionButton, {
@@ -125,7 +156,7 @@ describe('SortButton', () => {
     const wrapper = mountWithApp(<SortButton {...props} />);
 
     wrapper.act(() => {
-      wrapper.find(FilterButton)!.trigger('onClick');
+      wrapper.find(Button)!.trigger('onClick');
     });
 
     expect(wrapper).toContainReactComponent(DirectionButton, {
@@ -143,7 +174,7 @@ describe('SortButton', () => {
     const wrapper = mountWithApp(<SortButton {...props} />);
 
     wrapper.act(() => {
-      wrapper.find(FilterButton)!.trigger('onClick');
+      wrapper.find(Button)!.trigger('onClick');
     });
 
     wrapper.act(() => {
@@ -165,7 +196,7 @@ describe('SortButton', () => {
     const wrapper = mountWithApp(<SortButton {...props} />);
 
     wrapper.act(() => {
-      wrapper.find(FilterButton)!.trigger('onClick');
+      wrapper.find(Button)!.trigger('onClick');
     });
 
     wrapper.act(() => {

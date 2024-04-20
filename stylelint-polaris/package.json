@@ -1,7 +1,7 @@
 {
   "name": "@shopify/stylelint-polaris",
   "description": "Polaris Design System Stylelint tooling",
-  "version": "9.0.1",
+  "version": "16.0.0",
   "private": false,
   "license": "MIT",
   "author": "Shopify <dev@shopify.com>",
@@ -12,6 +12,9 @@
   "publishConfig": {
     "access": "public",
     "@shopify:registry": "https://registry.npmjs.org"
+  },
+  "engines": {
+    "node": ">=20.10.0"
   },
   "files": [
     "index.js",
@@ -32,12 +35,14 @@
     "clean": "rm -rf .turbo node_modules dist"
   },
   "dependencies": {
+    "stylelint-scss": "^4.4.0",
+    "postcss-scss": "^4.0.9",
     "postcss-value-parser": "^4.2.0",
     "postcss-media-query-parser": "^0.2.3",
-    "@shopify/polaris-tokens": "^6.8.1"
+    "@shopify/polaris-tokens": "^9.0.0"
   },
   "peerDependencies": {
-    "stylelint": "^14.15.0"
+    "stylelint": "^14.15.0 || ^15.0.0"
   },
   "jest": {
     "preset": "jest-preset-stylelint"

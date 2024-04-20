@@ -1,13 +1,12 @@
 import React, {forwardRef} from 'react';
 import type {
-  ColorsActionTokenAlias,
-  ColorsBackdropTokenAlias,
-  ColorsBackgroundTokenAlias,
-  ColorsOverlayTokenAlias,
-  ColorsSurfaceTokenAlias,
-  ShapeBorderWidthScale,
-  ShadowAlias,
-  SpacingSpaceScale,
+  ColorTextAlias,
+  ColorBackgroundAlias,
+  ColorBorderAlias,
+  BorderWidthScale,
+  BorderRadiusAliasOrScale,
+  ShadowAliasOrScale,
+  SpaceScale,
 } from '@shopify/polaris-tokens';
 
 import {
@@ -17,55 +16,15 @@ import {
 } from '../../utilities/css';
 import type {ResponsiveProp} from '../../utilities/css';
 
-import styles from './Box.scss';
+import styles from './Box.module.css';
 
-type Element = 'div' | 'span' | 'section' | 'legend' | 'ul' | 'li';
+export type Element = 'div' | 'span' | 'section' | 'legend' | 'ul' | 'li';
 
-type Overflow = 'hidden' | 'scroll';
+type LineStyles = 'solid' | 'dashed';
+type Overflow = 'hidden' | 'scroll' | 'clip';
 type Position = 'relative' | 'absolute' | 'fixed' | 'sticky';
 
-export type ColorTokenScale =
-  | 'text'
-  | 'text-critical'
-  | 'text-disabled'
-  | 'text-highlight'
-  | 'text-on-critical'
-  | 'text-on-dark'
-  | 'text-on-interactive'
-  | 'text-on-primary'
-  | 'text-primary'
-  | 'text-primary-hovered'
-  | 'text-primary-pressed'
-  | 'text-subdued'
-  | 'text-subdued-on-dark'
-  | 'text-success'
-  | 'text-warning';
-
-export type BorderTokenAlias =
-  | 'base'
-  | 'dark'
-  | 'divider'
-  | 'divider-on-dark'
-  | 'transparent';
-
-type Spacing = ResponsiveProp<SpacingSpaceScale>;
-
-export type BorderRadiusTokenScale =
-  | '05'
-  | '1'
-  | '2'
-  | '3'
-  | '4'
-  | '5'
-  | '6'
-  | 'full';
-
-export type BackgroundColors =
-  | ColorsBackdropTokenAlias
-  | ColorsBackgroundTokenAlias
-  | ColorsOverlayTokenAlias
-  | ColorsActionTokenAlias
-  | ColorsSurfaceTokenAlias;
+type Spacing = ResponsiveProp<SpaceScale>;
 
 export interface BoxProps extends React.AriaAttributes {
   children?: React.ReactNode;
@@ -74,39 +33,33 @@ export interface BoxProps extends React.AriaAttributes {
    */
   as?: Element;
   /** Background color */
-  background?: BackgroundColors;
+  background?: ColorBackgroundAlias;
+  /** Border color */
+  borderColor?: ColorBorderAlias | 'transparent';
   /** Border style */
-  border?: BorderTokenAlias;
-  /** Vertical end border style */
-  borderBlockEnd?: BorderTokenAlias;
-  /** Horizontal start border style */
-  borderInlineStart?: BorderTokenAlias;
-  /** Horizontal end border style */
-  borderInlineEnd?: BorderTokenAlias;
-  /** Vertical start border style */
-  borderBlockStart?: BorderTokenAlias;
+  borderStyle?: LineStyles;
   /** Border radius */
-  borderRadius?: BorderRadiusTokenScale;
+  borderRadius?: BorderRadiusAliasOrScale;
   /** Vertical end horizontal start border radius */
-  borderRadiusEndStart?: BorderRadiusTokenScale;
+  borderEndStartRadius?: BorderRadiusAliasOrScale;
   /** Vertical end horizontal end border radius */
-  borderRadiusEndEnd?: BorderRadiusTokenScale;
+  borderEndEndRadius?: BorderRadiusAliasOrScale;
   /** Vertical start horizontal start border radius */
-  borderRadiusStartStart?: BorderRadiusTokenScale;
+  borderStartStartRadius?: BorderRadiusAliasOrScale;
   /** Vertical start horizontal end border radius */
-  borderRadiusStartEnd?: BorderRadiusTokenScale;
+  borderStartEndRadius?: BorderRadiusAliasOrScale;
   /** Border width */
-  borderWidth?: ShapeBorderWidthScale;
+  borderWidth?: BorderWidthScale;
   /** Vertical start border width */
-  borderBlockStartWidth?: ShapeBorderWidthScale;
+  borderBlockStartWidth?: BorderWidthScale;
   /** Vertical end border width */
-  borderBlockEndWidth?: ShapeBorderWidthScale;
+  borderBlockEndWidth?: BorderWidthScale;
   /** Horizontal start border width */
-  borderInlineStartWidth?: ShapeBorderWidthScale;
+  borderInlineStartWidth?: BorderWidthScale;
   /** Horizontal end border width */
-  borderInlineEndWidth?: ShapeBorderWidthScale;
+  borderInlineEndWidth?: BorderWidthScale;
   /** Color of children */
-  color?: ColorTokenScale;
+  color?: ColorTextAlias;
   /** HTML id attribute */
   id?: string;
   /** Minimum height of container */
@@ -121,41 +74,53 @@ export interface BoxProps extends React.AriaAttributes {
   overflowY?: Overflow;
   /** Spacing around children. Accepts a spacing token or an object of spacing tokens for different screen sizes.
    * @example
-   * padding='4'
-   * padding={{xs: '2', sm: '3', md: '4', lg: '5', xl: '6'}}
+   * padding='400'
+   * padding={{xs: '200', sm: '300', md: '400', lg: '500', xl: '600'}}
    */
   padding?: Spacing;
+  /** Vertical start and end spacing around children. Accepts a spacing token or an object of spacing tokens for different screen sizes.
+   * @example
+   * paddingBlock='400'
+   * paddingBlock={{xs: '200', sm: '300', md: '400', lg: '500', xl: '600'}}
+   */
+  paddingBlock?: Spacing;
   /** Vertical start spacing around children. Accepts a spacing token or an object of spacing tokens for different screen sizes.
    * @example
-   * paddingBlockStart='4'
-   * paddingBlockStart={{xs: '2', sm: '3', md: '4', lg: '5', xl: '6'}}
+   * paddingBlockStart='400'
+   * paddingBlockStart={{xs: '200', sm: '300', md: '400', lg: '500', xl: '600'}}
    */
   paddingBlockStart?: Spacing;
   /** Vertical end spacing around children. Accepts a spacing token or an object of spacing tokens for different screen sizes.
    * @example
-   * paddingBlockEnd='4'
-   * paddingBlockEnd={{xs: '2', sm: '3', md: '4', lg: '5', xl: '6'}}
+   * paddingBlockEnd='400'
+   * paddingBlockEnd={{xs: '200', sm: '300', md: '400', lg: '500', xl: '600'}}
    */
   paddingBlockEnd?: Spacing;
+  /** Horizontal start and end spacing around children. Accepts a spacing token or an object of spacing tokens for different screen sizes.
+   * @example
+   * paddingInline='400'
+   * paddingInline={{xs: '200', sm: '300', md: '400', lg: '500', xl: '600'}}
+   */
+  paddingInline?: Spacing;
   /** Horizontal start spacing around children. Accepts a spacing token or an object of spacing tokens for different screen sizes.
    * @example
-   * paddingInlineStart='4'
-   * paddingInlineStart={{xs: '2', sm: '3', md: '4', lg: '5', xl: '6'}}
+   * paddingInlineStart='400'
+   * paddingInlineStart={{xs: '200', sm: '300', md: '400', lg: '500', xl: '600'}}
    */
   paddingInlineStart?: Spacing;
   /** Horizontal end spacing around children. Accepts a spacing token or an object of spacing tokens for different screen sizes.
    * @example
-   * paddingInlineEnd='4'
-   * paddingInlineEnd={{xs: '2', sm: '3', md: '4', lg: '5', xl: '6'}}
+   * paddingInlineEnd='400'
+   * paddingInlineEnd={{xs: '200', sm: '300', md: '400', lg: '500', xl: '600'}}
    */
   paddingInlineEnd?: Spacing;
   /** Aria role */
   role?: Extract<
     React.AriaRole,
-    'status' | 'presentation' | 'menu' | 'listbox' | 'combobox'
+    'status' | 'presentation' | 'menu' | 'listbox' | 'combobox' | 'group'
   >;
   /** Shadow on box */
-  shadow?: ShadowAlias;
+  shadow?: ShadowAliasOrScale;
   /** Set tab order */
   tabIndex?: Extract<React.AllHTMLAttributes<HTMLElement>['tabIndex'], number>;
   /** Width of container */
@@ -173,8 +138,12 @@ export interface BoxProps extends React.AriaAttributes {
   insetInlineEnd?: Spacing;
   /** Opacity of box */
   opacity?: string;
+  /** Outline color */
+  outlineColor?: ColorBorderAlias;
   /** Outline style */
-  outline?: BorderTokenAlias;
+  outlineStyle?: LineStyles;
+  /** Outline width */
+  outlineWidth?: BorderWidthScale;
   /** Visually hide the contents during print */
   printHidden?: boolean;
   /** Visually hide the contents (still announced by screenreader) */
@@ -188,21 +157,18 @@ export const Box = forwardRef<HTMLElement, BoxProps>(
     {
       as = 'div',
       background,
-      border,
-      borderBlockEnd,
-      borderInlineStart,
-      borderInlineEnd,
-      borderBlockStart,
+      borderColor,
+      borderStyle,
       borderWidth,
       borderBlockStartWidth,
       borderBlockEndWidth,
       borderInlineStartWidth,
       borderInlineEndWidth,
       borderRadius,
-      borderRadiusEndStart,
-      borderRadiusEndEnd,
-      borderRadiusStartStart,
-      borderRadiusStartEnd,
+      borderEndStartRadius,
+      borderEndEndRadius,
+      borderStartStartRadius,
+      borderStartEndRadius,
       children,
       color,
       id,
@@ -211,10 +177,14 @@ export const Box = forwardRef<HTMLElement, BoxProps>(
       maxWidth,
       overflowX,
       overflowY,
-      outline,
+      outlineColor,
+      outlineStyle,
+      outlineWidth,
       padding,
+      paddingBlock,
       paddingBlockStart,
       paddingBlockEnd,
+      paddingInline,
       paddingInlineStart,
       paddingInlineEnd,
       role,
@@ -234,36 +204,51 @@ export const Box = forwardRef<HTMLElement, BoxProps>(
     },
     ref,
   ) => {
+    // eslint-disable-next-line no-nested-ternary
+    const borderStyleValue = borderStyle
+      ? borderStyle
+      : borderColor ||
+        borderWidth ||
+        borderBlockStartWidth ||
+        borderBlockEndWidth ||
+        borderInlineStartWidth ||
+        borderInlineEndWidth
+      ? 'solid'
+      : undefined;
+
+    // eslint-disable-next-line no-nested-ternary
+    const outlineStyleValue = outlineStyle
+      ? outlineStyle
+      : outlineColor || outlineWidth
+      ? 'solid'
+      : undefined;
+
     const style = {
-      '--pc-box-color': color ? `var(--p-${color})` : undefined,
-      '--pc-box-background': background ? `var(--p-${background})` : undefined,
-      '--pc-box-border': border ? `var(--p-border-${border})` : undefined,
-      '--pc-box-border-block-end': borderBlockEnd
-        ? `var(--p-border-${borderBlockEnd})`
+      '--pc-box-color': color ? `var(--p-color-${color})` : undefined,
+      '--pc-box-background': background
+        ? `var(--p-color-${background})`
         : undefined,
-      '--pc-box-border-inline-start': borderInlineStart
-        ? `var(--p-border-${borderInlineStart})`
+      // eslint-disable-next-line no-nested-ternary
+      '--pc-box-border-color': borderColor
+        ? borderColor === 'transparent'
+          ? 'transparent'
+          : `var(--p-color-${borderColor})`
         : undefined,
-      '--pc-box-border-inline-end': borderInlineEnd
-        ? `var(--p-border-${borderInlineEnd})`
-        : undefined,
-      '--pc-box-border-block-start': borderBlockStart
-        ? `var(--p-border-${borderBlockStart})`
-        : undefined,
+      '--pc-box-border-style': borderStyleValue,
       '--pc-box-border-radius': borderRadius
         ? `var(--p-border-radius-${borderRadius})`
         : undefined,
-      '--pc-box-border-radius-end-start': borderRadiusEndStart
-        ? `var(--p-border-radius-${borderRadiusEndStart})`
+      '--pc-box-border-end-start-radius': borderEndStartRadius
+        ? `var(--p-border-radius-${borderEndStartRadius})`
         : undefined,
-      '--pc-box-border-radius-end-end': borderRadiusEndEnd
-        ? `var(--p-border-radius-${borderRadiusEndEnd})`
+      '--pc-box-border-end-end-radius': borderEndEndRadius
+        ? `var(--p-border-radius-${borderEndEndRadius})`
         : undefined,
-      '--pc-box-border-radius-start-start': borderRadiusStartStart
-        ? `var(--p-border-radius-${borderRadiusStartStart})`
+      '--pc-box-border-start-start-radius': borderStartStartRadius
+        ? `var(--p-border-radius-${borderStartStartRadius})`
         : undefined,
-      '--pc-box-border-radius-start-end': borderRadiusStartEnd
-        ? `var(--p-border-radius-${borderRadiusStartEnd})`
+      '--pc-box-border-start-end-radius': borderStartEndRadius
+        ? `var(--p-border-radius-${borderStartEndRadius})`
         : undefined,
       '--pc-box-border-width': borderWidth
         ? `var(--p-border-width-${borderWidth})`
@@ -283,32 +268,38 @@ export const Box = forwardRef<HTMLElement, BoxProps>(
       '--pc-box-min-height': minHeight,
       '--pc-box-min-width': minWidth,
       '--pc-box-max-width': maxWidth,
-      '--pc-box-outline': outline ? `var(--p-border-${outline})` : undefined,
+      '--pc-box-outline-color': outlineColor
+        ? `var(--p-color-${outlineColor})`
+        : undefined,
+      '--pc-box-outline-style': outlineStyleValue,
+      '--pc-box-outline-width': outlineWidth
+        ? `var(--p-border-width-${outlineWidth})`
+        : undefined,
       '--pc-box-overflow-x': overflowX,
       '--pc-box-overflow-y': overflowY,
       ...getResponsiveProps(
         'box',
-        'padding-block-end',
+        'padding-block-start',
         'space',
-        paddingBlockEnd || padding,
+        paddingBlockStart || paddingBlock || padding,
       ),
       ...getResponsiveProps(
         'box',
-        'padding-block-start',
+        'padding-block-end',
         'space',
-        paddingBlockStart || padding,
+        paddingBlockEnd || paddingBlock || padding,
       ),
       ...getResponsiveProps(
         'box',
         'padding-inline-start',
         'space',
-        paddingInlineStart || padding,
+        paddingInlineStart || paddingInline || padding,
       ),
       ...getResponsiveProps(
         'box',
         'padding-inline-end',
         'space',
-        paddingInlineEnd || padding,
+        paddingInlineEnd || paddingInline || padding,
       ),
       '--pc-box-shadow': shadow ? `var(--p-shadow-${shadow})` : undefined,
       '--pc-box-width': width,

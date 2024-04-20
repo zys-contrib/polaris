@@ -1,24 +1,26 @@
-import React, {useState, useCallback, useRef} from 'react';
+import React, {useState, useCallback, useRef, useId} from 'react';
 import {TransitionGroup} from 'react-transition-group';
 
 import {focusFirstFocusableNode} from '../../utilities/focus';
-import {useUniqueId} from '../../utilities/unique-id/hooks';
 import {useI18n} from '../../utilities/i18n';
 import {WithinContentContext} from '../../utilities/within-content-context';
 import {wrapWithComponent} from '../../utilities/components';
 import {Backdrop} from '../Backdrop';
 import {Box} from '../Box';
-import {Inline} from '../Inline';
+import type {Element} from '../Box';
+import {InlineStack} from '../InlineStack';
 import {Scrollable} from '../Scrollable';
 import {Spinner} from '../Spinner';
 import {Portal} from '../Portal';
 
 import {Dialog, Footer, Header, Section} from './components';
 import type {FooterProps} from './components';
-import styles from './Modal.scss';
+import styles from './Modal.module.css';
 
 const IFRAME_LOADING_HEIGHT = 200;
 const DEFAULT_IFRAME_CONTENT_HEIGHT = 400;
+
+export type ModalSize = 'small' | 'large' | 'fullScreen';
 
 export interface ModalProps extends FooterProps {
   /** Whether the modal is open or not */
@@ -42,10 +44,8 @@ export interface ModalProps extends FooterProps {
   instant?: boolean;
   /** Automatically adds sections to modal */
   sectioned?: boolean;
-  /** Increases the modal width */
-  large?: boolean;
-  /** Decreases the modal width */
-  small?: boolean;
+  /** The size of the modal */
+  size?: ModalSize;
   /** Limits modal height on large sceens with scrolling */
   limitHeight?: boolean;
   /** Replaces modal content with a spinner while a background action is being performed */
@@ -60,10 +60,13 @@ export interface ModalProps extends FooterProps {
   onScrolledToBottom?(): void;
   /** The element or the RefObject that activates the Modal */
   activator?: React.RefObject<HTMLElement> | React.ReactElement;
+  /**
+   * The element type to wrap the activator in
+   * @default 'div'
+   */
+  activatorWrapper?: Element;
   /** Removes Scrollable container from the modal content */
   noScroll?: boolean;
-  /** Sets modal to the height of the viewport on small screens */
-  fullScreen?: boolean;
 }
 
 export const Modal: React.FunctionComponent<ModalProps> & {
@@ -78,25 +81,24 @@ export const Modal: React.FunctionComponent<ModalProps> & {
   instant,
   sectioned,
   loading,
-  large,
-  small,
+  size,
   limitHeight,
   footer,
   primaryAction,
   secondaryActions,
   onScrolledToBottom,
   activator,
+  activatorWrapper = 'div',
   onClose,
   onIFrameLoad,
   onTransitionEnd,
   noScroll,
-  fullScreen,
 }: ModalProps) {
   const [iframeHeight, setIframeHeight] = useState(IFRAME_LOADING_HEIGHT);
   const [closing, setClosing] = useState(false);
 
-  const headerId = useUniqueId('modal-header');
-  const activatorRef = useRef<HTMLDivElement>(null);
+  const headerId = useId();
+  const activatorRef = useRef<HTMLElement>(null);
 
   const i18n = useI18n();
   const iframeTitle = i18n.translate('Polaris.Modal.iFrameTitle');
@@ -117,6 +119,7 @@ export const Modal: React.FunctionComponent<ModalProps> & {
       activator && isRef(activator)
         ? activator && activator.current
         : activatorRef.current;
+
     if (activatorElement) {
       requestAnimationFrame(() => focusFirstFocusableNode(activatorElement));
     }
@@ -156,19 +159,21 @@ export const Modal: React.FunctionComponent<ModalProps> & {
       : children;
 
     const body = loading ? (
-      <Box padding="4">
-        <Inline gap="4" align="center" blockAlign="center">
+      <Box padding="400">
+        <InlineStack gap="400" align="center" blockAlign="center">
           <Spinner />
-        </Inline>
+        </InlineStack>
       </Box>
     ) : (
       content
     );
 
     const scrollContainerMarkup = noScroll ? (
-      <Box width="100%" overflowX="hidden">
-        {body}
-      </Box>
+      <div className={styles.NoScrollBody}>
+        <Box width="100%" overflowX="hidden" overflowY="hidden">
+          {body}
+        </Box>
+      </div>
     ) : (
       <Scrollable
         shadow
@@ -199,10 +204,8 @@ export const Modal: React.FunctionComponent<ModalProps> & {
         onClose={onClose}
         onEntered={handleEntered}
         onExited={handleExited}
-        large={large}
-        small={small}
+        size={size}
         limitHeight={limitHeight}
-        fullScreen={fullScreen}
         setClosing={setClosing}
       >
         <Header
@@ -225,7 +228,9 @@ export const Modal: React.FunctionComponent<ModalProps> & {
 
   const activatorMarkup =
     activator && !isRef(activator) ? (
-      <Box ref={activatorRef}>{activator}</Box>
+      <Box ref={activatorRef} as={activatorWrapper}>
+        {activator}
+      </Box>
     ) : null;
 
   return (

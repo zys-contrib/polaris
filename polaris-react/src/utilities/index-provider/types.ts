@@ -7,6 +7,7 @@ export enum SelectionType {
   Page = 'page',
   Multi = 'multi',
   Single = 'single',
+  Range = 'range',
 }
 
 export type Range = [number, number];
@@ -27,7 +28,9 @@ export interface IndexProviderProps {
     selectionType: SelectionType,
     toggleType: boolean,
     selection?: string | Range,
+    position?: number,
   ): void;
+  paginatedSelectAllText?: string;
 }
 
 export type HandleSelectionChange = (
@@ -45,6 +48,7 @@ export interface BulkSelectionDataOptions {
     singular: string;
     plural: string;
   };
+  defaultPaginatedSelectAllText?: string;
 }
 
 export interface HandleBulkSelectionOptions {

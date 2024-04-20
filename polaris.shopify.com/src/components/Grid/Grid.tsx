@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React, {forwardRef} from 'react';
-import {type SpacingSpaceScale} from '@shopify/polaris-tokens';
+import {type SpaceScale} from '@shopify/polaris-tokens';
 import {stripMarkdownLinks} from '../../utils/various';
 import {useGlobalSearchResult} from '../GlobalSearch/GlobalSearch';
 import styles from './Grid.module.scss';
@@ -12,11 +12,11 @@ import {Box, type WithAsProp} from '../Box';
 export interface GridProps {
   condensed?: boolean;
   /* Set default values for both x & y gap values. */
-  gap?: SpacingSpaceScale;
+  gap?: SpaceScale;
   /* Set value for x gaps. Will overwrite any `gap` value set. */
-  gapX?: SpacingSpaceScale;
+  gapX?: SpaceScale;
   /* Set value for y gaps. Will overwrite any `gap` value set. */
-  gapY?: SpacingSpaceScale;
+  gapY?: SpaceScale;
   /* Set the minimum width of grid items. <Grid> will attempt to pack as many
    * <GridItems> in as possible without going below this size. Note: A <GridItem>
    * will never expand to be wider than the <Grid> container, meaning small
@@ -42,7 +42,6 @@ export const Grid = forwardRef(
       as={as}
       ref={ref}
       style={{
-        // @ts-expect-error The types for `style` don't support css vars
         '--props-grid-gap':
           typeof gap !== 'undefined' ? `var(--p-space-${gap})` : undefined,
         '--props-grid-gap-x':
@@ -63,7 +62,6 @@ export interface GridItemProps {
   title: string;
   url: string;
   description?: string;
-  deepLinks?: {url: string; text: string}[];
   renderPreview?: () => React.ReactNode;
   status?: Status;
   customOnClick?: React.MouseEventHandler<HTMLAnchorElement>;
@@ -73,16 +71,7 @@ export interface GridItemProps {
 
 export const GridItem = forwardRef(
   (
-    {
-      as = 'li',
-      title,
-      description,
-      url,
-      deepLinks,
-      renderPreview,
-      status,
-      customOnClick,
-    },
+    {as = 'li', title, description, url, renderPreview, status, customOnClick},
     ref,
   ) => {
     const searchAttributes = useGlobalSearchResult();
@@ -100,15 +89,6 @@ export const GridItem = forwardRef(
             <p>{stripMarkdownLinks(description || '')}</p>
           </a>
         </Link>
-        {deepLinks && (
-          <ul className={styles.DeepLinks}>
-            {deepLinks.map(({url, text}) => (
-              <li key={text}>
-                <a href={url}>{text}</a>
-              </li>
-            ))}
-          </ul>
-        )}
       </Box>
     );
   },

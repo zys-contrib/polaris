@@ -1,14 +1,55 @@
 import React, {useCallback, useState} from 'react';
 import type {ComponentMeta} from '@storybook/react';
-import {Icon, LegacyStack, Tag} from '@shopify/polaris';
-import {WandMinor} from '@shopify/polaris-icons';
+import {
+  InlineStack,
+  Icon,
+  LegacyStack,
+  Tag,
+  Bleed,
+  BlockStack,
+  Text,
+} from '@shopify/polaris';
+import {WandIcon} from '@shopify/polaris-icons';
 
 export default {
   component: Tag,
 } as ComponentMeta<typeof Tag>;
 
+export function All() {
+  return (
+    <BlockStack gap="100">
+      <Text as="p">Default</Text>
+      <Default />
+      <br />
+      <Text as="p">Removable</Text>
+      <Removable />
+      <br />
+      <Text as="p">Clickable</Text>
+      <Clickable />
+      <br />
+      <Text as="p">With Link</Text>
+      <WithLink />
+      <br />
+      <Text as="p">With Custom Content</Text>
+      <WithCustomContent />
+      <br />
+      <Text as="p">Removable with Link</Text>
+      <RemovableWithLink />
+      <br />
+      <Text as="p">Removable large</Text>
+      <RemovableLarge />
+    </BlockStack>
+  );
+}
+
 export function Default() {
-  return <Tag>Wholesale</Tag>;
+  return (
+    <InlineStack gap="100">
+      <Tag>Wholesale</Tag>
+      <Tag disabled>Disabled</Tag>
+      <Tag url="#">With URL</Tag>
+    </InlineStack>
+  );
 }
 
 export function Removable() {
@@ -30,7 +71,11 @@ export function Removable() {
   );
 
   const tagMarkup = selectedTags.map((option) => (
-    <Tag key={option} onRemove={removeTag(option)}>
+    <Tag
+      key={option}
+      onRemove={removeTag(option)}
+      disabled={option === 'Antique'}
+    >
       {option}
     </Tag>
   ));
@@ -39,7 +84,14 @@ export function Removable() {
 }
 
 export function Clickable() {
-  return <Tag onClick={() => console.log('Clicked')}>Wholesale</Tag>;
+  return (
+    <InlineStack gap="100">
+      <Tag onClick={() => console.log('Clicked')}>Wholesale</Tag>
+      <Tag onClick={() => console.log('Clicked')} disabled>
+        Wholesale (clickable disabled)
+      </Tag>
+    </InlineStack>
+  );
 }
 
 export function WithLink() {
@@ -49,10 +101,12 @@ export function WithLink() {
 export function WithCustomContent() {
   return (
     <Tag url="#">
-      <LegacyStack spacing="extraTight">
-        <Icon source={WandMinor} />
+      <InlineStack gap="050">
+        <Bleed marginInlineStart="100">
+          <Icon tone="base" source={WandIcon} />
+        </Bleed>
         <span>Wholesale</span>
-      </LegacyStack>
+      </InlineStack>
     </Tag>
   );
 }
@@ -81,4 +135,43 @@ export function RemovableWithLink() {
   ));
 
   return <LegacyStack spacing="tight">{tagMarkup}</LegacyStack>;
+}
+
+export function RemovableLarge() {
+  const [selectedTags, setSelectedTags] = useState([
+    'Rustic',
+    'Antique',
+    'Vinyl',
+    'Refurbished',
+  ]);
+
+  const removeTag = useCallback(
+    (tag) => () => {
+      setSelectedTags((previousTags) =>
+        previousTags.filter((previousTag) => previousTag !== tag),
+      );
+    },
+    [],
+  );
+
+  const tagMarkup = selectedTags.map((option) => (
+    <Tag size="large" key={option} onRemove={removeTag(option)}>
+      {option}
+    </Tag>
+  ));
+
+  const tagWithLinkMarkup = selectedTags.map((option) => (
+    <Tag size="large" key={option} onRemove={removeTag(option)} url="#">
+      {option}
+    </Tag>
+  ));
+
+  return (
+    <BlockStack gap="100">
+      <Text as="p">Large</Text>
+      <LegacyStack spacing="tight">{tagMarkup}</LegacyStack>
+      <Text as="p">Large with link</Text>
+      <LegacyStack spacing="tight">{tagWithLinkMarkup}</LegacyStack>
+    </BlockStack>
+  );
 }

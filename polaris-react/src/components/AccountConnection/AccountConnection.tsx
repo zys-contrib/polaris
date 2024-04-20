@@ -4,11 +4,12 @@ import type {Action} from '../../types';
 import {Avatar} from '../Avatar';
 import {buttonFrom} from '../Button';
 import {SettingAction} from '../SettingAction';
-import {AlphaCard} from '../AlphaCard';
+import {Card} from '../Card';
 import {Box} from '../Box';
-import {Inline} from '../Inline';
+import {InlineStack} from '../InlineStack';
 import {Text} from '../Text';
-import {AlphaStack} from '../AlphaStack';
+import {BlockStack} from '../BlockStack';
+import {useBreakpoints} from '../../utilities/breakpoints';
 
 export interface AccountConnectionProps {
   /** Content to display as title */
@@ -36,6 +37,8 @@ export function AccountConnection({
   details,
   termsOfService,
 }: AccountConnectionProps) {
+  const breakpoints = useBreakpoints();
+
   const initials = accountName
     ? accountName
         .split(/\s+/)
@@ -44,42 +47,54 @@ export function AccountConnection({
     : undefined;
 
   const avatarMarkup = connected ? (
-    <Avatar
-      accessibilityLabel=""
-      name={accountName}
-      initials={initials}
-      source={avatarUrl}
-    />
+    <span>
+      <Avatar
+        accessibilityLabel=""
+        name={accountName}
+        initials={initials}
+        source={avatarUrl}
+      />
+    </span>
   ) : null;
 
-  const titleMarkup = title ? title : accountName;
+  const titleContent = title ? title : accountName;
+
+  const titleMarkup = (
+    <Text as="h2" variant="headingSm">
+      {titleContent}
+    </Text>
+  );
 
   const detailsMarkup = details ? (
-    <Text as="span" color="subdued">
+    <Text as="span" variant="bodyMd" tone="subdued">
       {details}
     </Text>
   ) : null;
 
   const termsOfServiceMarkup = termsOfService ? (
-    <Box paddingBlockStart="5">{termsOfService}</Box>
+    <Box paddingBlockStart={breakpoints.mdUp ? '400' : '500'}>
+      <Text as="span" variant="bodyMd">
+        {termsOfService}
+      </Text>
+    </Box>
   ) : null;
 
   const actionElement = action
-    ? buttonFrom(action, {primary: !connected})
+    ? buttonFrom(action, {variant: connected ? undefined : 'primary'})
     : null;
 
   return (
-    <AlphaCard>
+    <Card>
       <SettingAction action={actionElement}>
-        <Inline gap="4">
+        <InlineStack gap="400">
           {avatarMarkup}
-          <AlphaStack gap="2">
+          <BlockStack gap="100">
             {titleMarkup}
             {detailsMarkup}
-          </AlphaStack>
-        </Inline>
+          </BlockStack>
+        </InlineStack>
       </SettingAction>
       {termsOfServiceMarkup}
-    </AlphaCard>
+    </Card>
   );
 }

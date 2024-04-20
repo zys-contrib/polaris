@@ -1,19 +1,18 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useMemo, useCallback, useRef, useState} from 'react';
 import {
-  AnalyticsMajor,
-  AppsMajor,
-  CirclePlusMinor,
-  CustomersMajor,
-  DiscountsMajor,
-  ExternalMinor,
-  GlobeMinor,
-  HomeMajor,
-  MarketingMajor,
-  OrdersMajor,
-  ProductsMajor,
-  ProductsMinor,
-  SettingsMajor,
-  WifiMajor,
+  ChartVerticalIcon,
+  AppsIcon,
+  PlusCircleIcon,
+  PersonIcon,
+  DiscountIcon,
+  ExternalIcon,
+  GlobeIcon,
+  HomeIcon,
+  TargetIcon,
+  OrderIcon,
+  ProductIcon,
+  SettingsIcon,
+  WifiIcon,
 } from '@shopify/polaris-icons';
 
 import {
@@ -24,6 +23,7 @@ import {
   FormLayout,
   Frame,
   Layout,
+  // eslint-disable-next-line import/no-deprecated
   LegacyCard,
   Loading,
   Modal,
@@ -33,6 +33,7 @@ import {
   SkeletonBodyText,
   SkeletonDisplayText,
   SkeletonPage,
+  // eslint-disable-next-line import/no-deprecated
   LegacyStack,
   Text,
   // eslint-disable-next-line import/no-deprecated
@@ -41,16 +42,21 @@ import {
   Thumbnail,
   Toast,
   TopBar,
+  FooterHelp,
+  Link,
+  AlphaPicker,
+  BlockStack,
 } from '../src';
-import type {DropZoneProps} from '../src';
+import type {DropZoneProps, PageProps} from '../src';
 
-import styles from './DetailsPage.scss';
+import styles from './DetailsPage.module.css';
 
 export function DetailsPage() {
   const defaultState = useRef({
     emailFieldValue: 'dharma@jadedpixel.com',
     nameFieldValue: 'Jaded Pixel',
   });
+  const [query, setQuery] = useState('');
   const skipToContentRef = useRef<HTMLAnchorElement>(null);
   const [toastActive, setToastActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -70,6 +76,80 @@ export function DetailsPage() {
   const [emailFieldValue, setEmailFieldValue] = useState(
     defaultState.current.emailFieldValue,
   );
+  const [addedTags, setAddedTags] = useState<
+    {value: string; children: string}[]
+  >([]);
+  const [addedVendors, setAddedVendors] = useState<
+    {value: string; children: string}[]
+  >([]);
+
+  const tags = useMemo(
+    () => [
+      {value: 'Outdoors', children: 'Outdoors'},
+      {value: 'Adventure', children: 'Adventure'},
+      {value: 'Hiking', children: 'Hiking'},
+      {value: 'Camping', children: 'Camping'},
+      {value: 'Backpacking', children: 'Backpacking'},
+      {value: 'Mountaineering', children: 'Mountaineering'},
+      {value: 'Skiing', children: 'Skiing'},
+      {value: 'Snowboarding', children: 'Snowboarding'},
+      ...addedTags,
+    ],
+    [addedTags],
+  );
+
+  const vendors = useMemo(
+    () => [
+      {value: 'The North Face', children: 'The North Face'},
+      {value: 'Patagonia', children: 'Patagonia'},
+      {value: 'Arc’teryx', children: 'Arc’teryx'},
+      {value: 'Marmot', children: 'Marmot'},
+      {value: 'Black Diamond', children: 'Black Diamond'},
+      {value: 'Mountain Hardwear', children: 'Mountain Hardwear'},
+      {value: 'Columbia', children: 'Columbia'},
+      {value: 'Canada Goose', children: 'Canada Goose'},
+      {value: 'Merrell', children: 'Merrell'},
+      {value: 'Salomon', children: 'Salomon'},
+      {value: 'Burton', children: 'Burton'},
+      ...addedVendors,
+    ],
+    [addedVendors],
+  );
+
+  const handleTagSelect = useCallback(
+    (newTag: string) => {
+      if (
+        tags.some((tag) => tag.value === newTag) ||
+        addedTags.some((tag) => tag.value === newTag)
+      ) {
+        return;
+      }
+      setAddedTags((addedTags) => [
+        ...addedTags,
+        {value: newTag, children: newTag},
+      ]);
+      setQuery('');
+    },
+    [addedTags, tags],
+  );
+
+  const handleVendorSelect = useCallback(
+    (newVendor: string) => {
+      if (
+        vendors.some((vendor) => vendor.value === newVendor) ||
+        addedVendors.some((vendor) => vendor.value === newVendor)
+      ) {
+        return;
+      }
+      setAddedVendors((addedVendors) => [
+        ...addedVendors,
+        {value: newVendor, children: newVendor},
+      ]);
+      setQuery('');
+    },
+    [addedVendors, vendors],
+  );
+
   const [storeName, setStoreName] = useState(
     defaultState.current.nameFieldValue,
   );
@@ -137,7 +217,6 @@ export function DetailsPage() {
         width="36"
         height="36"
         viewBox="0 0 36 36"
-        fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -217,7 +296,7 @@ export function DetailsPage() {
         items={[
           {
             label: 'Home',
-            icon: HomeMajor,
+            icon: HomeIcon,
             onClick: () => {
               toggleIsLoading();
               setNavItemActive('home');
@@ -227,7 +306,7 @@ export function DetailsPage() {
           },
           {
             label: 'Orders',
-            icon: OrdersMajor,
+            icon: OrderIcon,
             onClick: () => {
               toggleIsLoading();
               setNavItemActive('orders');
@@ -266,7 +345,7 @@ export function DetailsPage() {
           },
           {
             label: 'Products',
-            icon: ProductsMajor,
+            icon: ProductIcon,
             onClick: () => {
               toggleIsLoading();
               setNavItemActive('products');
@@ -305,7 +384,7 @@ export function DetailsPage() {
           },
           {
             label: 'Customers',
-            icon: CustomersMajor,
+            icon: PersonIcon,
             onClick: () => {
               toggleIsLoading();
               setNavItemActive('customers');
@@ -315,7 +394,7 @@ export function DetailsPage() {
           },
           {
             label: 'Analytics',
-            icon: AnalyticsMajor,
+            icon: ChartVerticalIcon,
             onClick: () => {
               toggleIsLoading();
               setNavItemActive('analytics');
@@ -325,7 +404,7 @@ export function DetailsPage() {
           },
           {
             label: 'Marketing',
-            icon: MarketingMajor,
+            icon: TargetIcon,
             onClick: () => {
               toggleIsLoading();
               setNavItemActive('marketing');
@@ -335,7 +414,7 @@ export function DetailsPage() {
           },
           {
             label: 'Discounts',
-            icon: DiscountsMajor,
+            icon: DiscountIcon,
             onClick: () => {
               toggleIsLoading();
               setNavItemActive('discounts');
@@ -345,7 +424,7 @@ export function DetailsPage() {
           },
           {
             label: 'Apps',
-            icon: AppsMajor,
+            icon: AppsIcon,
             onClick: () => {
               toggleIsLoading();
               setNavItemActive('apps');
@@ -359,7 +438,7 @@ export function DetailsPage() {
         fill
         title="Sales channels"
         action={{
-          icon: CirclePlusMinor,
+          icon: PlusCircleIcon,
           accessibilityLabel: 'Add sales channel',
           onClick: toggleModalActive,
           tooltip: {
@@ -409,14 +488,14 @@ export function DetailsPage() {
           },
           {
             label: 'Updog Marketplace',
-            icon: ProductsMinor,
+            icon: ProductIcon,
             onClick: () => {},
             matches: navItemActive === 'pos',
             url: '#',
             secondaryAction: {
               url: '#',
               accessibilityLabel: 'OLp',
-              icon: ExternalMinor,
+              icon: ExternalIcon,
               tooltip: {
                 content: 'Open Updog Marketplace',
               },
@@ -424,14 +503,14 @@ export function DetailsPage() {
           },
           {
             label: 'Radio',
-            icon: WifiMajor,
+            icon: WifiIcon,
             onClick: () => {},
             matches: navItemActive === 'pos',
             url: '#',
             secondaryAction: {
               url: '#',
               accessibilityLabel: 'radio',
-              icon: GlobeMinor,
+              icon: GlobeIcon,
             },
           },
         ]}
@@ -439,7 +518,7 @@ export function DetailsPage() {
       <Navigation.Section
         items={[
           {
-            icon: SettingsMajor,
+            icon: SettingsIcon,
             label: 'Settings',
             onClick: toggleModalActive,
           },
@@ -480,7 +559,7 @@ export function DetailsPage() {
     setPreviewValue(newValue);
   }, []);
 
-  const actions1 = [
+  const actions1: PageProps['secondaryActions'] = [
     {
       content: 'Duplicate',
       onAction: () => console.log('duplicate'),
@@ -490,17 +569,18 @@ export function DetailsPage() {
       onAction: () => console.log('print'),
     },
   ];
-  const actions2 = [
+  const actions2: PageProps['secondaryActions'] = [
     {
       content: 'Print',
       onAction: () => console.log('print'),
     },
   ];
 
-  const [actions, setActions] = useState(actions1);
+  const [actions, setActions] =
+    useState<PageProps['secondaryActions']>(actions1);
 
   const toggleActions = () => {
-    if (actions.length === 2) {
+    if (Array.isArray(actions) && actions.length === 2) {
       setActions(actions2);
     } else {
       setActions(actions1);
@@ -528,8 +608,7 @@ export function DetailsPage() {
             alt={file.name}
             source={
               validImageTypes.indexOf(file.type) > 0
-                ? // eslint-disable-next-line node/no-unsupported-features/node-builtins
-                  URL.createObjectURL(file)
+                ? URL.createObjectURL(file)
                 : 'https://cdn.shopify.com/s/files/1/0757/9955/files/New_Post.png?12678548500147524304'
             }
           />
@@ -548,24 +627,25 @@ export function DetailsPage() {
   const actualPageMarkup = (
     <Page
       fullWidth
-      breadcrumbs={[{content: 'Products', url: '/products/31'}]}
+      backAction={{content: 'Products', url: '/products/31'}}
       title={title}
-      titleMetadata={<Badge status="success">Success badge</Badge>}
+      titleMetadata={<Badge tone="success">Success badge</Badge>}
       primaryAction={{
         content: 'Save this page',
-
         onAction: () => console.log('save'),
       }}
       additionalMetadata="Created May 8, 2020 at 7:31 am from Developer Tools (via import)"
-      secondaryActions={[
-        ...actions,
-        {
-          content: 'View',
-          onAction: () => {
-            console.log(previewValue);
+      secondaryActions={
+        Array.isArray(actions) && [
+          ...actions,
+          {
+            content: 'View',
+            onAction: () => {
+              console.log(previewValue);
+            },
           },
-        },
-      ]}
+        ]
+      }
       actionGroups={[
         {
           title: 'Promote',
@@ -578,7 +658,6 @@ export function DetailsPage() {
           actions: [
             {
               content: 'Embed on a website',
-
               onAction: () => console.log('embed'),
             },
             {
@@ -623,22 +702,56 @@ export function DetailsPage() {
             </DropZone>
           </LegacyCard>
         </Layout.Section>
-        <Layout.Section secondary>
+        <Layout.Section variant="oneThird">
           <LegacyCard title="Organization">
             <LegacyCard.Section>
-              <Select
-                label="Product type"
-                options={options}
-                onChange={setSelected}
-                value={selected}
-              />
-              <br />
-              <Select
-                label="Vendor"
-                options={options}
-                onChange={setSelected}
-                value={selected}
-              />
+              <BlockStack gap="200">
+                <Select
+                  label="Product type"
+                  options={options}
+                  onChange={setSelected}
+                  value={selected}
+                />
+
+                <AlphaPicker
+                  allowMultiple
+                  activator={{
+                    label: 'Tags',
+                    placeholder: 'None selected',
+                  }}
+                  searchField={{
+                    label: 'Search tags',
+                    placeholder: 'Search or add new tags',
+                    value: query,
+                    onChange: (value) => setQuery(value),
+                  }}
+                  options={tags}
+                  onSelect={handleTagSelect}
+                  addAction={{
+                    value: query,
+                    children: `Add ${query}`,
+                  }}
+                />
+
+                <AlphaPicker
+                  activator={{
+                    label: 'Vendor',
+                    placeholder: 'None selected',
+                  }}
+                  searchField={{
+                    label: 'Search vendors',
+                    placeholder: 'Search or add new vendor',
+                    value: query,
+                    onChange: (value) => setQuery(value),
+                  }}
+                  options={vendors}
+                  onSelect={handleVendorSelect}
+                  addAction={{
+                    value: query,
+                    children: `Add ${query}`,
+                  }}
+                />
+              </BlockStack>
             </LegacyCard.Section>
             <LegacyCard.Section title="Collections" />
             <LegacyCard.Section title="Tags" />
@@ -710,6 +823,12 @@ export function DetailsPage() {
       {pageMarkup}
       {toastMarkup}
       {modalMarkup}
+      <FooterHelp>
+        Learn more about{' '}
+        <Link url="https://help.shopify.com/manual/orders/fulfill-orders">
+          fulfilling orders
+        </Link>
+      </FooterHelp>
     </Frame>
   );
 }

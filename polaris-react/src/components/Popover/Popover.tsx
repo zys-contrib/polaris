@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useImperativeHandle,
   useRef,
+  useId,
   useState,
 } from 'react';
 import type {AriaAttributes} from 'react';
@@ -15,7 +16,6 @@ import {
 } from '../../utilities/focus';
 import {Portal} from '../Portal';
 import {portal} from '../shared';
-import {useUniqueId} from '../../utilities/unique-id';
 
 import {PopoverCloseSource, Pane, PopoverOverlay, Section} from './components';
 import type {PopoverAutofocusTarget, PopoverOverlayProps} from './components';
@@ -33,7 +33,10 @@ export interface PopoverProps {
   preferredAlignment?: PopoverOverlayProps['preferredAlignment'];
   /** Show or hide the Popover */
   active: boolean;
-  /** The element to activate the Popover */
+  /** The element to activate the Popover.
+   * If using a button, use the default or tertiary variant
+   * which will show an active state when popover is active
+   */
   activator: React.ReactElement;
   /**
    * Use the activator's input element to calculate the Popover position
@@ -111,7 +114,7 @@ const PopoverComponent = forwardRef<PopoverPublicAPI, PopoverProps>(
     const activatorContainer = useRef<HTMLElement>(null);
 
     const WrapperComponent: any = activatorWrapper;
-    const id = useUniqueId('popover');
+    const id = useId();
 
     function forceUpdatePosition() {
       overlayRef.current?.forceUpdatePosition();

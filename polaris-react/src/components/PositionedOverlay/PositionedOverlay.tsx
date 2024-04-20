@@ -15,9 +15,9 @@ import {
   windowRect,
 } from './utilities/math';
 import type {PreferredPosition, PreferredAlignment} from './utilities/math';
-import styles from './PositionedOverlay.scss';
+import styles from './PositionedOverlay.module.css';
 
-type Positioning = 'above' | 'below';
+type Positioning = 'above' | 'below' | 'cover';
 
 interface OverlayDetails {
   left?: number;
@@ -63,6 +63,7 @@ const OBSERVER_CONFIG = {
   childList: true,
   subtree: true,
   characterData: true,
+  attributeFilter: ['style'],
 };
 
 export class PositionedOverlay extends PureComponent<
@@ -269,9 +270,10 @@ export class PositionedOverlay extends PureComponent<
           : this.firstScrollableContainer;
         const scrollableContainerRect = getRectForNode(scrollableElement);
 
-        const overlayRect = fullWidth
-          ? new Rect({...currentOverlayRect, width: activatorRect.width})
-          : currentOverlayRect;
+        const overlayRect =
+          fullWidth || preferredPosition === 'cover'
+            ? new Rect({...currentOverlayRect, width: activatorRect.width})
+            : currentOverlayRect;
 
         // If `body` is 100% height, it still acts as though it were not constrained to that size. This adjusts for that.
         if (scrollableElement === document.body) {
@@ -314,7 +316,10 @@ export class PositionedOverlay extends PureComponent<
           preferredAlignment,
         );
 
-        const chevronOffset = activatorRect.center.x - horizontalPosition;
+        const chevronOffset =
+          activatorRect.center.x -
+          horizontalPosition +
+          overlayMargins.horizontal * 2;
 
         this.setState(
           {
@@ -327,7 +332,10 @@ export class PositionedOverlay extends PureComponent<
             top: lockPosition ? top : verticalPosition.top,
             lockPosition: Boolean(fixed),
             height: verticalPosition.height || 0,
-            width: fullWidth ? overlayRect.width : null,
+            width:
+              fullWidth || preferredPosition === 'cover'
+                ? overlayRect.width
+                : null,
             positioning: verticalPosition.positioning as Positioning,
             outsideScrollableContainer:
               onScrollOut != null &&

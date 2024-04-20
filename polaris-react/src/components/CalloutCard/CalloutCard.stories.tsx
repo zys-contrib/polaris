@@ -1,10 +1,11 @@
 import React from 'react';
-import type {ComponentMeta} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {Badge, CalloutCard, Text} from '@shopify/polaris';
+import {SmileyHappyIcon, SmileySadIcon} from '@shopify/polaris-icons';
 
 export default {
   component: CalloutCard,
-} as ComponentMeta<typeof CalloutCard>;
+} as Meta<typeof CalloutCard>;
 
 export function Default() {
   return (
@@ -16,7 +17,9 @@ export function Default() {
         url: 'https://www.shopify.com',
       }}
     >
-      <p>Upload your store’s logo, change colors and fonts, and more.</p>
+      <Text as="p" variant="bodyMd">
+        Upload your store’s logo, change colors and fonts, and more.
+      </Text>
     </CalloutCard>
   );
 }
@@ -29,7 +32,9 @@ export function WithSecondaryAction() {
       primaryAction={{content: 'Customize checkout'}}
       secondaryAction={{content: 'Learn more about customizing checkout'}}
     >
-      <p>Upload your store’s logo, change colors and fonts, and more.</p>
+      <Text as="p" variant="bodyMd">
+        Upload your store’s logo, change colors and fonts, and more.
+      </Text>
     </CalloutCard>
   );
 }
@@ -42,7 +47,9 @@ export function Dismissable() {
       primaryAction={{content: 'Customize checkout'}}
       onDismiss={() => {}}
     >
-      <p>Upload your store’s logo, change colors and fonts, and more.</p>
+      <Text as="p" variant="bodyMd">
+        Upload your store’s logo, change colors and fonts, and more.
+      </Text>
     </CalloutCard>
   );
 }
@@ -51,7 +58,7 @@ export function WithCustomTitle() {
   const customTitle = (
     <>
       <span>Customize the style of your checkout </span>
-      <Badge status="new">New</Badge>
+      <Badge tone="new">New</Badge>
     </>
   );
 
@@ -61,7 +68,31 @@ export function WithCustomTitle() {
       illustration="https://cdn.shopify.com/s/assets/admin/checkout/settings-customizecart-705f57c725ac05be5a34ec20c05b94298cb8afd10aac7bd9c7ad02030f48cfa0.svg"
       primaryAction={{content: 'Customize checkout'}}
     >
-      <p>Upload your store’s logo, change colors and fonts, and more.</p>
+      <Text as="p" variant="bodyMd">
+        Upload your store’s logo, change colors and fonts, and more.
+      </Text>
+    </CalloutCard>
+  );
+}
+
+export function WithIconableActions() {
+  return (
+    <CalloutCard
+      title="Tell us how we're doing"
+      illustration="https://cdn.shopify.com/s/assets/admin/checkout/settings-customizecart-705f57c725ac05be5a34ec20c05b94298cb8afd10aac7bd9c7ad02030f48cfa0.svg"
+      primaryAction={{
+        content: 'Good',
+        icon: SmileyHappyIcon,
+      }}
+      secondaryAction={{
+        content: 'Bad',
+        icon: SmileySadIcon,
+        variant: 'secondary',
+      }}
+    >
+      <Text as="p" variant="bodyMd">
+        How do you like our app?
+      </Text>
     </CalloutCard>
   );
 }

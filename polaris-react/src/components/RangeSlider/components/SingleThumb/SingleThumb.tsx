@@ -6,9 +6,9 @@ import {Labelled, helpTextID} from '../../../Labelled';
 import {Text} from '../../../Text';
 import {invertNumber} from '../../utilities';
 import type {RangeSliderProps} from '../../types';
-import sharedStyles from '../../RangeSlider.scss';
+import sharedStyles from '../../RangeSlider.module.css';
 
-import styles from './SingleThumb.scss';
+import styles from './SingleThumb.module.css';
 
 export interface SingleThumbProps extends RangeSliderProps {
   value: number;
@@ -66,7 +66,7 @@ export function SingleThumb(props: SingleThumbProps) {
   const outputMarkup = !disabled && output && (
     <output htmlFor={id} className={styles.Output}>
       <div className={styles.OutputBubble}>
-        <Text as="span" variant="headingXs" alignment="center">
+        <Text as="span" variant="headingSm" alignment="center">
           {clampedValue}
         </Text>
       </div>
@@ -96,7 +96,12 @@ export function SingleThumb(props: SingleThumbProps) {
     >
       <div className={className} style={cssVars}>
         {prefixMarkup}
-        <div className={styles.InputWrapper}>
+        <div
+          className={classNames(
+            styles.InputWrapper,
+            sharedStyles['Track--dashed-after'],
+          )}
+        >
           <input
             type="range"
             className={styles.Input}

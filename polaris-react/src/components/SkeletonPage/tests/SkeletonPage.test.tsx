@@ -1,11 +1,13 @@
 import React from 'react';
 import {mountWithApp} from 'tests/utilities';
 
+// eslint-disable-next-line import/no-deprecated
 import {LegacyCard} from '../../LegacyCard';
 import {Layout} from '../../Layout';
 import {SkeletonBodyText} from '../../SkeletonBodyText';
 import {SkeletonPage} from '../SkeletonPage';
 import {Box} from '../../Box';
+import {Text} from '../../Text';
 
 describe('<SkeletonPage />', () => {
   it('renders its children', () => {
@@ -33,12 +35,12 @@ describe('<SkeletonPage />', () => {
   });
 
   describe('title', () => {
-    it('renders an h1 with the Title class when title is defined', () => {
+    it('renders a h1 when title is defined', () => {
       const skeletonPage = mountWithApp(<SkeletonPage title="Products" />);
 
-      expect(skeletonPage).toContainReactComponent('h1', {className: 'Title'});
+      expect(skeletonPage).toContainReactComponent(Text, {as: 'h1'});
       expect(skeletonPage).not.toContainReactComponent(Box, {
-        background: 'surface-neutral',
+        background: 'bg-fill-tertiary',
       });
     });
 
@@ -49,26 +51,26 @@ describe('<SkeletonPage />', () => {
         className: 'Title',
       });
       expect(skeletonPage).toContainReactComponent(Box, {
-        background: 'surface-neutral',
+        background: 'bg-fill-tertiary',
       });
     });
 
     it('renders SkeletonTitle when title is an empty string', () => {
       const skeletonPage = mountWithApp(<SkeletonPage title="" />);
 
-      expect(skeletonPage).not.toContainReactComponent('h1', {
-        className: 'Title',
+      expect(skeletonPage).not.toContainReactComponent(Text, {
+        as: 'h1',
       });
       expect(skeletonPage).toContainReactComponent(Box, {
-        background: 'surface-neutral',
+        background: 'bg-fill-tertiary',
       });
     });
   });
 
-  it('renders breadcrumbs', () => {
-    const skeletonPage = mountWithApp(<SkeletonPage breadcrumbs />);
+  it('renders backAction', () => {
+    const skeletonPage = mountWithApp(<SkeletonPage backAction />);
     expect(skeletonPage).toContainReactComponent(Box, {
-      background: 'surface-neutral',
+      background: 'bg-fill-tertiary',
       minWidth: '2.25rem',
       minHeight: '2.25rem',
       maxWidth: '2.25rem',

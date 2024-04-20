@@ -3,7 +3,7 @@ import React from 'react';
 import {Box} from '../../../Box';
 import {classNames} from '../../../../utilities/css';
 
-import styles from './Section.scss';
+import styles from './Section.module.css';
 
 export interface SectionProps {
   children?: React.ReactNode;
@@ -27,9 +27,11 @@ export function Section({
     <div className={className}>
       <Box
         as="section"
-        padding={flush ? '0' : '5'}
+        padding={flush ? '0' : '400'}
         {...(titleHidden && {paddingInlineEnd: '0'})}
-        {...(subdued && {background: 'surface-subdued'})}
+        {...(subdued && {
+          background: 'bg-surface-tertiary',
+        })}
       >
         {children}
       </Box>

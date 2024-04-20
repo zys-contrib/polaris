@@ -8,14 +8,12 @@ import * as polarisIcons from '@shopify/polaris-icons';
 import SearchResultHighlight from '../SearchResultHighlight';
 
 interface IconGridProps {
-  title?: string;
   children: React.ReactNode;
 }
 
-function IconGrid({title, children}: IconGridProps) {
+function IconGrid({children}: IconGridProps) {
   return (
     <>
-      {title ? <h2 className={styles.SectionHeading}>{title}</h2> : null}
       <div className={styles.IconGrid}>
         <ul className={styles.IconGridInner}>{children}</ul>
       </div>
@@ -30,6 +28,7 @@ interface IconGridItemProps {
   customOnClick?: Function;
   rank?: number;
   searchTerm?: string;
+  uuid?: string;
 }
 
 function IconGridItem({
@@ -39,8 +38,9 @@ function IconGridItem({
   customOnClick,
   rank,
   searchTerm,
+  uuid,
 }: IconGridItemProps) {
-  const {id, name} = icon;
+  const {id} = icon;
   const searchAttributes = useGlobalSearchResult();
 
   return (
@@ -65,13 +65,14 @@ function IconGridItem({
             activeIcon === id && styles.isSelected,
           )}
           onClick={() =>
+            uuid &&
             customOnClick &&
-            customOnClick(searchTerm, rank, `/icons?icon=${id}`)
+            customOnClick(uuid, searchTerm, rank, id, `/icons?icon=${id}`)
           }
         >
           <SearchResultHighlight />
           <Icon source={(polarisIcons as any)[id]} />
-          <p>{name}</p>
+          <p>{id}</p>
         </a>
       </Link>
     </li>

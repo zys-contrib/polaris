@@ -8,7 +8,6 @@ import virtual from '@rollup/plugin-virtual';
 import globby from 'globby';
 import jsYaml from 'js-yaml';
 import svgr from '@svgr/core';
-import {optimize} from 'svgo';
 
 const convert = svgr.default;
 const iconBasePath = new URL('./icons', import.meta.url).pathname;
@@ -58,7 +57,6 @@ export default metadata;
 const metadataTypes = `export interface Icon {
   id: string;
   name: string;
-  set: 'major' | 'minor';
   description: string;
   keywords: string[];
 }
@@ -100,55 +98,7 @@ function customTypes({fileName, source}) {
 function svgBuild(options = {}) {
   const filter = createFilter(options.include || '**/*.svg', options.exclude);
 
-  /** @type {import('svgo').OptimizeOptions} */
-  const svgoConfig = {
-    plugins: [
-      {
-        name: 'preset-default',
-        params: {
-          overrides: {
-            /**
-             * viewBox is needed in order to produce 20px by 20px containers
-             * with smaller (minor) icons inside.
-             */
-            removeViewBox: false,
-
-            /**
-             * The following 2 settings are disabled to reduce rendering inconsistency
-             * on Android. Android uses a subset of the SVG spec called SVG Tiny:
-             * https://developer.android.com/studio/write/vector-asset-studio#svg-support
-             */
-
-            /**
-             * Merging mutliple detached paths into a single path can lead to
-             * rendering issues on some platforms where detatched paths are joined
-             * by hairlines. Not merging paths results in greater compatibility
-             * with minimal additional overhead.
-             */
-            mergePaths: false,
-
-            convertPathData: {
-              /**
-               * Mixing absolute and relative path commands can lead to rendering
-               * issues on some platforms. This disables converting some path data to
-               * absolute if it is shorter, keeping all path data relative. Using
-               * relative paths means that data points are relative  to the current
-               * point at the start of the path command, which does not greatly
-               * increase the quantity of path data.
-               */
-              utilizeAbsolute: false,
-            },
-          },
-        },
-      },
-    ],
-  };
-
-  svgoConfig.plugins.push({
-    ...replaceFillAttributeSvgoPlugin(),
-  });
-
-  const optimizedSvgs = [];
+  const svgs = [];
 
   return {
     name: 'svgBuild',
@@ -157,16 +107,12 @@ function svgBuild(options = {}) {
         return null;
       }
 
-      const rawSvg = fs.readFileSync(id, 'utf8');
-      const {data: optimizedSvg} = await optimize(rawSvg, {
-        ...svgoConfig,
-        path: id,
-      });
+      const svg = fs.readFileSync(id, 'utf8');
 
-      optimizedSvgs.push({id, optimizedSvg});
+      svgs.push({id, svg});
 
       const svgrState = {filePath: id, caller: {name: 'svgBuild'}};
-      const jsCode = await convert(optimizedSvg, {}, svgrState);
+      const jsCode = await convert(svg, {}, svgrState);
 
       return {
         code: jsCode,
@@ -181,32 +127,13 @@ function svgBuild(options = {}) {
       };
     },
     buildEnd() {
-      optimizedSvgs.forEach(({id, optimizedSvg}) => {
+      svgs.forEach(({id, svg}) => {
         this.emitFile({
           type: 'asset',
           fileName: `svg/${path.basename(id)}`,
-          source: optimizedSvg,
+          source: svg,
         });
       });
-    },
-  };
-}
-
-/**
- * An SVGO plugin that applies a transform function to every fill attribute
- * in an SVG. This lets you replace fill colors or remove them entirely.
- */
-function replaceFillAttributeSvgoPlugin() {
-  return {
-    type: 'perItem',
-    name: 'replaceFillAttibute',
-    description: 'replaces fill attributes using a user-defined function',
-    fn(item) {
-      if (!item.isElem() || !item.attr('fill')) {
-        return;
-      }
-
-      item.removeAttr('fill');
     },
   };
 }
@@ -222,6 +149,11 @@ export default [
         interop,
         entryFileNames: '[name].js',
         chunkFileNames: '[name].js',
+        manualChunks: (id) => {
+          if (id.startsWith(iconBasePath)) {
+            return id.replace(iconBasePath, 'icons/');
+          }
+        },
       },
       {
         dir: 'dist',
@@ -229,17 +161,14 @@ export default [
         interop,
         entryFileNames: '[name].mjs',
         chunkFileNames: '[name].mjs',
+        manualChunks: (id) => {
+          if (id.startsWith(iconBasePath)) {
+            return id.replace(iconBasePath, 'icons/');
+          }
+        },
       },
     ],
-    manualChunks: (id) => {
-      // Generate distinct chunks for each icon
-      // This allows consuming apps to split up the icons into multiple subchunks
-      // containing a few icons each instead of always having to put every icon
-      // into a single shared chunk
-      if (id.startsWith(iconBasePath)) {
-        return id.replace(iconBasePath, 'icons/');
-      }
-    },
+
     external: ['react'],
     onwarn: (warning, warn) => {
       // Unresolved imports means Rollup couldn't find an import, possibly because

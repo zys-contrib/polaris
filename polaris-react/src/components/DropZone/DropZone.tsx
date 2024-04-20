@@ -1,6 +1,13 @@
-import React, {useState, useRef, useCallback, useMemo, useEffect} from 'react';
+import React, {
+  useState,
+  useRef,
+  useCallback,
+  useMemo,
+  useEffect,
+  useId,
+} from 'react';
 import type {FunctionComponent} from 'react';
-import {UploadMajor, CircleAlertMajor} from '@shopify/polaris-icons';
+import {UploadIcon, AlertCircleIcon} from '@shopify/polaris-icons';
 
 import {debounce} from '../../utilities/debounce';
 import {classNames, variationName} from '../../utilities/css';
@@ -11,10 +18,9 @@ import {Labelled} from '../Labelled';
 import type {LabelledProps} from '../Labelled';
 import {useI18n} from '../../utilities/i18n';
 import {isServer} from '../../utilities/target';
-import {useUniqueId} from '../../utilities/unique-id';
 import {useComponentDidMount} from '../../utilities/use-component-did-mount';
 import {useToggle} from '../../utilities/use-toggle';
-import {AlphaStack} from '../AlphaStack';
+import {BlockStack} from '../BlockStack';
 import {useEventListener} from '../../utilities/use-event-listener';
 
 import {FileUpload} from './components';
@@ -26,7 +32,7 @@ import {
   createAllowMultipleKey,
 } from './utils';
 import type {DropZoneEvent} from './utils';
-import styles from './DropZone.scss';
+import styles from './DropZone.module.css';
 
 export type DropZoneFileType = 'file' | 'image' | 'video';
 
@@ -294,7 +300,8 @@ export const DropZone: React.FunctionComponent<DropZoneProps> & {
     adjustSize();
   });
 
-  const id = useUniqueId('DropZone', idProp);
+  const uniqId = useId();
+  const id = idProp ?? uniqId;
 
   const typeSuffix = capitalize(type);
   const allowMultipleKey = createAllowMultipleKey(allowMultiple);
@@ -319,6 +326,7 @@ export const DropZone: React.FunctionComponent<DropZoneProps> & {
   const classes = classNames(
     styles.DropZone,
     outline && styles.hasOutline,
+    !outline && styles.noOutline,
     focused && styles.focused,
     (active || dragging) && styles.isDragging,
     disabled && styles.isDisabled,
@@ -332,12 +340,12 @@ export const DropZone: React.FunctionComponent<DropZoneProps> & {
     !internalError &&
     !error &&
     overlay &&
-    overlayMarkup(UploadMajor, 'interactive', overlayTextWithDefault);
+    overlayMarkup(UploadIcon, overlayTextWithDefault);
 
   const dragErrorOverlay =
     dragging &&
     (internalError || error) &&
-    overlayMarkup(CircleAlertMajor, 'critical', errorOverlayTextWithDefault);
+    overlayMarkup(AlertCircleIcon, errorOverlayTextWithDefault, 'critical');
 
   const context = useMemo(
     () => ({
@@ -363,19 +371,19 @@ export const DropZone: React.FunctionComponent<DropZoneProps> & {
 
   function overlayMarkup(
     icon: FunctionComponent,
-    color: 'critical' | 'interactive',
     text: string,
+    color?: 'critical',
   ) {
     return (
       <div className={styles.Overlay}>
-        <AlphaStack gap="2" inlineAlign="center">
-          {size === 'small' && <Icon source={icon} color={color} />}
+        <BlockStack gap="200" inlineAlign="center">
+          {size === 'small' && <Icon source={icon} tone={color} />}
           {(size === 'medium' || size === 'large') && (
             <Text variant="bodySm" as="p" fontWeight="bold">
               {text}
             </Text>
           )}
-        </AlphaStack>
+        </BlockStack>
       </div>
     );
   }

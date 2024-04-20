@@ -8,11 +8,13 @@ on:
     paths:
       - 'polaris-react/src/**'
       - 'polaris-react/playground/**'
+      - 'polaris-react/.storybook/**'
       - 'polaris-tokens/src/**'
   pull_request:
     paths:
       - 'polaris-react/src/**'
       - 'polaris-react/playground/**'
+      - 'polaris-react/.storybook/**'
       - 'polaris-tokens/src/**'
 
 jobs:
@@ -32,11 +34,14 @@ jobs:
           sudo rm -rf "/usr/local/share/boost"
           sudo rm -rf "$AGENT_TOOLSDIRECTORY"
 
-      - name: Setup Node with v16.13.0
-        uses: actions/setup-node@v3
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+
+      - name: Setup Node from .nvmrc
+        uses: actions/setup-node@v4
         with:
-          node-version: 16.13.0
-          cache: yarn
+          node-version-file: '.nvmrc'
+          cache: pnpm
 
       - name: Restore cache
         uses: actions/cache@v3
@@ -45,18 +50,18 @@ jobs:
             **/.turbo
             node_modules/.cache/turbo
             polaris-react/build-internal/cache
-          key: ${{ runner.os }}-accessibility-test-v1-${{ github.sha }}
+          key: ${{ runner.os }}-accessibility-test-v2-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-accessibility-test-v1-
+            ${{ runner.os }}-accessibility-test-v2-
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Build packages
-        run: yarn build --filter=@shopify/polaris
+        run: pnpm build --filter=@shopify/polaris
 
       - name: Build Storybook
-        run: yarn workspace @shopify/polaris run storybook:build --quiet
+        run: pnpm --filter=@shopify/polaris run storybook:build --quiet
 
       - name: Run accessibility test
         run: node ./polaris-react/scripts/accessibility-check.js
@@ -72,11 +77,14 @@ jobs:
         with:
           fetch-depth: 0 # Chromatic git history to track changes
 
-      - name: Setup Node with v16.13.0
-        uses: actions/setup-node@v3
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+
+      - name: Setup Node from .nvmrc
+        uses: actions/setup-node@v4
         with:
-          node-version: 16.13.0
-          cache: yarn
+          node-version-file: '.nvmrc'
+          cache: pnpm
 
       - name: Restore cache
         uses: actions/cache@v3
@@ -85,18 +93,22 @@ jobs:
             **/.turbo
             node_modules/.cache/turbo
             polaris-react/build-internal/cache
-          key: ${{ runner.os }}-visual-regression-test-v1-${{ github.sha }}
+          key: ${{ runner.os }}-visual-regression-test-v2-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-visual-regression-test-v1-
+            ${{ runner.os }}-visual-regression-test-v2-
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Build packages
-        run: yarn build --filter=@shopify/polaris
+        run: pnpm build --filter=@shopify/polaris
 
       - name: Build Storybook
-        run: yarn workspace @shopify/polaris run storybook:build --quiet
+        run: pnpm --filter=@shopify/polaris run storybook:build --quiet
+        env:
+          STORYBOOK_GITHUB_SHA: ${{ github.sha }}
+          STORYBOOK_GITHUB_REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+          STORYBOOK_GITHUB_PR: ${{ github.event.number }}
 
       - name: Run Chromatic tests
         uses: chromaui/action@v1
@@ -109,3 +121,5 @@ jobs:
           exitOnceUploaded: true
         env:
           STORYBOOK_GITHUB_SHA: ${{ github.sha }}
+          STORYBOOK_GITHUB_REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+          STORYBOOK_GITHUB_PR: ${{ github.event.number }}

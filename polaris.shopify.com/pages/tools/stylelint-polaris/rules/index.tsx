@@ -9,14 +9,18 @@ import PageMeta from '../../../../src/components/PageMeta';
 import {uppercaseFirst} from '../../../../src/utils/various';
 import {MarkdownFile} from '../../../../src/types';
 import {parseMarkdown} from '../../../../src/utils/markdown.mjs';
+import {
+  serializeMdx,
+  type SerializedMdxReturn,
+} from '../../../../src/components/Markdown/serialize';
 
 export interface RulesProps {
   title: string;
   description: string;
-  content: string;
+  mdx: SerializedMdxReturn[0];
 }
 
-const FoundationsCategory = ({title, description, content}: RulesProps) => {
+const FoundationsCategory = ({title, description, mdx}: RulesProps) => {
   return (
     <>
       <PageMeta description={description} />
@@ -24,7 +28,7 @@ const FoundationsCategory = ({title, description, content}: RulesProps) => {
         <Longform>
           <h1>{title}</h1>
           <p>{description}</p>
-          <Markdown>{content}</Markdown>
+          <Markdown {...mdx} />
         </Longform>
       </Page>
     </>
@@ -33,13 +37,15 @@ const FoundationsCategory = ({title, description, content}: RulesProps) => {
 
 export const getStaticProps: GetStaticProps<RulesProps> = async () => {
   const {title, description} = indexPageMetadata();
-  const content = ruleListMarkdown();
+  const [mdx] = await serializeMdx(path.resolve(process.cwd(), rulesPath), {
+    load: ruleListMarkdown,
+  });
 
   return {
     props: {
       title,
       description,
-      content,
+      mdx,
     },
   };
 };
@@ -47,7 +53,7 @@ export const getStaticProps: GetStaticProps<RulesProps> = async () => {
 const rulesPath = 'content/tools/stylelint-polaris/rules';
 
 function indexPageMetadata() {
-  const markdownPath = path.resolve(process.cwd(), `${rulesPath}/index.md`);
+  const markdownPath = path.resolve(process.cwd(), `${rulesPath}/index.mdx`);
   const markdown = fs.readFileSync(markdownPath, 'utf-8');
   const {
     frontMatter: {title, description},
@@ -56,11 +62,11 @@ function indexPageMetadata() {
   return {title, description};
 }
 
-function ruleListMarkdown(): string {
-  const globPath = [path.resolve(process.cwd(), `${rulesPath}/*.md`)];
+function ruleListMarkdown(directory: string): string {
+  const globPath = [`${directory}/*.mdx`];
   const rulePagePaths = globby
     .sync(globPath)
-    .filter((path) => !path.endsWith(`${rulesPath}/index.md`));
+    .filter((path) => !path.endsWith(`${rulesPath}/index.mdx`));
 
   const content: {[key: string]: string[]} = {};
   rulePagePaths.forEach((markdownFilePath) => {
@@ -73,7 +79,7 @@ function ruleListMarkdown(): string {
       const url = markdownFilePath
         .replace(`${process.cwd()}/content`, '')
         .replace('/index', '')
-        .replace(/\.md$/, '');
+        .replace(/\.mdx$/, '');
 
       const category = uppercaseFirst(title.split('/')[0]).replace(
         'Media-queries',

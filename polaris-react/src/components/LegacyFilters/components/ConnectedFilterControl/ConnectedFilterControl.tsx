@@ -9,7 +9,7 @@ import {Button} from '../../../Button';
 import {EventListener} from '../../../EventListener';
 
 import {Item} from './components';
-import styles from './ConnectedFilterControl.scss';
+import styles from './ConnectedFilterControl.module.css';
 
 interface PopoverableAction extends DisableableAction {
   popoverOpen: boolean;
@@ -232,6 +232,7 @@ export class ConnectedFilterControl extends Component<
         disclosure
         disabled={this.props.disabled || action.disabled}
         id={id}
+        size="large"
       >
         {action.content}
       </Button>
